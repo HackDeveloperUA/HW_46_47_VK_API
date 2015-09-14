@@ -4,54 +4,316 @@
 //
 //  Created by MD on 10.09.15.
 //  Copyright (c) 2015 MD. All rights reserved.
-//
+
 
 #import "ASGroupTVC.h"
 
-@interface ASGroupTVC ()
+// Model
+#import "ASUser.h"
+#import "ASWall.h"
+#import "ASFriend.h"
+#import "ASGroup.h"
 
+
+// Collection View
+#import "ASInfoMemberCollectionCell.h"
+#import "ASInfoMemberFlowLayout.h"
+
+#import "ASPhotosCollectionCell.h"
+#import "ASPhotosFlowLayout.h"
+
+// Custom Cell
+#import "ASMainGroupCell.h"
+#import "ASSegmentPost.h"
+#import "ASGrayCell.h"
+
+// Networking
+#import "ASServerManager.h"
+#import "AFNetWorking.h"
+#import "UIImageView+AFNetworking.h"
+
+// HEX
+#import "UIColor+HEX.h"
+
+
+static NSString* identifierMainGroup    = @"ASMainGroupCell";
+static NSString* identifierSegmentPost  = @"ASSegmentPost";
+static NSString* identifierGray         = @"ASGrayCell";
+
+
+
+@interface ASGroupTVC () <UITableViewDataSource,      UITableViewDelegate ,
+                          UICollectionViewDataSource, UICollectionViewDelegate,
+                          UIScrollViewDelegate>
+
+
+@property (strong, nonatomic) NSString* groupID;
+
+@property (strong,nonatomic)  ASGroup *group;
+@property (strong, nonatomic) NSMutableArray* arrrayWall;
+@property (strong, nonatomic) NSArray* arrayDataCountres;
+@property (assign,nonatomic)  BOOL loadingData;
+@property (assign, nonatomic) BOOL firstTimeAppear;
+
+//@property (strong,nonatomic)  UIRefreshControl *refresh;
+//@property (strong,nonatomic)  NSMutableArray *imageViewSize;
 @end
 
-@implementation ASGroupTVC
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
+
+@implementation ASGroupTVC
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+
+    self.arrrayWall  = [NSMutableArray array];
+
+    self.loadingData = YES;
+    self.firstTimeAppear = YES;
+
+}
+
+
+
+- (void) viewDidAppear:(BOOL)animated {
+    
+    [super viewDidAppear:animated];
+    
+    //[self getInfoFromServer];
+
+    
+    if (self.firstTimeAppear) {
+        self.firstTimeAppear = NO;
+        
+        [[ASServerManager sharedManager] authorizeUser:^(ASUser *user) {
+            
+            NSLog(@"AUTHORIZED!");
+            NSLog(@"%@ %@", user.firstName, user.lastName);
+            [self getInfoFromServer];
+        }];
+        
+    }
+    [self.tableView reloadData];
+
+}
+
+#pragma mark - GET-InfoServer
+
+-(void)  getInfoFromServer {
+
+    //58860049 iosdevcourse
+    [[ASServerManager sharedManager] getGroupInfoID:@"58860049" onSuccess:^(ASGroup *group) {
+        
+            self.arrayDataCountres = [NSArray array];
+            self.navigationItem.title = group.fullName;
+            self.groupID = group.groupID;
+            self.group = group;
+        
+            _arrayDataCountres = @[_group.members, _group.topics, _group.docs, _group.photos, _group.videos, _group.albums];
+        
+            [self.tableView reloadData];
+            self.loadingData = NO;
+        
+          //[self getWallFromServer];
+            
+        
+    } onFailure:^(NSError *error, NSInteger statusCode) {
+        
+    }];
+
+}
+
+
+
+#pragma mark - GET-WallServer
+
+-(void)  getWallFromServer {
+    
+    NSLog(@"[count ] =====  %d",[self.arrrayWall count]);
+
+}
+
+#pragma mark - UIScrollViewDelegate
+
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    
+    
+    if ((scrollView.contentOffset.y + scrollView.frame.size.height) >= scrollView.contentSize.height) {
+        if (!self.loadingData)
+        {
+            self.loadingData = YES;
+            //[self getWallFromServer];
+        }
+    }
+}
+
+
+
+#pragma mark - UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    id cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+    
+    if ([cell isKindOfClass:[ASMainGroupCell class]]) {
+      
+       return  (208+[ASMainGroupCell heightForText:self.group.status])-21;
+       
+    }
+    
+    if ([cell isKindOfClass:[ASSegmentPost class]]) {
+        return 44.f;
+    }
+    
+    if ([cell isKindOfClass:[ASGrayCell class]]) {
+        return 16.f;
+    }
+    
+
+    
+    return 10.f;
+}
+
+
+
+#pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
+
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
+
+    if (section == 0) {
+        return 1;
+    }
+    
+    if (section == 1) {
+        return [self.arrrayWall count];
+    }
+    
+  return 0;
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
-    return cell;
+
+    if (indexPath.section == 0) {
+        
+        if (indexPath.row == 0) {
+            
+          ASMainGroupCell* cell = (ASMainGroupCell*)[tableView dequeueReusableCellWithIdentifier:identifierMainGroup];
+            
+           if (!cell) {
+              cell = [[ASMainGroupCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                         reuseIdentifier:identifierMainGroup];
+            }
+            
+        
+            cell.fullNameGroup.text = self.group.fullName;
+            cell.typeGroup.text     = self.group.typeCommunity;
+            cell.statusGroup.text   = self.group.status;
+           
+            //cell.followButton.titleLabel.text = self.group.titleJoinButton;
+            
+            //@"Join community" : @"You are a member"
+            [cell.followButton setTitle:self.group.titleJoinButton forState: UIControlStateNormal];
+
+
+            if ([cell.followButton.titleLabel.text isEqualToString:@"Join community"]) {
+                [cell.followButton setBackgroundColor:[UIColor colorWithRed:0.114 green:0.384 blue:0.941 alpha:1]];
+            } else {
+                [cell.followButton setBackgroundColor:[UIColor colorWithRed:1 green:0.176 blue:0.333 alpha:1]];
+            }
+          
+            cell.collectionView.collectionViewLayout = (UICollectionViewLayout*)[ASInfoMemberFlowLayout initFlowLayout];
+            return cell;
+        }
+        
+    }
+    return nil;
+
 }
-*/
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+}
+
+
+#pragma mark -  UICollectionViewDataSource
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return 5;
+}
+
+
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    NSArray* arrayCounteres = @[@"members", @"topics", @"docs", @"photos", @"videos", @"albums"];
+ 
+    static NSString *identifier = @"ASInfoMemberCollectionCell";
+    ASInfoMemberCollectionCell *cell = (ASInfoMemberCollectionCell*)[collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    
+    cell.firstLabel.text = _arrayDataCountres[indexPath.row];
+    cell.seconLabel.text =  arrayCounteres[indexPath.row];
+    return cell;
+    
+}
+
+
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    static NSString *identifier = @"superCell";
+    ASInfoMemberCollectionCell *cell = (ASInfoMemberCollectionCell*)[collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+
+    NSLog(@"TESSSTT didSelectItemAtIndexPath");
+    
+    if ([cell.seconLabel.text isEqualToString:@"members"]) {
+        
+        
+    }
+    else
+      if ([cell.seconLabel.text isEqualToString:@"topics"]) {
+       
+          
+    }
+    else
+      if ([cell.seconLabel.text isEqualToString:@"docs"]) {
+         
+          
+    } else
+        if ([cell.seconLabel.text isEqualToString:@"photos"]) {
+           
+            
+    } else
+        if ([cell.seconLabel.text isEqualToString:@"videos"]) {
+            
+            
+    } else
+        if ([cell.seconLabel.text isEqualToString:@"albums"]) {
+                
+        }
+
+    
+    
+}
 
 /*
 // Override to support conditional editing of the table view.

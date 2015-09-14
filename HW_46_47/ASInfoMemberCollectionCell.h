@@ -11,7 +11,6 @@
 @interface ASInfoMemberCollectionCell : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *firstLabel;
-
 @property (weak, nonatomic) IBOutlet UILabel *seconLabel;
 
 

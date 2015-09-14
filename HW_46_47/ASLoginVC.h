@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class ASAccessToken;
+
+typedef void(^ASLoginCompletionBlock)(ASAccessToken* token);
+
 @interface ASLoginVC : UIViewController
+
+
+- (id) initWithCompletionBlock:(ASLoginCompletionBlock) completionBlock;
 
 @end
