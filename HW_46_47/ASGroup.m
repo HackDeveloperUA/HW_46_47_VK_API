@@ -60,6 +60,21 @@
         self.videos  = [[[responseObject objectForKey:@"counters"] objectForKey:@"videos"] stringValue];
         self.albums  = [[[responseObject objectForKey:@"counters"] objectForKey:@"albums"] stringValue];
 
+        if (!self.topics) {
+            _topics = @"0";
+        }
+        if (!self.docs) {
+            _docs = @"0";
+        }
+        if (!self.photos) {
+            _photos = @"0";
+        }
+        if (!self.videos) {
+            _videos = @"0";
+        }
+        if (!self.albums) {
+            _albums = @"0";
+        }
         
         BOOL isMember  = [[responseObject objectForKey:@"is_member"] boolValue];
         BOOL isClosed  = [[responseObject objectForKey:@"is_closed"] boolValue];

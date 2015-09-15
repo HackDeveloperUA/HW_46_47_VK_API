@@ -13,14 +13,11 @@
 
 +(UICollectionViewFlowLayout*) initFlowLayout {
     
-    
-    
     UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc]init];
     
-    
-    flowLayout.minimumLineSpacing = 5.f;
+    flowLayout.minimumLineSpacing = 10.f;
     flowLayout.minimumInteritemSpacing = 5.f;
-    flowLayout.itemSize = CGSizeMake(50.f, 50.f);
+    flowLayout.itemSize = CGSizeMake(68.f, 48.f);
     flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
     
     

@@ -109,7 +109,7 @@ static NSString* identifierGray         = @"ASGrayCell";
 -(void)  getInfoFromServer {
 
     //58860049 iosdevcourse
-    [[ASServerManager sharedManager] getGroupInfoID:@"58860049" onSuccess:^(ASGroup *group) {
+    [[ASServerManager sharedManager] getGroupInfoID:@"iosdevcourse" onSuccess:^(ASGroup *group) {
         
             self.arrayDataCountres = [NSArray array];
             self.navigationItem.title = group.fullName;
@@ -194,7 +194,7 @@ static NSString* identifierGray         = @"ASGrayCell";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
     if (section == 0) {
-        return 1;
+        return 3;
     }
     
     if (section == 1) {
@@ -209,35 +209,101 @@ static NSString* identifierGray         = @"ASGrayCell";
 
     if (indexPath.section == 0) {
         
+        
+        
         if (indexPath.row == 0) {
             
-          ASMainGroupCell* cell = (ASMainGroupCell*)[tableView dequeueReusableCellWithIdentifier:identifierMainGroup];
+            ASMainGroupCell* cell = (ASMainGroupCell*)[tableView dequeueReusableCellWithIdentifier:identifierMainGroup];
             
-           if (!cell) {
+            if (!cell) {
               cell = [[ASMainGroupCell alloc] initWithStyle:UITableViewCellStyleDefault
                                          reuseIdentifier:identifierMainGroup];
             }
             
-        
+            __weak ASMainGroupCell *weakCell = cell;
+            
+            NSURLRequest *request = [[NSURLRequest alloc]initWithURL:self.group.mainCommunityImageURL];
+
+            
+            [cell.mainImageGroup setImageWithURLRequest:request
+                                       placeholderImage:nil
+                                                success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                    
+                                                    weakCell.mainImageGroup.image = image;
+                                                    
+                                                    CALayer *imageLayer = weakCell.mainImageGroup.layer;
+                                                    [imageLayer setCornerRadius:40];
+                                                    [imageLayer setBorderWidth:3];
+                                                    [imageLayer setBorderColor:[UIColor whiteColor].CGColor];
+                                                    [imageLayer setMasksToBounds:YES];
+                                                }
+                                                failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                                    
+                                                }];
+            
+
+            
+            
             cell.fullNameGroup.text = self.group.fullName;
             cell.typeGroup.text     = self.group.typeCommunity;
             cell.statusGroup.text   = self.group.status;
-           
-            //cell.followButton.titleLabel.text = self.group.titleJoinButton;
             
             //@"Join community" : @"You are a member"
             [cell.followButton setTitle:self.group.titleJoinButton forState: UIControlStateNormal];
-
-
+            [cell.followButton addTarget:self
+                                action:@selector(followButtonAction:)
+                      forControlEvents:UIControlEventTouchUpInside];
+            
+            
             if ([cell.followButton.titleLabel.text isEqualToString:@"Join community"]) {
                 [cell.followButton setBackgroundColor:[UIColor colorWithRed:0.114 green:0.384 blue:0.941 alpha:1]];
-            } else {
-                [cell.followButton setBackgroundColor:[UIColor colorWithRed:1 green:0.176 blue:0.333 alpha:1]];
+            }
+            else
+           
+            if ([cell.followButton.titleLabel.text isEqualToString:@"You are a member"])
+            {
+            [cell.followButton setBackgroundColor:[UIColor colorWithRed:1 green:0.176 blue:0.333 alpha:1]];
             }
           
             cell.collectionView.collectionViewLayout = (UICollectionViewLayout*)[ASInfoMemberFlowLayout initFlowLayout];
             return cell;
         }
+        
+        
+        
+        if (indexPath.row == 1) {
+
+            ASGrayCell* cell = (ASGrayCell*)[tableView dequeueReusableCellWithIdentifier:identifierGray];
+            
+            if (!cell) {
+            cell = [[ASGrayCell alloc] initWithStyle:UITableViewCellStyleDefault  reuseIdentifier:identifierGray];
+            }
+            return cell;
+         }
+        
+        
+        
+        
+        if (indexPath.row == 2) {
+
+            ASSegmentPost* cell = (ASSegmentPost*)[tableView dequeueReusableCellWithIdentifier:identifierSegmentPost];
+            
+            if (!cell) {
+               cell = [[ASSegmentPost alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierSegmentPost];
+            }
+        
+            [cell.postSegmentControl addTarget:self
+                                        action:@selector(segmentControlPostAction:)
+                               forControlEvents: UIControlEventValueChanged];
+            
+            [cell.createPost addTarget:self
+                                action:@selector(createPostAction:)
+                      forControlEvents:UIControlEventTouchUpInside];
+            
+            return cell;
+        }
+        
+        
         
     }
     return nil;
@@ -280,7 +346,7 @@ static NSString* identifierGray         = @"ASGrayCell";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *identifier = @"superCell";
+    static NSString *identifier = @"ASInfoMemberCollectionCell";
     ASInfoMemberCollectionCell *cell = (ASInfoMemberCollectionCell*)[collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
 
     NSLog(@"TESSSTT didSelectItemAtIndexPath");
@@ -310,11 +376,34 @@ static NSString* identifierGray         = @"ASGrayCell";
         if ([cell.seconLabel.text isEqualToString:@"albums"]) {
                 
         }
+}
 
+
+
+
+#pragma mark - Action
+
+- (IBAction)segmentControlPostAction:(UISegmentedControl *)sender {
     
+    NSInteger selectedSegment = sender.selectedSegmentIndex;
+    NSLog(@"selectedSegment = %d",selectedSegment);
     
 }
 
+
+-(void) createPostAction:(UIButton*) sender {
+
+    
+    NSLog(@"createPostAction");
+}
+
+
+
+-(void) followButtonAction:(UIButton*) sender {
+    
+    
+    NSLog(@"followButtonAction");
+}
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {

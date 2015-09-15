@@ -10,10 +10,12 @@
 
 @interface ASMainGroupCell : UITableViewCell
 
-@property (strong, nonatomic) IBOutlet UILabel *fullNameGroup;
+@property (weak, nonatomic) IBOutlet UILabel *fullNameGroup;
 @property (weak, nonatomic) IBOutlet UILabel *typeGroup;
 @property (weak, nonatomic) IBOutlet UILabel *statusGroup;
 @property (weak, nonatomic) IBOutlet UIButton *followButton;
+@property (weak, nonatomic) IBOutlet UIImageView *mainImageGroup;
+
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 + (CGFloat) heightForText:(NSString*) text;
