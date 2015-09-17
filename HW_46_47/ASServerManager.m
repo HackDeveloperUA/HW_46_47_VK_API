@@ -44,21 +44,6 @@ static NSString* kUserId = @"kUserId";
     return manager;
 }
 
-/*
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        
-        NSURL* url = [NSURL URLWithString:@"https://api.vk.com/method/"];
-        
-        self.requestOperationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:url];
-    }
-    return self;
-}
-
-
-*/
 
 - (instancetype)init {
     
@@ -88,9 +73,6 @@ static NSString* kUserId = @"kUserId";
     self.accessToken.userID = [userDefaults objectForKey:kUserId];
     
 }
-
- 
-
 
 
 - (void)authorizeUser:(void(^)(ASUser* user))completion {
@@ -142,48 +124,8 @@ static NSString* kUserId = @"kUserId";
     }
 }
 
-/*
-- (void) authorizeUser:(void(^)(ASUser* user)) completion {
-    
-    ASLoginVC* vc =
-    [[ASLoginVC alloc] initWithCompletionBlock:^(ASAccessToken *token) {
-        
-        self.accessToken = token;
-        
-        if (token) {
-            
-            
-            [self getUsersInfoUserID:self.accessToken.userID onSuccess:^(ASUser *user) {
-                if (completion) {
-                    completion(user);
-                }
-            } onFailure:^(NSError *error, NSInteger statusCode) {
-                if (completion) {
-                    completion(nil);
-                }
-            }];
-            
-            
-        } else if (completion) {
-            completion(nil);
-        }
-        
-    }];
-    
-    UINavigationController* nav    = [[UINavigationController alloc] initWithRootViewController:vc];
-    UIViewController*       mainVC = [[[[UIApplication sharedApplication] windows] firstObject] rootViewController];
-    
-    [mainVC presentViewController:nav
-                         animated:YES
-                       completion:nil];
-}*/
-
-
-
-
 
 // --- USER --- //
-
 
 - (void) getUsersInfoUserID:(NSString*) userId
                   onSuccess:(void(^)(ASUser* user)) success
@@ -193,9 +135,23 @@ static NSString* kUserId = @"kUserId";
     //photo_max_orig,status,sex,bdate,city, online
     
     NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
-                            userId,          @"user_ids",
-                            @"photo_max_orig,country,city,sex,bdate,status,online",  @"fields",
-                            @"nom",             @"name_case", nil];
+                            userId,      @"user_ids",
+                            @"sex,"
+                            "bdate,"
+                            "city,"
+                            "country,"
+                            "photo_400_orig,"
+                            "online,"
+                            "photo_id,"
+                            "can_post,"
+                            "can_write_private_message,"
+                            "status,"
+                            "last_seen,"
+                            "counters,"
+                            "personal",  @"fields",
+                            @"nom",      @"name_case",
+                            @"5.37",     @"v",
+                            self.accessToken.token, @"access_token",nil];
     
     
     
@@ -204,14 +160,17 @@ static NSString* kUserId = @"kUserId";
      
                               success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
                                   
-                                  //NSLog(@"JSON: %@",responseObject);
+                                  NSLog(@"JSON: %@",responseObject);
                                   
+                                  ASUser* user = nil;
+
+                                  /*
                                   NSArray* friendsArray = [responseObject objectForKey:@"response"];
                                   ASUser* user = nil;
                                   
                                   for (NSDictionary* dict in friendsArray) {
                                       user = [[ASUser alloc] initWithServerResponse:dict];
-                                  }
+                                  }*/
                                   
                                   
                               if (success) {
@@ -278,24 +237,6 @@ static NSString* kUserId = @"kUserId";
               onSuccess:(void(^)(ASGroup* group)) success
               onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure {
     
-    //status,activity,can_post,members_count,counters,description
-
-    // FOR WALL CHECK
-    /*
-    NSCharacterSet * set = [NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ"];
-    
-    if ([groupId rangeOfCharacterFromSet:set].location != NSNotFound) {
-        
-        NSLog(@"FIRST before = %@",groupId);
-        NSLog(@"FIRST after = %@",groupId);
-
-    }else {
-        NSLog(@"Second before = %@",groupId);
-        // groupId = [@"-" stringByAppendingString:groupId];
-        NSLog(@"Second after = %@",groupId);
-
-    }
-    */
 
     // accessToket тут не нужен . Он вредит
     
