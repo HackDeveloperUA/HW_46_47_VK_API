@@ -209,6 +209,14 @@
                                     <outlet property="numberPhotoButton" destination="vcc-wq-g1K" id="ZZG-Kd-xvg"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ASGrayCell" rowHeight="16" id="9Be-it-Tdt" customClass="ASGrayCell">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9Be-it-Tdt" id="ehI-y3-RpV">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" white="0.94935074470000003" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ASSegmentPost" rowHeight="44" id="hyr-YM-tXL" customClass="ASSegmentPost">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hyr-YM-tXL" id="xyr-gO-J6M">

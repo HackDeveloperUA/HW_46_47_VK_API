@@ -140,7 +140,7 @@ static NSString* kUserId = @"kUserId";
                             "bdate,"
                             "city,"
                             "country,"
-                            "photo_400_orig,"
+                            "photo_max_orig,"
                             "online,"
                             "photo_id,"
                             "can_post,"
@@ -148,6 +148,7 @@ static NSString* kUserId = @"kUserId";
                             "status,"
                             "last_seen,"
                             "counters,"
+                            "friend_status,"
                             "personal",  @"fields",
                             @"nom",      @"name_case",
                             @"5.37",     @"v",
@@ -162,15 +163,13 @@ static NSString* kUserId = @"kUserId";
                                   
                                   NSLog(@"JSON: %@",responseObject);
                                   
-                                  ASUser* user = nil;
 
-                                  /*
-                                  NSArray* friendsArray = [responseObject objectForKey:@"response"];
+                                  NSArray* responceArray = [responseObject objectForKey:@"response"];
                                   ASUser* user = nil;
                                   
-                                  for (NSDictionary* dict in friendsArray) {
+                                  for (NSDictionary* dict in responceArray) {
                                       user = [[ASUser alloc] initWithServerResponse:dict];
-                                  }*/
+                                  }
                                   
                                   
                               if (success) {
