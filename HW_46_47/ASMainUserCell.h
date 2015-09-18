@@ -13,6 +13,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *ownerMainPhoto;
 @property (weak, nonatomic) IBOutlet UILabel *fullName;
 @property (weak, nonatomic) IBOutlet UILabel *lastSeenORonline;
+@property (weak, nonatomic) IBOutlet UILabel *cityORcountry;
 
 @property (weak, nonatomic) IBOutlet UIButton *sendMessageButton;
 @property (weak, nonatomic) IBOutlet UIButton *addFriendButton;

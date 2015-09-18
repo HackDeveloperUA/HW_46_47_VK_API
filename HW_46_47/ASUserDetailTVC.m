@@ -40,10 +40,27 @@ static NSString* identifierSegmentPost  = @"ASSegmentPost";
 static NSString* identifierGray         = @"ASGrayCell";
 
 
+static CGSize CGSizeResize(CGSize size) {
+    
+    
+    //size.width *= height / size.height;
+    //size.height = height;
+    //return size;
+    
+    CGFloat targetHeight = 65.0f;
+    CGFloat scaleFactor = targetHeight / size.height;
+    CGFloat targetWidth = size.width * scaleFactor;
+    
+    return CGSizeMake(targetWidth, targetHeight);
+}
 
-@interface ASUserDetailTVC () /*<UITableViewDataSource,      UITableViewDelegate ,
-                                UICollectionViewDataSource, UICollectionViewDelegate,
-                                UIScrollViewDelegate>*/
+
+
+
+
+@interface ASUserDetailTVC () <UITableViewDataSource,      UITableViewDelegate,UICollectionViewDelegateFlowLayout,
+                                UICollectionViewDataSource, UICollectionViewDelegate>
+                              /*  UIScrollViewDelegate>*/
 
 @property (strong, nonatomic) NSString* groupID;
 
@@ -51,11 +68,14 @@ static NSString* identifierGray         = @"ASGrayCell";
 @property (strong,nonatomic)  ASUser *currentUser;
 
 @property (strong, nonatomic) NSMutableArray* arrrayWall;
-@property (strong, nonatomic) NSArray* arrayDataCountres;
+
+@property (strong, nonatomic) NSArray* arrayNumberDataCountres;
+@property (strong, nonatomic) NSArray* arrayTextDataCountres;
+
+@property (strong, nonatomic) NSArray* miniaturePhotoArray;
 
 @property (assign,nonatomic)  BOOL loadingData;
 @property (assign, nonatomic) BOOL firstTimeAppear;
-
 
 @end
 
@@ -66,10 +86,16 @@ static NSString* identifierGray         = @"ASGrayCell";
     [super viewDidLoad];
     
     
+    
+    
     self.currentUser  = [ASUser new];
     self.currentGroup = [ASGroup new];
     
     self.arrrayWall  = [NSMutableArray array];
+    
+    self.arrayNumberDataCountres = [NSArray array];
+    self.arrayTextDataCountres   = [NSArray array];
+    
     
     self.loadingData = YES;
     self.firstTimeAppear = YES;
@@ -120,7 +146,9 @@ static NSString* identifierGray         = @"ASGrayCell";
                                               onSuccess:^(ASUser *user) {
                                                   
                                                   self.currentUser = user;
+                                                  [self setCounteresForCollectionView];
                                                   [self.tableView reloadData];
+                                             
                                               }
      
                                               onFailure:^(NSError *error, NSInteger statusCode) {
@@ -138,30 +166,303 @@ static NSString* identifierGray         = @"ASGrayCell";
 
 }
 
+#pragma mark - UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    id cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+    
+    if ([cell isKindOfClass:[ASMainUserCell class]]) {
+        return 211.f;
+    }
+    
+    if ([cell isKindOfClass:[ASPhotoUserCell class]]) {
+        return 95.f;
+    }
+    
+    if ([cell isKindOfClass:[ASGrayCell class]]) {
+        return 16.f;
+    }
+    
+    if ([cell isKindOfClass:[ASSegmentPost class]]) {
+        return 44.f;
+    }
+    
+    
+    return 10.f;
+}
 
 
-#pragma mark - Table view data source
+
+#pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 0;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
+    if (section == 0) {
+        return 4;
+    }
+    
+    if (section == 1) {
+        return  [self.arrrayWall count];
+    }
+
     return 0;
-
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
-    return cell;
-}
-*/
 
+    
+    if (indexPath.section == 0) {
+        
+        if (indexPath.row == 0) {
+
+            
+            ASMainUserCell* cell = (ASMainUserCell*)[tableView dequeueReusableCellWithIdentifier:identifierMainUser];
+            
+            if (!cell) {
+                cell = [[ASMainUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierMainUser];
+            }
+            
+            [cell.ownerMainPhoto setImageWithURL:self.currentUser.mainImageURL placeholderImage:[UIImage imageNamed:@"pl_man"]];
+            
+            CALayer *imageLayer = cell.ownerMainPhoto.layer;
+            [imageLayer setCornerRadius:40];
+            [imageLayer setBorderWidth:3];
+            [imageLayer setBorderColor:[UIColor whiteColor].CGColor];
+            [imageLayer setMasksToBounds:YES];
+            
+            
+            cell.fullName.text = [NSString stringWithFormat:@"%@ %@",self.currentUser.firstName , self.currentUser.lastName];
+            cell.cityORcountry.text = self.currentUser.city;
+            
+           // BOOL result = value ? YES : NO;
+            self.currentUser.online == 0 ? (cell.lastSeenORonline.text = self.currentUser.lastSeen) :
+                                          (cell.lastSeenORonline.text = @"Online");
+            
+             cell.sendMessageButton.enabled = self.currentUser.enableSendMessageButton;
+             cell.addFriendButton.enabled   = self.currentUser.enableAddFriendButton;
+            [cell.addFriendButton setTitle:   self.currentUser.titleAddFriendButton  forState: UIControlStateNormal];
+            
+            
+            [cell.sendMessageButton addTarget:self action:@selector(sendMessageAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.addFriendButton   addTarget:self action:@selector(addFriendAction:)   forControlEvents:UIControlEventTouchUpInside];
+            
+            [cell.collectionViewMember reloadData];
+            return cell;
+        }
+        
+        
+        if (indexPath.row == 1) {
+        
+            
+            ASPhotoUserCell* cell = (ASPhotoUserCell*)[tableView dequeueReusableCellWithIdentifier:identifierPhotos];
+            
+            if (!cell) {
+                cell = [[ASPhotoUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierPhotos];
+            }
+            
+            NSString* titleButton = [NSString stringWithFormat:@"%d photos",[self.miniaturePhotoArray count]];
+            [cell.numberPhotoButton setTitle:  titleButton  forState: UIControlStateNormal];
+
+            return cell;
+        }
+        
+        
+        if (indexPath.row == 2) {
+        
+            ASGrayCell* cell = (ASGrayCell*)[tableView dequeueReusableCellWithIdentifier:identifierGray];
+            if (!cell) {
+                cell = [[ASGrayCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierGray];
+            }
+            
+            return cell;
+        }
+        
+        if (indexPath.row == 3) {
+            
+            ASSegmentPost* cell = (ASSegmentPost*)[tableView dequeueReusableCellWithIdentifier:identifierSegmentPost];
+            if (!cell) {
+                cell = [[ASSegmentPost alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierSegmentPost];
+            }
+            
+            [cell.postSegmentControl addTarget:self
+                                        action:@selector(segmentControlPostAction:)
+                              forControlEvents: UIControlEventValueChanged];
+            
+            [cell.createPost addTarget:self
+                                action:@selector(createPostAction:)
+                      forControlEvents:UIControlEventTouchUpInside];
+        
+            return cell;
+        }
+    }
+    
+  return nil;
+}
+
+#pragma mark -  UICollectionViewDataSource
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+  
+    
+    if (collectionView.tag == 100) {
+        return [self.arrayNumberDataCountres count];
+    }
+    
+    if (collectionView.tag == 200) {
+        return [self.miniaturePhotoArray count];
+    }
+
+    return 1;
+}
+
+
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    
+    NSLog(@"Я здесь !!!");
+    
+    if (collectionView.tag == 100) {
+    
+        static NSString *identifier = @"ASInfoMemberCollectionCell";
+        ASInfoMemberCollectionCell *cell = (ASInfoMemberCollectionCell*)
+                                           [collectionView dequeueReusableCellWithReuseIdentifier:identifier
+                                                                                     forIndexPath:indexPath];
+        
+        //if (!self.arrayNumberDataCountres || !self.arrayTextDataCountres) {
+            
+        cell.firstLabel.text = self.arrayNumberDataCountres[indexPath.row];
+        cell.seconLabel.text = self.arrayTextDataCountres[indexPath.row];
+       // }
+        
+    return cell;
+    }
+    
+    
+    if (collectionView.tag == 200) {
+
+        static NSString *identifier = @"ASPhotosCollectionCell";
+        ASPhotosCollectionCell *cell = (ASPhotosCollectionCell*)
+                                        [collectionView dequeueReusableCellWithReuseIdentifier:identifier
+                                                                                  forIndexPath:indexPath];
+        
+        cell.cellImage.image = [UIImage imageNamed:self.miniaturePhotoArray[indexPath.row]];
+        cell.backgroundColor = [UIColor blueColor];
+        
+        // Надо же загружать из интернета
+       // [cell.ownerMainPhoto setImageWithURL:self.currentUser.mainImageURL placeholderImage:[UIImage imageNamed:@"pl_man"]];
+    return cell;
+    }
+    
+    
+  return nil;
+}
+
+#pragma mark - UICollectionViewDelegate
+
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    
+    if (collectionView.tag == 200) {
+        
+        UIImage* image = [UIImage imageNamed:self.miniaturePhotoArray[indexPath.row]];
+        CGSize   newSize = CGSizeResize(image.size);
+        
+        return CGSizeResize(image.size);
+    }
+    
+    if (collectionView.tag == 100) {
+    
+        return CGSizeMake(60, 50);
+    }
+
+    
+    return  CGSizeMake(50, 50);
+}
+
+
+
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    /*
+    static NSString *identifier = @"ASInfoMemberCollectionCell";
+    ASInfoMemberCollectionCell *cell = (ASInfoMemberCollectionCell*)[collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    */
+}
+
+
+#pragma mark - Action
+
+-(void)  sendMessageAction:(UIButton*) sender {
+    
+    
+}
+
+-(void)  addFriendAction:(UIButton*) sender {
+    
+    
+}
+
+-(void)segmentControlPostAction:(UISegmentedControl *)sender {
+    
+    NSInteger selectedSegment = sender.selectedSegmentIndex;
+    NSLog(@"selectedSegment = %d",selectedSegment);
+    
+}
+
+
+-(void) createPostAction:(UIButton*) sender {
+    
+    
+    NSLog(@"createPostAction");
+}
+
+
+#pragma mark - Other
+
+-(void) setCounteresForCollectionView {
+    
+    
+    NSArray* arrayCounterText = @[@"albums",   @"audios",  @"followers", @"friends",
+                                  @"groups",   @"pages",   @"photos",    @"videos", @"subscriptions"];
+    
+    
+    NSArray* arrayCounterNumber = @[_currentUser.albums,    _currentUser.audios,
+                                    _currentUser.followers, _currentUser.friends,
+                                    _currentUser.groups,    _currentUser.pages,
+                                    _currentUser.photos, _currentUser.videos,
+                                    _currentUser.subscriptions ];
+    
+    NSMutableArray* newNumberArray = [NSMutableArray array];
+    NSMutableArray* newTextArray   = [NSMutableArray array];
+    
+    
+    for (int i=0; i<[arrayCounterNumber count]; i++) {
+        
+        NSString* str = arrayCounterNumber[i];
+        int count = [str integerValue];
+        
+        if (count > 0) {
+            [newNumberArray addObject:str];
+            [newTextArray   addObject:arrayCounterText[i]];
+        }
+    }
+    
+    self.arrayNumberDataCountres = newNumberArray;
+    self.arrayTextDataCountres   = newTextArray;
+    
+}
 
 
 @end
