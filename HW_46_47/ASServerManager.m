@@ -14,7 +14,7 @@
 #import "ASUser.h"
 #import "ASGroup.h"
 #import "ASWall.h"
-
+#import "ASPhoto.h"
 
 static NSString* kToken = @"kToken";
 static NSString* kExpirationDate = @"kExpirationDate";
@@ -186,6 +186,62 @@ static NSString* kUserId = @"kUserId";
                               }];
 }
 
+-(void) getPhotoUserID:(NSString*) userID
+            withOffset:(NSInteger) offset
+                 count:(NSInteger) count
+             onSuccess:(void(^)(NSArray* photos)) success
+             onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure {
+    
+    
+    
+    NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            userID,      @"owner_id",
+                            @"wall",     @"album_id",
+                            //@"",         @"photo_ids",
+                            @"1",        @"rev",
+                            @"1",        @"extended",
+                            // @"photo",    @"feed_type",
+                            //@"0",        @"photo_sizes",
+                            @(offset),   @"offset",
+                            @(count),    @"count",
+                            @"5.37",     @"v",
+                            self.accessToken.token, @"access_token",nil];
+    
+    
+    [self.requestOperationManager GET:@"photos.get"
+                           parameters:params
+     
+                              success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
+                                  
+                                  NSLog(@"JSON - %@",responseObject);
+                                  
+                                  //NSArray*  response = [responseObject  objectForKey:@"response"];
+                                  NSArray*  items    = [[responseObject objectForKey:@"response"] objectForKey:@"items"];
+                                  
+                                  NSMutableArray* objectsArray = [NSMutableArray array];
+
+                                  for (NSDictionary* dict in items) {
+                                      
+                                       ASPhoto* photo =  [[ASPhoto alloc] initWithServerResponse:dict];
+                                       [objectsArray addObject:photo];
+                                  }
+                                  
+                                  
+                                  if (success) {
+                                      success(objectsArray);
+                                  }
+                              }
+     
+                              failure:^(AFHTTPRequestOperation *operation, NSError* error){
+                                  NSLog(@"Error: %@",error);
+                                  if (failure) {
+                                      failure(error, operation.response.statusCode);
+                                  }
+                              }];
+    
+}
+
+
 
 
 
@@ -228,6 +284,8 @@ static NSString* kUserId = @"kUserId";
     }];
     
 }
+
+
 
 
 // --- GROUP --- //

@@ -24,6 +24,7 @@
 		6C45684D1BA33CC6000B380A /* ASAccessToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C45684C1BA33CC6000B380A /* ASAccessToken.m */; };
 		6C4568511BA33E09000B380A /* ASServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C4568501BA33E09000B380A /* ASServerManager.m */; };
 		6C4568541BA33ECE000B380A /* ASUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C4568531BA33ECE000B380A /* ASUser.m */; };
+		6C7C9F4E1BACBCFE00D2228F /* ASPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C7C9F4D1BACBCFE00D2228F /* ASPhoto.m */; };
 		6C9671A91BA723D9006B2D59 /* ASInfoMemberFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9671A81BA723D9006B2D59 /* ASInfoMemberFlowLayout.m */; };
 		6C9671AC1BA72407006B2D59 /* ASPhotosFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9671AB1BA72407006B2D59 /* ASPhotosFlowLayout.m */; };
 		6C9671AF1BA74F64006B2D59 /* UIColor+HEX.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9671AE1BA74F64006B2D59 /* UIColor+HEX.m */; };
@@ -88,6 +89,8 @@
 		6C4568501BA33E09000B380A /* ASServerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASServerManager.m; sourceTree = "<group>"; };
 		6C4568521BA33ECE000B380A /* ASUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASUser.h; sourceTree = "<group>"; };
 		6C4568531BA33ECE000B380A /* ASUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASUser.m; sourceTree = "<group>"; };
+		6C7C9F4C1BACBCFE00D2228F /* ASPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASPhoto.h; sourceTree = "<group>"; };
+		6C7C9F4D1BACBCFE00D2228F /* ASPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASPhoto.m; sourceTree = "<group>"; };
 		6C9671A71BA723D9006B2D59 /* ASInfoMemberFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASInfoMemberFlowLayout.h; sourceTree = "<group>"; };
 		6C9671A81BA723D9006B2D59 /* ASInfoMemberFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASInfoMemberFlowLayout.m; sourceTree = "<group>"; };
 		6C9671AA1BA72407006B2D59 /* ASPhotosFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASPhotosFlowLayout.h; sourceTree = "<group>"; };
@@ -205,6 +208,15 @@
 			name = Server;
 			sourceTree = "<group>";
 		};
+		6C7C9F4B1BACBCCA00D2228F /* Primitive Model */ = {
+			isa = PBXGroup;
+			children = (
+				6C7C9F4C1BACBCFE00D2228F /* ASPhoto.h */,
+				6C7C9F4D1BACBCFE00D2228F /* ASPhoto.m */,
+			);
+			name = "Primitive Model";
+			sourceTree = "<group>";
+		};
 		6C9B11F11BA1572D00242620 = {
 			isa = PBXGroup;
 			children = (
@@ -232,6 +244,7 @@
 				6C45684C1BA33CC6000B380A /* ASAccessToken.m */,
 				6C45684E1BA33D4E000B380A /* Server */,
 				6C4568401BA2DECF000B380A /* View Controllers */,
+				6C7C9F4B1BACBCCA00D2228F /* Primitive Model */,
 				6C45684A1BA33774000B380A /* Model */,
 				6CF725911BA227AC003F935B /* CollectionView Cell */,
 				6C2559881BA213400005622E /* Cell */,
@@ -442,6 +455,7 @@
 				6C9671B21BA75623006B2D59 /* ASGrayCell.m in Sources */,
 				6C9B12061BA1572D00242620 /* ViewController.m in Sources */,
 				6C2AC5B91BA429B8006C0DE6 /* ASFriend.m in Sources */,
+				6C7C9F4E1BACBCFE00D2228F /* ASPhoto.m in Sources */,
 				6C9B12031BA1572D00242620 /* AppDelegate.m in Sources */,
 				6C2559911BA216D60005622E /* ASWallTextImageCell.m in Sources */,
 				6C451E8C1BA61B8800A879C9 /* ASGroup.m in Sources */,

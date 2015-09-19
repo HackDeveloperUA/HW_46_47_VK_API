@@ -158,6 +158,7 @@
                                 <connections>
                                     <outlet property="addFriendButton" destination="WlB-w2-FxH" id="VYQ-ZQ-V8Y"/>
                                     <outlet property="cityORcountry" destination="del-HO-Xu6" id="SlY-s5-Oni"/>
+                                    <outlet property="collectionViewMember" destination="83F-Lp-dJV" id="JSJ-x6-TnR"/>
                                     <outlet property="fullName" destination="Wws-DK-XIO" id="scl-0V-JUm"/>
                                     <outlet property="lastSeenORonline" destination="gY0-y7-7Yn" id="Mf4-6S-8Ul"/>
                                     <outlet property="ownerMainPhoto" destination="jrI-Bj-rf6" id="dcI-cn-cai"/>
@@ -195,13 +196,13 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="65" height="65"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
-                                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ikZ-jc-Hr9">
+                                                            <imageView userInteractionEnabled="NO" alpha="0.34999999999999964" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ikZ-jc-Hr9">
                                                                 <rect key="frame" x="0.0" y="0.0" width="65" height="65"/>
                                                             </imageView>
                                                         </subviews>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     </view>
-                                                    <color key="backgroundColor" red="1" green="0.73119173130000004" blue="0.4591576638" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="backgroundColor" red="0.1215686275" green="0.23921568630000001" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
                                                     <size key="customSize" width="65" height="65"/>
                                                     <connections>
                                                         <outlet property="cellImage" destination="ikZ-jc-Hr9" id="xX3-dX-nbD"/>
@@ -224,6 +225,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="collectionViewPhotos" destination="RRw-4L-aJL" id="XKk-uu-fzJ"/>
                                     <outlet property="numberPhotoButton" destination="vcc-wq-g1K" id="ZZG-Kd-xvg"/>
                                 </connections>
                             </tableViewCell>

@@ -72,11 +72,14 @@ static CGSize CGSizeResize(CGSize size) {
 @property (strong, nonatomic) NSArray* arrayNumberDataCountres;
 @property (strong, nonatomic) NSArray* arrayTextDataCountres;
 
-@property (strong, nonatomic) NSArray* miniaturePhotoArray;
+@property (strong, nonatomic) NSMutableArray* miniaturePhotoArray;
 
 @property (assign,nonatomic)  BOOL loadingData;
 @property (assign, nonatomic) BOOL firstTimeAppear;
 
+
+@property (strong, nonatomic)  UICollectionView* photoColl;
+@property (strong, nonatomic) NSArray* testAAARRRAY;
 @end
 
 @implementation ASUserDetailTVC
@@ -84,7 +87,18 @@ static CGSize CGSizeResize(CGSize size) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
+
+     ///
+    self.testAAARRRAY = [NSArray array];
+    self.testAAARRRAY = @[@"",@"",@"",@"",@""];
+
+    ///
+    UICollectionViewFlowLayout *layout=[[UICollectionViewFlowLayout alloc] init];
+    self.photoColl =[[UICollectionView alloc] initWithFrame:self.view.frame collectionViewLayout:layout];
+    //self.photoColl = [[UICollectionView alloc] init];
+    [self.photoColl setDataSource:self];
+    [self.photoColl setDelegate:self];
     
     
     
@@ -95,9 +109,10 @@ static CGSize CGSizeResize(CGSize size) {
     
     self.arrayNumberDataCountres = [NSArray array];
     self.arrayTextDataCountres   = [NSArray array];
+    self.miniaturePhotoArray     = [NSArray array];
     
     
-    self.loadingData = YES;
+    self.loadingData     = YES;
     self.firstTimeAppear = YES;
     
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
@@ -121,8 +136,11 @@ static CGSize CGSizeResize(CGSize size) {
         [[ASServerManager sharedManager] authorizeUser:^(ASUser *user) {
             
             NSLog(@"AUTHORIZED!");
+            self.navigationItem.title = user.firstName;
+            
             NSLog(@"%@ %@", user.firstName, user.lastName);
             [self getUserFromServer];
+            [self getUserPhotoFromServer];
         }];
         
     }
@@ -137,7 +155,7 @@ static CGSize CGSizeResize(CGSize size) {
 
 
 
-#pragma mark - Get Friends From Server
+#pragma mark - GetDataFromServer
 
 -(void)  getUserFromServer {
     
@@ -158,8 +176,42 @@ static CGSize CGSizeResize(CGSize size) {
 }
 
 
+-(void)  getUserPhotoFromServer {
+   
+    [[ASServerManager sharedManager] getPhotoUserID:@"201621080"
+                                         withOffset:[self.miniaturePhotoArray count]
+                                              count:20
+                                          onSuccess:^(NSArray *photos) {
+                               self.testAAARRRAY = @[@"",@"",@"",@"",@""];
+                                [self.photoColl reloadData];
+     
+                                              /*
+      if ([photos count] > 0) {
+          
+          [self.miniaturePhotoArray addObjectsFromArray:photos];
+          
+          NSMutableArray* newPaths = [NSMutableArray array];
+          
+          for (int i = (int)[self.miniaturePhotoArray count] - (int)[photos count]; i < [self.miniaturePhotoArray count]; i++){
+              [newPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+          }
+          
 
-#pragma mark - Get Wall From Server
+          [self.tableView beginUpdates];
+          [self.tableView insertRowsAtIndexPaths:newPaths withRowAnimation:UITableViewRowAnimationTop];
+          [self.tableView endUpdates];
+          
+          self.loadingData = NO;
+      }
+       */
+                    
+                                          } onFailure:^(NSError *error, NSInteger statusCode) {
+                                              
+                                          }];
+    
+}
+
+
 
 -(void)  getWallFromServer {
     
@@ -266,9 +318,21 @@ static CGSize CGSizeResize(CGSize size) {
                 cell = [[ASPhotoUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierPhotos];
             }
             
+           // UICollectionViewFlowLayout *layout=[[UICollectionViewFlowLayout alloc] init];
+           // self.photoColl =[[UICollectionView alloc] initWithFrame:self.view.frame collectionViewLayout:layout];
+            //self.photoColl = [[UICollectionView alloc] init];
+           // [self.photoColl setDataSource:self];
+           // [self.photoColl setDelegate:self];
+            
+            self.photoColl = cell.collectionViewPhotos;
+            [self.photoColl setDataSource:self];
+            [self.photoColl setDelegate:self];
+            [self.photoColl reloadData];
+            //self.photoColl = cell;//cell.collectionViewPhotos;
+            
             NSString* titleButton = [NSString stringWithFormat:@"%d photos",[self.miniaturePhotoArray count]];
             [cell.numberPhotoButton setTitle:  titleButton  forState: UIControlStateNormal];
-
+            [cell.collectionViewPhotos reloadData];
             return cell;
         }
         
@@ -319,7 +383,8 @@ static CGSize CGSizeResize(CGSize size) {
     }
     
     if (collectionView.tag == 200) {
-        return [self.miniaturePhotoArray count];
+        return [self.testAAARRRAY count];
+        //return [self.miniaturePhotoArray count];
     }
 
     return 1;
@@ -329,7 +394,6 @@ static CGSize CGSizeResize(CGSize size) {
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    NSLog(@"Я здесь !!!");
     
     if (collectionView.tag == 100) {
     
@@ -338,17 +402,16 @@ static CGSize CGSizeResize(CGSize size) {
                                            [collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                                      forIndexPath:indexPath];
         
-        //if (!self.arrayNumberDataCountres || !self.arrayTextDataCountres) {
-            
         cell.firstLabel.text = self.arrayNumberDataCountres[indexPath.row];
         cell.seconLabel.text = self.arrayTextDataCountres[indexPath.row];
-       // }
         
     return cell;
     }
     
     
     if (collectionView.tag == 200) {
+
+        NSLog(@"collectionView.tag == 200");
 
         static NSString *identifier = @"ASPhotosCollectionCell";
         ASPhotosCollectionCell *cell = (ASPhotosCollectionCell*)
@@ -358,6 +421,9 @@ static CGSize CGSizeResize(CGSize size) {
         cell.cellImage.image = [UIImage imageNamed:self.miniaturePhotoArray[indexPath.row]];
         cell.backgroundColor = [UIColor blueColor];
         
+        self.photoColl = collectionView;
+        
+        //self.photoColl = cell;
         // Надо же загружать из интернета
        // [cell.ownerMainPhoto setImageWithURL:self.currentUser.mainImageURL placeholderImage:[UIImage imageNamed:@"pl_man"]];
     return cell;

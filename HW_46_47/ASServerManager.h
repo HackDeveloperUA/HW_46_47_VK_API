@@ -41,6 +41,11 @@
               onFailure:(void (^) (NSError *error)) failure;
 
 
+-(void) getPhotoUserID:(NSString*) userID
+            withOffset:(NSInteger) offset
+                 count:(NSInteger) count
+             onSuccess:(void(^)(NSArray* photos)) success
+             onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
 
 // --- GROUP --- //
 
