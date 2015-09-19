@@ -161,7 +161,7 @@ static NSString* kUserId = @"kUserId";
      
                               success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
                                   
-                                  NSLog(@"JSON: %@",responseObject);
+                                  //NSLog(@"JSON: %@",responseObject);
                                   
 
                                   NSArray* responceArray = [responseObject objectForKey:@"response"];
@@ -213,7 +213,7 @@ static NSString* kUserId = @"kUserId";
      
                               success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
                                   
-                                  NSLog(@"JSON - %@",responseObject);
+                                  //NSLog(@"JSON - %@",responseObject);
                                   
                                   //NSArray*  response = [responseObject  objectForKey:@"response"];
                                   NSArray*  items    = [[responseObject objectForKey:@"response"] objectForKey:@"items"];

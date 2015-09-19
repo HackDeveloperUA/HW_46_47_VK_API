@@ -545,7 +545,13 @@
                             <outlet property="delegate" destination="816-OW-CbA" id="6jb-kn-CWR"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="2fI-AR-zE4"/>
+                    <navigationItem key="navigationItem" id="2fI-AR-zE4">
+                        <barButtonItem key="rightBarButtonItem" title="Item" id="qob-hD-odA">
+                            <connections>
+                                <action selector="itemBar:" destination="816-OW-CbA" id="aGI-JW-6x1"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="600" height="960"/>
                 </tableViewController>

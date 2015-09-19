@@ -10,4 +10,5 @@
 
 @interface ASUserDetailTVC : UITableViewController
 
+- (IBAction)itemBar:(id)sender;
 @end

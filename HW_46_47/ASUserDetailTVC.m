@@ -13,7 +13,7 @@
 #import "ASWall.h"
 #import "ASFriend.h"
 #import "ASGroup.h"
-
+#import "ASPhoto.h"
 
 // Collection View
 #import "ASInfoMemberCollectionCell.h"
@@ -72,14 +72,14 @@ static CGSize CGSizeResize(CGSize size) {
 @property (strong, nonatomic) NSArray* arrayNumberDataCountres;
 @property (strong, nonatomic) NSArray* arrayTextDataCountres;
 
-@property (strong, nonatomic) NSMutableArray* miniaturePhotoArray;
 
 @property (assign,nonatomic)  BOOL loadingData;
 @property (assign, nonatomic) BOOL firstTimeAppear;
 
+//
+@property (strong, nonatomic) NSMutableArray* miniaturePhotoArray;
+@property (strong, nonatomic) NSMutableArray* pathsArray;
 
-@property (strong, nonatomic)  UICollectionView* photoColl;
-@property (strong, nonatomic) NSArray* testAAARRRAY;
 @end
 
 @implementation ASUserDetailTVC
@@ -90,16 +90,24 @@ static CGSize CGSizeResize(CGSize size) {
 
 
      ///
-    self.testAAARRRAY = [NSArray array];
-    self.testAAARRRAY = @[@"",@"",@"",@"",@""];
+     // self.testAAARRRAY = [NSArray array];
+     // self.testAAARRRAY = @[@"2",@"3",@"5",@"5",@"3"];
+
+    //self.testAAARRRAY = @[@"3",@"3",@"2",@"2",@"2"];
 
     ///
-    UICollectionViewFlowLayout *layout=[[UICollectionViewFlowLayout alloc] init];
-    self.photoColl =[[UICollectionView alloc] initWithFrame:self.view.frame collectionViewLayout:layout];
+    //UICollectionViewFlowLayout *layout=[[UICollectionViewFlowLayout alloc] init];
+    //self.photoColl =[[UICollectionView alloc] initWithFrame:self.view.frame collectionViewLayout:layout];
     //self.photoColl = [[UICollectionView alloc] init];
-    [self.photoColl setDataSource:self];
-    [self.photoColl setDelegate:self];
+    //[self.photoColl setDataSource:self];
+    //[self.photoColl setDelegate:self];
     
+    // UICollectionViewFlowLayout *layout=[[UICollectionViewFlowLayout alloc] init];
+    // self.photoColl =[[UICollectionView alloc] initWithFrame:self.view.frame collectionViewLayout:layout];
+    // [self.photoColl setDataSource:self];
+    // [self.photoColl setDelegate:self];
+    
+   // NSLog(@"self.photoCell = %@",self.photoColl);
     
     
     self.currentUser  = [ASUser new];
@@ -109,8 +117,9 @@ static CGSize CGSizeResize(CGSize size) {
     
     self.arrayNumberDataCountres = [NSArray array];
     self.arrayTextDataCountres   = [NSArray array];
-    self.miniaturePhotoArray     = [NSArray array];
+    self.miniaturePhotoArray     = [NSMutableArray array];
     
+    self.pathsArray = [NSMutableArray array];
     
     self.loadingData     = YES;
     self.firstTimeAppear = YES;
@@ -182,29 +191,21 @@ static CGSize CGSizeResize(CGSize size) {
                                          withOffset:[self.miniaturePhotoArray count]
                                               count:20
                                           onSuccess:^(NSArray *photos) {
-                               self.testAAARRRAY = @[@"",@"",@"",@"",@""];
-                                [self.photoColl reloadData];
-     
-                                              /*
+                               
+       
       if ([photos count] > 0) {
           
           [self.miniaturePhotoArray addObjectsFromArray:photos];
-          
-          NSMutableArray* newPaths = [NSMutableArray array];
-          
-          for (int i = (int)[self.miniaturePhotoArray count] - (int)[photos count]; i < [self.miniaturePhotoArray count]; i++){
-              [newPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
-          }
-          
+               
+           NSIndexSet *sectionSet = [NSIndexSet indexSetWithIndex:1];
 
           [self.tableView beginUpdates];
-          [self.tableView insertRowsAtIndexPaths:newPaths withRowAnimation:UITableViewRowAnimationTop];
+          [self.tableView reloadSections:sectionSet withRowAnimation:UITableViewRowAnimationNone];
           [self.tableView endUpdates];
-          
-          self.loadingData = NO;
+
+          //self.loadingData = NO;
       }
-       */
-                    
+       
                                           } onFailure:^(NSError *error, NSInteger statusCode) {
                                               
                                           }];
@@ -271,15 +272,14 @@ static CGSize CGSizeResize(CGSize size) {
     
     if (indexPath.section == 0) {
         
+        
+        
         if (indexPath.row == 0) {
-
             
             ASMainUserCell* cell = (ASMainUserCell*)[tableView dequeueReusableCellWithIdentifier:identifierMainUser];
-            
             if (!cell) {
                 cell = [[ASMainUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierMainUser];
             }
-            
             [cell.ownerMainPhoto setImageWithURL:self.currentUser.mainImageURL placeholderImage:[UIImage imageNamed:@"pl_man"]];
             
             CALayer *imageLayer = cell.ownerMainPhoto.layer;
@@ -309,32 +309,31 @@ static CGSize CGSizeResize(CGSize size) {
         }
         
         
-        if (indexPath.row == 1) {
         
+        
+        if (indexPath.row == 1) {
             
             ASPhotoUserCell* cell = (ASPhotoUserCell*)[tableView dequeueReusableCellWithIdentifier:identifierPhotos];
-            
             if (!cell) {
                 cell = [[ASPhotoUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierPhotos];
             }
-            
-           // UICollectionViewFlowLayout *layout=[[UICollectionViewFlowLayout alloc] init];
-           // self.photoColl =[[UICollectionView alloc] initWithFrame:self.view.frame collectionViewLayout:layout];
-            //self.photoColl = [[UICollectionView alloc] init];
-           // [self.photoColl setDataSource:self];
-           // [self.photoColl setDelegate:self];
-            
-            self.photoColl = cell.collectionViewPhotos;
-            [self.photoColl setDataSource:self];
-            [self.photoColl setDelegate:self];
-            [self.photoColl reloadData];
-            //self.photoColl = cell;//cell.collectionViewPhotos;
-            
+
             NSString* titleButton = [NSString stringWithFormat:@"%d photos",[self.miniaturePhotoArray count]];
             [cell.numberPhotoButton setTitle:  titleButton  forState: UIControlStateNormal];
+           
+            
             [cell.collectionViewPhotos reloadData];
+           /* if ([self.pathsArray count] > 0) {
+               
+                [cell.collectionViewPhotos reloadItemsAtIndexPaths:[cell.collectionViewPhotos indexPathsForVisibleItems]];
+                //[cell.collectionViewPhotos reloadItemsAtIndexPaths:self.pathsArray];
+                //[cell.collectionViewPhotos insertItemsAtIndexPaths:self.pathsArray];
+            }*/
+            
             return cell;
         }
+        
+        
         
         
         if (indexPath.row == 2) {
@@ -343,9 +342,12 @@ static CGSize CGSizeResize(CGSize size) {
             if (!cell) {
                 cell = [[ASGrayCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierGray];
             }
-            
             return cell;
         }
+        
+        
+        
+        
         
         if (indexPath.row == 3) {
             
@@ -353,17 +355,20 @@ static CGSize CGSizeResize(CGSize size) {
             if (!cell) {
                 cell = [[ASSegmentPost alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierSegmentPost];
             }
-            
             [cell.postSegmentControl addTarget:self
                                         action:@selector(segmentControlPostAction:)
                               forControlEvents: UIControlEventValueChanged];
-            
             [cell.createPost addTarget:self
                                 action:@selector(createPostAction:)
                       forControlEvents:UIControlEventTouchUpInside];
         
             return cell;
         }
+        
+        
+        
+        
+        
     }
     
   return nil;
@@ -383,8 +388,9 @@ static CGSize CGSizeResize(CGSize size) {
     }
     
     if (collectionView.tag == 200) {
-        return [self.testAAARRRAY count];
-        //return [self.miniaturePhotoArray count];
+       // NSLog(@"numberOfItemsInSection подсчитываю = %d",[self.testAAARRRAY count]);
+        //return [self.testAAARRRAY count];
+        return [self.miniaturePhotoArray count];
     }
 
     return 1;
@@ -418,14 +424,15 @@ static CGSize CGSizeResize(CGSize size) {
                                         [collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                                   forIndexPath:indexPath];
         
-        cell.cellImage.image = [UIImage imageNamed:self.miniaturePhotoArray[indexPath.row]];
+       // cell.cellImage.image = [UIImage imageNamed:self.miniaturePhotoArray[indexPath.row]];
         cell.backgroundColor = [UIColor blueColor];
         
-        self.photoColl = collectionView;
+        //self.photoColl = collectionView;
         
         //self.photoColl = cell;
         // Надо же загружать из интернета
        // [cell.ownerMainPhoto setImageWithURL:self.currentUser.mainImageURL placeholderImage:[UIImage imageNamed:@"pl_man"]];
+        
     return cell;
     }
     
@@ -441,10 +448,11 @@ static CGSize CGSizeResize(CGSize size) {
     
     if (collectionView.tag == 200) {
         
-        UIImage* image = [UIImage imageNamed:self.miniaturePhotoArray[indexPath.row]];
-        CGSize   newSize = CGSizeResize(image.size);
+        //UIImage* image = [UIImage imageNamed:self.miniaturePhotoArray[indexPath.row]];
+        //CGSize   newSize = CGSizeResize(image.size);
         
-        return CGSizeResize(image.size);
+       // return CGSizeResize(image.size);
+        return CGSizeMake(95, 95);
     }
     
     if (collectionView.tag == 100) {
@@ -530,5 +538,15 @@ static CGSize CGSizeResize(CGSize size) {
     
 }
 
+
+- (IBAction)itemBar:(id)sender {
+
+    NSIndexSet *sectionSet = [NSIndexSet indexSetWithIndex:1];
+    
+    [self.tableView beginUpdates];
+    [self.tableView reloadSections:sectionSet withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView endUpdates];
+    
+}
 
 @end
