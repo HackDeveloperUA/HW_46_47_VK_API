@@ -13,4 +13,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *numberPhotoButton;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionViewPhotos;
 
++ (ASPhotoUserCell*) sharedManager;
+
 @end

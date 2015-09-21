@@ -20,4 +20,17 @@
     // Configure the view for the selected state
 }
 
++ (ASPhotoUserCell*) sharedManager {
+    
+    static ASPhotoUserCell* manager = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        manager = [[ASPhotoUserCell alloc] init];
+    });
+    
+    return manager;
+}
+
+
 @end

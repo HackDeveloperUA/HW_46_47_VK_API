@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface ASPhoto : NSObject
 
@@ -33,6 +34,12 @@
 @property (strong, nonatomic) NSURL* photo_604URL;
 @property (strong, nonatomic) NSURL* photo_807URL;
 @property (strong, nonatomic) NSURL* photo_1280URL;
+
+@property (strong, nonatomic) UIImage* photo_75image;
+@property (strong, nonatomic) UIImage* photo_130image;
+@property (strong, nonatomic) UIImage* photo_604image;
+@property (strong, nonatomic) UIImage* photo_807image;
+@property (strong, nonatomic) UIImage* photo_1280image;
 
 
 -(instancetype) initWithServerResponse:(NSDictionary*) responseObject;

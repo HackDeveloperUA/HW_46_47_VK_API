@@ -181,7 +181,7 @@
                                         </button>
                                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" tag="200" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="RRw-4L-aJL">
                                             <rect key="frame" x="0.0" y="24" width="600" height="65"/>
-                                            <color key="backgroundColor" name="controlDarkShadowColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="7Ft-Hq-Qrc">
                                                 <size key="itemSize" width="50" height="50"/>
                                                 <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -196,13 +196,19 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="65" height="65"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
-                                                            <imageView userInteractionEnabled="NO" alpha="0.34999999999999964" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ikZ-jc-Hr9">
+                                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ikZ-jc-Hr9">
                                                                 <rect key="frame" x="0.0" y="0.0" width="65" height="65"/>
                                                             </imageView>
                                                         </subviews>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     </view>
-                                                    <color key="backgroundColor" red="0.1215686275" green="0.23921568630000001" blue="0.8980392157" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="backgroundColor" name="alternateSelectedControlTextColor" catalog="System" colorSpace="catalog"/>
+                                                    <constraints>
+                                                        <constraint firstItem="ikZ-jc-Hr9" firstAttribute="leading" secondItem="h3U-Sr-t3G" secondAttribute="leading" id="ApW-6T-amF"/>
+                                                        <constraint firstAttribute="bottom" secondItem="ikZ-jc-Hr9" secondAttribute="bottom" id="gc0-qu-nfy"/>
+                                                        <constraint firstAttribute="trailing" secondItem="ikZ-jc-Hr9" secondAttribute="trailing" id="lD6-Ol-Uez"/>
+                                                        <constraint firstItem="ikZ-jc-Hr9" firstAttribute="top" secondItem="h3U-Sr-t3G" secondAttribute="top" id="nNg-78-ewa"/>
+                                                    </constraints>
                                                     <size key="customSize" width="65" height="65"/>
                                                     <connections>
                                                         <outlet property="cellImage" destination="ikZ-jc-Hr9" id="xX3-dX-nbD"/>

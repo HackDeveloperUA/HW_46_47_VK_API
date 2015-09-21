@@ -34,8 +34,8 @@
 #import "UIImageView+AFNetworking.h"
 
 
-static NSString* identifierMainUser    = @"ASMainUserCell";
-static NSString* identifierPhotos      = @"ASPhotoUserCell";
+static NSString* identifierMainUser     = @"ASMainUserCell";
+static NSString* identifierPhotos       = @"ASPhotoUserCell";
 static NSString* identifierSegmentPost  = @"ASSegmentPost";
 static NSString* identifierGray         = @"ASGrayCell";
 
@@ -59,8 +59,8 @@ static CGSize CGSizeResize(CGSize size) {
 
 
 @interface ASUserDetailTVC () <UITableViewDataSource,      UITableViewDelegate,UICollectionViewDelegateFlowLayout,
-                                UICollectionViewDataSource, UICollectionViewDelegate>
-                              /*  UIScrollViewDelegate>*/
+                                UICollectionViewDataSource, UICollectionViewDelegate,
+                                UIScrollViewDelegate>
 
 @property (strong, nonatomic) NSString* groupID;
 
@@ -73,12 +73,14 @@ static CGSize CGSizeResize(CGSize size) {
 @property (strong, nonatomic) NSArray* arrayTextDataCountres;
 
 
-@property (assign,nonatomic)  BOOL loadingData;
+@property (assign,nonatomic)  BOOL loadingDataWall;
+@property (assign,nonatomic)  BOOL loadingDataCollPhoto;
 @property (assign, nonatomic) BOOL firstTimeAppear;
 
 //
 @property (strong, nonatomic) NSMutableArray* miniaturePhotoArray;
 @property (strong, nonatomic) NSMutableArray* pathsArray;
+
 
 @end
 
@@ -88,28 +90,6 @@ static CGSize CGSizeResize(CGSize size) {
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-
-     ///
-     // self.testAAARRRAY = [NSArray array];
-     // self.testAAARRRAY = @[@"2",@"3",@"5",@"5",@"3"];
-
-    //self.testAAARRRAY = @[@"3",@"3",@"2",@"2",@"2"];
-
-    ///
-    //UICollectionViewFlowLayout *layout=[[UICollectionViewFlowLayout alloc] init];
-    //self.photoColl =[[UICollectionView alloc] initWithFrame:self.view.frame collectionViewLayout:layout];
-    //self.photoColl = [[UICollectionView alloc] init];
-    //[self.photoColl setDataSource:self];
-    //[self.photoColl setDelegate:self];
-    
-    // UICollectionViewFlowLayout *layout=[[UICollectionViewFlowLayout alloc] init];
-    // self.photoColl =[[UICollectionView alloc] initWithFrame:self.view.frame collectionViewLayout:layout];
-    // [self.photoColl setDataSource:self];
-    // [self.photoColl setDelegate:self];
-    
-   // NSLog(@"self.photoCell = %@",self.photoColl);
-    
-    
     self.currentUser  = [ASUser new];
     self.currentGroup = [ASGroup new];
     
@@ -121,8 +101,11 @@ static CGSize CGSizeResize(CGSize size) {
     
     self.pathsArray = [NSMutableArray array];
     
-    self.loadingData     = YES;
-    self.firstTimeAppear = YES;
+    self.loadingDataWall      = YES;
+    self.loadingDataCollPhoto = YES;
+    self.firstTimeAppear      = YES;
+    
+    NSLog(@"\n\n\n ViewDidLoad  loadingDataCollPhoto = %hhd \n\n",self.loadingDataCollPhoto);
     
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:1.000];
@@ -191,19 +174,23 @@ static CGSize CGSizeResize(CGSize size) {
                                          withOffset:[self.miniaturePhotoArray count]
                                               count:20
                                           onSuccess:^(NSArray *photos) {
-                               
+          
+        NSLog(@"А БРАТЬЕВ = %d",[self.miniaturePhotoArray count]);
+        NSLog(@"НАС %d",[photos count]);
        
+ 
       if ([photos count] > 0) {
           
           [self.miniaturePhotoArray addObjectsFromArray:photos];
-               
-           NSIndexSet *sectionSet = [NSIndexSet indexSetWithIndex:1];
+          
+           NSIndexSet *sectionSet = [NSIndexSet indexSetWithIndex:0];
 
-          [self.tableView beginUpdates];
-          [self.tableView reloadSections:sectionSet withRowAnimation:UITableViewRowAnimationNone];
-          [self.tableView endUpdates];
+           [self.tableView beginUpdates];
+           [self.tableView reloadSections:sectionSet withRowAnimation:UITableViewRowAnimationNone];
+           [self.tableView endUpdates];
 
-          //self.loadingData = NO;
+           self.loadingDataCollPhoto = NO;
+
       }
        
                                           } onFailure:^(NSError *error, NSInteger statusCode) {
@@ -218,6 +205,44 @@ static CGSize CGSizeResize(CGSize size) {
     
 
 }
+
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    
+    
+    
+    if ([UICollectionView isSubclassOfClass:[UIScrollView class]]) {
+        
+        UICollectionView* collectionView = (UICollectionView*)scrollView;
+        
+
+        if (collectionView.tag == 200) {
+            
+            if ((scrollView.contentOffset.x + scrollView.frame.size.width) >= scrollView.contentSize.width+5) {
+
+                
+                if (!self.loadingDataCollPhoto)
+                {
+                    scrollView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, 0, 200);
+
+                    NSLog(@"Подгружаю !");
+                   
+                    self.loadingDataCollPhoto = YES;
+                    [self getUserPhotoFromServer];
+                }
+                
+            }
+        }
+        
+        
+     
+    }
+    
+}
+
+
+
+
 
 #pragma mark - UITableViewDelegate
 
@@ -312,24 +337,21 @@ static CGSize CGSizeResize(CGSize size) {
         
         
         if (indexPath.row == 1) {
+           
             
             ASPhotoUserCell* cell = (ASPhotoUserCell*)[tableView dequeueReusableCellWithIdentifier:identifierPhotos];
             if (!cell) {
                 cell = [[ASPhotoUserCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierPhotos];
             }
 
+
             NSString* titleButton = [NSString stringWithFormat:@"%d photos",[self.miniaturePhotoArray count]];
+            
             [cell.numberPhotoButton setTitle:  titleButton  forState: UIControlStateNormal];
-           
             
-            [cell.collectionViewPhotos reloadData];
-           /* if ([self.pathsArray count] > 0) {
-               
-                [cell.collectionViewPhotos reloadItemsAtIndexPaths:[cell.collectionViewPhotos indexPathsForVisibleItems]];
-                //[cell.collectionViewPhotos reloadItemsAtIndexPaths:self.pathsArray];
-                //[cell.collectionViewPhotos insertItemsAtIndexPaths:self.pathsArray];
-            }*/
-            
+            //cell.collectionViewPhotos.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, 0, self.view.bounds.size.width/2);
+            //[cell.collectionViewPhotos reloadData];
+      
             return cell;
         }
         
@@ -365,9 +387,7 @@ static CGSize CGSizeResize(CGSize size) {
             return cell;
         }
         
-        
-        
-        
+   
         
     }
     
@@ -388,8 +408,7 @@ static CGSize CGSizeResize(CGSize size) {
     }
     
     if (collectionView.tag == 200) {
-       // NSLog(@"numberOfItemsInSection подсчитываю = %d",[self.testAAARRRAY count]);
-        //return [self.testAAARRRAY count];
+ 
         return [self.miniaturePhotoArray count];
     }
 
@@ -400,6 +419,8 @@ static CGSize CGSizeResize(CGSize size) {
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
+    
+    NSLog(@"cellForItemAtIndexPath");
     
     if (collectionView.tag == 100) {
     
@@ -417,21 +438,33 @@ static CGSize CGSizeResize(CGSize size) {
     
     if (collectionView.tag == 200) {
 
-        NSLog(@"collectionView.tag == 200");
+        
+       
 
         static NSString *identifier = @"ASPhotosCollectionCell";
         ASPhotosCollectionCell *cell = (ASPhotosCollectionCell*)
                                         [collectionView dequeueReusableCellWithReuseIdentifier:identifier
                                                                                   forIndexPath:indexPath];
+        ASPhoto* photo = self.miniaturePhotoArray[indexPath.row];
+    
+        __weak ASPhotosCollectionCell *weakCell = cell;
         
-       // cell.cellImage.image = [UIImage imageNamed:self.miniaturePhotoArray[indexPath.row]];
-        cell.backgroundColor = [UIColor blueColor];
+        NSURLRequest *request = [[NSURLRequest alloc]initWithURL:photo.photo_130URL];
         
-        //self.photoColl = collectionView;
+        [cell.cellImage setImageWithURLRequest:request
+                                   placeholderImage:[UIImage imageNamed:@"pl_post2"]
+                                            success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                
+                                                weakCell.cellImage.image = image;
+                                                photo.photo_130image = image;
+                                                
+                                                
+                                            }
+                                            failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                                
+                                            }];
         
-        //self.photoColl = cell;
-        // Надо же загружать из интернета
-       // [cell.ownerMainPhoto setImageWithURL:self.currentUser.mainImageURL placeholderImage:[UIImage imageNamed:@"pl_man"]];
+   
         
     return cell;
     }
@@ -448,11 +481,20 @@ static CGSize CGSizeResize(CGSize size) {
     
     if (collectionView.tag == 200) {
         
+        ASPhoto* photo = self.miniaturePhotoArray[indexPath.row];
+ 
+            
+            CGSize   oldSize = CGSizeMake(photo.width, photo.height);
+            CGSize   newSize = CGSizeResize(oldSize);
+           
+            return CGSizeResize(newSize);
+
+        
+        
         //UIImage* image = [UIImage imageNamed:self.miniaturePhotoArray[indexPath.row]];
         //CGSize   newSize = CGSizeResize(image.size);
-        
+        //    return CGSizeMake(95, 95);
        // return CGSizeResize(image.size);
-        return CGSizeMake(95, 95);
     }
     
     if (collectionView.tag == 100) {
@@ -541,12 +583,12 @@ static CGSize CGSizeResize(CGSize size) {
 
 - (IBAction)itemBar:(id)sender {
 
-    NSIndexSet *sectionSet = [NSIndexSet indexSetWithIndex:1];
-    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:0 inSection:0];
+  
     [self.tableView beginUpdates];
-    [self.tableView reloadSections:sectionSet withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     [self.tableView endUpdates];
-    
+
 }
 
 @end
