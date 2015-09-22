@@ -1,14 +1,14 @@
 //
-//  ASPhotoUserCell.m
+//  ASColleCell.m
 //  HW_46_47
 //
-//  Created by MD on 10.09.15.
+//  Created by MD on 21.09.15.
 //  Copyright (c) 2015 MD. All rights reserved.
 //
 
-#import "ASPhotoUserCell.h"
+#import "ASColleCell.h"
 
-@implementation ASPhotoUserCell
+@implementation ASColleCell
 
 - (void)awakeFromNib {
     // Initialization code
@@ -20,10 +20,13 @@
     // Configure the view for the selected state
 }
 
--(void) superReloadDataWithPath:(NSArray*) arrayPath {
-
+-(void) superReloadData:(NSArray*) arrayPath {
+    
     [self.collectionView reloadData];
-   //[self.collectionViewPhotos insertItemsAtIndexPaths:arrayPath];
+    //[self.collectionView insertItemsAtIndexPaths:arrayPath];
+    //[self.collectionView.collectionViewLayout invalidateLayout];
+    
     
 }
+
 @end

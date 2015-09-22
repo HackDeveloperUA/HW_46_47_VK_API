@@ -10,7 +10,7 @@
             <objects>
                 <tableViewController id="816-OW-CbA" customClass="ASUserDetailTVC" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="223" sectionHeaderHeight="22" sectionFooterHeight="22" id="was-rS-uTM">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="960"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="1100"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -231,7 +231,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="collectionViewPhotos" destination="RRw-4L-aJL" id="XKk-uu-fzJ"/>
+                                    <outlet property="collectionView" destination="RRw-4L-aJL" id="LTB-At-s1W"/>
                                     <outlet property="numberPhotoButton" destination="vcc-wq-g1K" id="ZZG-Kd-xvg"/>
                                 </connections>
                             </tableViewCell>
@@ -544,6 +544,50 @@
                                     <outlet property="textPost" destination="MYa-Ez-BiQ" id="wR8-eS-0p9"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ASCollCell" rowHeight="115" id="Rtm-lI-BDi" customClass="ASColleCell">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Rtm-lI-BDi" id="UqJ-nU-JCW">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" tag="777" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="G8M-3a-Lr6">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="110"/>
+                                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Cwn-xB-67j">
+                                                <size key="itemSize" width="50" height="50"/>
+                                                <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                                <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                                <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                            </collectionViewFlowLayout>
+                                            <cells>
+                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="collView" id="wew-M7-zV6" customClass="ASCustomCollCell">
+                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    </view>
+                                                    <color key="backgroundColor" red="0.45105334070000003" green="1" blue="0.69453547510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <size key="customSize" width="100" height="100"/>
+                                                </collectionViewCell>
+                                            </cells>
+                                            <connections>
+                                                <outlet property="dataSource" destination="816-OW-CbA" id="hsz-Xb-T7p"/>
+                                                <outlet property="delegate" destination="816-OW-CbA" id="q16-Vw-J6W"/>
+                                            </connections>
+                                        </collectionView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="G8M-3a-Lr6" secondAttribute="bottom" constant="4" id="9GL-Ee-6QC"/>
+                                        <constraint firstItem="G8M-3a-Lr6" firstAttribute="top" secondItem="UqJ-nU-JCW" secondAttribute="top" id="Dzo-D0-cNp"/>
+                                        <constraint firstAttribute="trailing" secondItem="G8M-3a-Lr6" secondAttribute="trailing" id="LSL-wO-Ojr"/>
+                                        <constraint firstItem="G8M-3a-Lr6" firstAttribute="leading" secondItem="UqJ-nU-JCW" secondAttribute="leading" id="qzV-p4-Jc9"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="collectionView" destination="G8M-3a-Lr6" id="db5-CK-4Gr"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <sections/>
                         <connections>
@@ -559,7 +603,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="600" height="960"/>
+                    <size key="freeformSize" width="600" height="1100"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AC5-0s-WYh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
