@@ -25,7 +25,6 @@
 		6C4568511BA33E09000B380A /* ASServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C4568501BA33E09000B380A /* ASServerManager.m */; };
 		6C4568541BA33ECE000B380A /* ASUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C4568531BA33ECE000B380A /* ASUser.m */; };
 		6C7C9F4E1BACBCFE00D2228F /* ASPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C7C9F4D1BACBCFE00D2228F /* ASPhoto.m */; };
-		6C806C541BB0A1DA00CBE519 /* ASColleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C806C531BB0A1DA00CBE519 /* ASColleCell.m */; };
 		6C9671A91BA723D9006B2D59 /* ASInfoMemberFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9671A81BA723D9006B2D59 /* ASInfoMemberFlowLayout.m */; };
 		6C9671AC1BA72407006B2D59 /* ASPhotosFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9671AB1BA72407006B2D59 /* ASPhotosFlowLayout.m */; };
 		6C9671AF1BA74F64006B2D59 /* UIColor+HEX.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9671AE1BA74F64006B2D59 /* UIColor+HEX.m */; };
@@ -37,7 +36,8 @@
 		6C9B120B1BA1572D00242620 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6C9B120A1BA1572D00242620 /* Images.xcassets */; };
 		6C9B120E1BA1572D00242620 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C9B120C1BA1572D00242620 /* LaunchScreen.xib */; };
 		6C9B121A1BA1572D00242620 /* HW_46_47Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B12191BA1572D00242620 /* HW_46_47Tests.m */; };
-		6CAE923D1BB14462007ABE9F /* ASCustomCollCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CAE923C1BB14462007ABE9F /* ASCustomCollCell.m */; };
+		6CB8A2BD1BB2C93400FB8D50 /* CVPhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6CB8A2BC1BB2C93400FB8D50 /* CVPhotoCell.xib */; };
+		6CB8A2C01BB2CBA000FB8D50 /* ASCollectionPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CB8A2BF1BB2CBA000FB8D50 /* ASCollectionPhotoCell.m */; };
 		6CF725901BA224B6003F935B /* ASGroupTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CF7258F1BA224B6003F935B /* ASGroupTVC.m */; };
 		6CF725941BA22804003F935B /* ASInfoMemberCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CF725931BA22804003F935B /* ASInfoMemberCollectionCell.m */; };
 		F40777EBAAFB296CF1E9751E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5531970FBAF8A94A6D75370A /* libPods.a */; };
@@ -93,8 +93,6 @@
 		6C4568531BA33ECE000B380A /* ASUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASUser.m; sourceTree = "<group>"; };
 		6C7C9F4C1BACBCFE00D2228F /* ASPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASPhoto.h; sourceTree = "<group>"; };
 		6C7C9F4D1BACBCFE00D2228F /* ASPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASPhoto.m; sourceTree = "<group>"; };
-		6C806C521BB0A1DA00CBE519 /* ASColleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASColleCell.h; sourceTree = "<group>"; };
-		6C806C531BB0A1DA00CBE519 /* ASColleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASColleCell.m; sourceTree = "<group>"; };
 		6C9671A71BA723D9006B2D59 /* ASInfoMemberFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASInfoMemberFlowLayout.h; sourceTree = "<group>"; };
 		6C9671A81BA723D9006B2D59 /* ASInfoMemberFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASInfoMemberFlowLayout.m; sourceTree = "<group>"; };
 		6C9671AA1BA72407006B2D59 /* ASPhotosFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASPhotosFlowLayout.h; sourceTree = "<group>"; };
@@ -116,8 +114,9 @@
 		6C9B12131BA1572D00242620 /* HW_46_47Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HW_46_47Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C9B12181BA1572D00242620 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6C9B12191BA1572D00242620 /* HW_46_47Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HW_46_47Tests.m; sourceTree = "<group>"; };
-		6CAE923B1BB14462007ABE9F /* ASCustomCollCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASCustomCollCell.h; sourceTree = "<group>"; };
-		6CAE923C1BB14462007ABE9F /* ASCustomCollCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASCustomCollCell.m; sourceTree = "<group>"; };
+		6CB8A2BC1BB2C93400FB8D50 /* CVPhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CVPhotoCell.xib; sourceTree = "<group>"; };
+		6CB8A2BE1BB2CBA000FB8D50 /* ASCollectionPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASCollectionPhotoCell.h; sourceTree = "<group>"; };
+		6CB8A2BF1BB2CBA000FB8D50 /* ASCollectionPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASCollectionPhotoCell.m; sourceTree = "<group>"; };
 		6CF7258E1BA224B6003F935B /* ASGroupTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASGroupTVC.h; sourceTree = "<group>"; };
 		6CF7258F1BA224B6003F935B /* ASGroupTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASGroupTVC.m; sourceTree = "<group>"; };
 		6CF725921BA22804003F935B /* ASInfoMemberCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASInfoMemberCollectionCell.h; sourceTree = "<group>"; };
@@ -223,17 +222,6 @@
 			name = "Primitive Model";
 			sourceTree = "<group>";
 		};
-		6C806C511BB0A1C800CBE519 /* TEST */ = {
-			isa = PBXGroup;
-			children = (
-				6C806C521BB0A1DA00CBE519 /* ASColleCell.h */,
-				6C806C531BB0A1DA00CBE519 /* ASColleCell.m */,
-				6CAE923B1BB14462007ABE9F /* ASCustomCollCell.h */,
-				6CAE923C1BB14462007ABE9F /* ASCustomCollCell.m */,
-			);
-			name = TEST;
-			sourceTree = "<group>";
-		};
 		6C9B11F11BA1572D00242620 = {
 			isa = PBXGroup;
 			children = (
@@ -257,9 +245,10 @@
 		6C9B11FC1BA1572D00242620 /* HW_46_47 */ = {
 			isa = PBXGroup;
 			children = (
-				6C806C511BB0A1C800CBE519 /* TEST */,
 				6C45684B1BA33CC6000B380A /* ASAccessToken.h */,
 				6C45684C1BA33CC6000B380A /* ASAccessToken.m */,
+				6CB8A2BE1BB2CBA000FB8D50 /* ASCollectionPhotoCell.h */,
+				6CB8A2BF1BB2CBA000FB8D50 /* ASCollectionPhotoCell.m */,
 				6C45684E1BA33D4E000B380A /* Server */,
 				6C4568401BA2DECF000B380A /* View Controllers */,
 				6C7C9F4B1BACBCCA00D2228F /* Primitive Model */,
@@ -267,6 +256,7 @@
 				6CF725911BA227AC003F935B /* CollectionView Cell */,
 				6C2559881BA213400005622E /* Cell */,
 				6C9B12071BA1572D00242620 /* Main.storyboard */,
+				6CB8A2BC1BB2C93400FB8D50 /* CVPhotoCell.xib */,
 				6C9B12041BA1572D00242620 /* ViewController.h */,
 				6C9B12051BA1572D00242620 /* ViewController.m */,
 				6C9B120A1BA1572D00242620 /* Images.xcassets */,
@@ -414,6 +404,7 @@
 				6C9B12091BA1572D00242620 /* Main.storyboard in Resources */,
 				6C9B120E1BA1572D00242620 /* LaunchScreen.xib in Resources */,
 				6C9B120B1BA1572D00242620 /* Images.xcassets in Resources */,
+				6CB8A2BD1BB2C93400FB8D50 /* CVPhotoCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,13 +457,11 @@
 			files = (
 				6C25599A1BA21E920005622E /* ASPhotoUserCell.m in Sources */,
 				6C2AC5BF1BA42B27006C0DE6 /* ASFollower.m in Sources */,
-				6CAE923D1BB14462007ABE9F /* ASCustomCollCell.m in Sources */,
 				6C45684D1BA33CC6000B380A /* ASAccessToken.m in Sources */,
 				6C4568511BA33E09000B380A /* ASServerManager.m in Sources */,
 				6C9671AF1BA74F64006B2D59 /* UIColor+HEX.m in Sources */,
 				6CF725901BA224B6003F935B /* ASGroupTVC.m in Sources */,
 				6C9671B21BA75623006B2D59 /* ASGrayCell.m in Sources */,
-				6C806C541BB0A1DA00CBE519 /* ASColleCell.m in Sources */,
 				6C9B12061BA1572D00242620 /* ViewController.m in Sources */,
 				6C2AC5B91BA429B8006C0DE6 /* ASFriend.m in Sources */,
 				6C7C9F4E1BACBCFE00D2228F /* ASPhoto.m in Sources */,
@@ -490,6 +479,7 @@
 				6C2559941BA216EB0005622E /* ASWallTextCell.m in Sources */,
 				6C25598B1BA2142A0005622E /* ASMainGroupCell.m in Sources */,
 				6C9B12001BA1572D00242620 /* main.m in Sources */,
+				6CB8A2C01BB2CBA000FB8D50 /* ASCollectionPhotoCell.m in Sources */,
 				6C25598E1BA215AB0005622E /* ASSegmentPost.m in Sources */,
 				6C2AC5BC1BA42A4E006C0DE6 /* ASWall.m in Sources */,
 				6C4568431BA2DF3C000B380A /* ASUserDetailTVC.m in Sources */,

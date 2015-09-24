@@ -20,9 +20,21 @@
     // Configure the view for the selected state
 }
 
++(void) reloadDataWithCollectionViewCell:(UICollectionView*) collectionView {
+
+    [collectionView reloadData];
+}
+
+-(void) simpleReloadDataWithPath {
+  
+    [super reloadInputViews];
+    //[_collectionUserCell reloadData];
+}
+
+
 -(void) superReloadDataWithPath:(NSArray*) arrayPath {
 
-    [self.collectionView reloadData];
+    [self.collectionUserCell reloadData];
    //[self.collectionViewPhotos insertItemsAtIndexPaths:arrayPath];
     
 }

@@ -11,8 +11,9 @@
 @interface ASPhotoUserCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UIButton *numberPhotoButton;
-@property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (strong, nonatomic) IBOutlet UICollectionView *collectionUserCell;
 
 -(void) superReloadDataWithPath:(NSArray*) arrayPath;
-
+-(void) simpleReloadDataWithPath;
++(void) reloadDataWithCollectionViewCell:(UICollectionView*) collectionView;
 @end
