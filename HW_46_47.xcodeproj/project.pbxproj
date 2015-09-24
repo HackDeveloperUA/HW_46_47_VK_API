@@ -12,14 +12,12 @@
 		6C2559911BA216D60005622E /* ASWallTextImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2559901BA216D60005622E /* ASWallTextImageCell.m */; };
 		6C2559941BA216EB0005622E /* ASWallTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2559931BA216EB0005622E /* ASWallTextCell.m */; };
 		6C2559971BA21DF30005622E /* ASMainUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2559961BA21DF30005622E /* ASMainUserCell.m */; };
-		6C25599A1BA21E920005622E /* ASPhotoUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2559991BA21E920005622E /* ASPhotoUserCell.m */; };
 		6C2AC5B91BA429B8006C0DE6 /* ASFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2AC5B81BA429B8006C0DE6 /* ASFriend.m */; };
 		6C2AC5BC1BA42A4E006C0DE6 /* ASWall.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2AC5BB1BA42A4E006C0DE6 /* ASWall.m */; };
 		6C2AC5BF1BA42B27006C0DE6 /* ASFollower.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2AC5BE1BA42B27006C0DE6 /* ASFollower.m */; };
 		6C2AC5C21BA42B4D006C0DE6 /* ASSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2AC5C11BA42B4D006C0DE6 /* ASSubscription.m */; };
 		6C451E8C1BA61B8800A879C9 /* ASGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C451E8B1BA61B8800A879C9 /* ASGroup.m */; };
 		6C4568431BA2DF3C000B380A /* ASUserDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C4568421BA2DF3C000B380A /* ASUserDetailTVC.m */; };
-		6C4568461BA2EB55000B380A /* ASPhotosCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C4568451BA2EB55000B380A /* ASPhotosCollectionCell.m */; };
 		6C4568491BA2FF23000B380A /* ASLoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C4568481BA2FF23000B380A /* ASLoginVC.m */; };
 		6C45684D1BA33CC6000B380A /* ASAccessToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C45684C1BA33CC6000B380A /* ASAccessToken.m */; };
 		6C4568511BA33E09000B380A /* ASServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C4568501BA33E09000B380A /* ASServerManager.m */; };
@@ -31,7 +29,6 @@
 		6C9671B21BA75623006B2D59 /* ASGrayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9671B11BA75623006B2D59 /* ASGrayCell.m */; };
 		6C9B12001BA1572D00242620 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B11FF1BA1572D00242620 /* main.m */; };
 		6C9B12031BA1572D00242620 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B12021BA1572D00242620 /* AppDelegate.m */; };
-		6C9B12061BA1572D00242620 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B12051BA1572D00242620 /* ViewController.m */; };
 		6C9B12091BA1572D00242620 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6C9B12071BA1572D00242620 /* Main.storyboard */; };
 		6C9B120B1BA1572D00242620 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6C9B120A1BA1572D00242620 /* Images.xcassets */; };
 		6C9B120E1BA1572D00242620 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C9B120C1BA1572D00242620 /* LaunchScreen.xib */; };
@@ -67,8 +64,6 @@
 		6C2559931BA216EB0005622E /* ASWallTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASWallTextCell.m; sourceTree = "<group>"; };
 		6C2559951BA21DF30005622E /* ASMainUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASMainUserCell.h; sourceTree = "<group>"; };
 		6C2559961BA21DF30005622E /* ASMainUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASMainUserCell.m; sourceTree = "<group>"; };
-		6C2559981BA21E920005622E /* ASPhotoUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASPhotoUserCell.h; sourceTree = "<group>"; };
-		6C2559991BA21E920005622E /* ASPhotoUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASPhotoUserCell.m; sourceTree = "<group>"; };
 		6C2AC5B71BA429B8006C0DE6 /* ASFriend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASFriend.h; sourceTree = "<group>"; };
 		6C2AC5B81BA429B8006C0DE6 /* ASFriend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASFriend.m; sourceTree = "<group>"; };
 		6C2AC5BA1BA42A4E006C0DE6 /* ASWall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASWall.h; sourceTree = "<group>"; };
@@ -81,8 +76,6 @@
 		6C451E8B1BA61B8800A879C9 /* ASGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASGroup.m; sourceTree = "<group>"; };
 		6C4568411BA2DF3C000B380A /* ASUserDetailTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASUserDetailTVC.h; sourceTree = "<group>"; };
 		6C4568421BA2DF3C000B380A /* ASUserDetailTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASUserDetailTVC.m; sourceTree = "<group>"; };
-		6C4568441BA2EB55000B380A /* ASPhotosCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASPhotosCollectionCell.h; sourceTree = "<group>"; };
-		6C4568451BA2EB55000B380A /* ASPhotosCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASPhotosCollectionCell.m; sourceTree = "<group>"; };
 		6C4568471BA2FF23000B380A /* ASLoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASLoginVC.h; sourceTree = "<group>"; };
 		6C4568481BA2FF23000B380A /* ASLoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASLoginVC.m; sourceTree = "<group>"; };
 		6C45684B1BA33CC6000B380A /* ASAccessToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASAccessToken.h; sourceTree = "<group>"; };
@@ -106,8 +99,6 @@
 		6C9B11FF1BA1572D00242620 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6C9B12011BA1572D00242620 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		6C9B12021BA1572D00242620 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		6C9B12041BA1572D00242620 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		6C9B12051BA1572D00242620 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		6C9B12081BA1572D00242620 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6C9B120A1BA1572D00242620 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6C9B120D1BA1572D00242620 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -164,8 +155,6 @@
 				6C2559931BA216EB0005622E /* ASWallTextCell.m */,
 				6C2559951BA21DF30005622E /* ASMainUserCell.h */,
 				6C2559961BA21DF30005622E /* ASMainUserCell.m */,
-				6C2559981BA21E920005622E /* ASPhotoUserCell.h */,
-				6C2559991BA21E920005622E /* ASPhotoUserCell.m */,
 				6C9671B01BA75623006B2D59 /* ASGrayCell.h */,
 				6C9671B11BA75623006B2D59 /* ASGrayCell.m */,
 			);
@@ -190,12 +179,12 @@
 			children = (
 				6C4568521BA33ECE000B380A /* ASUser.h */,
 				6C4568531BA33ECE000B380A /* ASUser.m */,
-				6C451E8A1BA61B8800A879C9 /* ASGroup.h */,
-				6C451E8B1BA61B8800A879C9 /* ASGroup.m */,
 				6C2AC5B71BA429B8006C0DE6 /* ASFriend.h */,
 				6C2AC5B81BA429B8006C0DE6 /* ASFriend.m */,
 				6C2AC5BA1BA42A4E006C0DE6 /* ASWall.h */,
 				6C2AC5BB1BA42A4E006C0DE6 /* ASWall.m */,
+				6C451E8A1BA61B8800A879C9 /* ASGroup.h */,
+				6C451E8B1BA61B8800A879C9 /* ASGroup.m */,
 				6C2AC5BD1BA42B27006C0DE6 /* ASFollower.h */,
 				6C2AC5BE1BA42B27006C0DE6 /* ASFollower.m */,
 				6C2AC5C01BA42B4D006C0DE6 /* ASSubscription.h */,
@@ -247,8 +236,6 @@
 			children = (
 				6C45684B1BA33CC6000B380A /* ASAccessToken.h */,
 				6C45684C1BA33CC6000B380A /* ASAccessToken.m */,
-				6CB8A2BE1BB2CBA000FB8D50 /* ASCollectionPhotoCell.h */,
-				6CB8A2BF1BB2CBA000FB8D50 /* ASCollectionPhotoCell.m */,
 				6C45684E1BA33D4E000B380A /* Server */,
 				6C4568401BA2DECF000B380A /* View Controllers */,
 				6C7C9F4B1BACBCCA00D2228F /* Primitive Model */,
@@ -257,8 +244,6 @@
 				6C2559881BA213400005622E /* Cell */,
 				6C9B12071BA1572D00242620 /* Main.storyboard */,
 				6CB8A2BC1BB2C93400FB8D50 /* CVPhotoCell.xib */,
-				6C9B12041BA1572D00242620 /* ViewController.h */,
-				6C9B12051BA1572D00242620 /* ViewController.m */,
 				6C9B120A1BA1572D00242620 /* Images.xcassets */,
 				6C9671AD1BA74F64006B2D59 /* UIColor+HEX.h */,
 				6C9671AE1BA74F64006B2D59 /* UIColor+HEX.m */,
@@ -303,8 +288,8 @@
 				6CF725931BA22804003F935B /* ASInfoMemberCollectionCell.m */,
 				6C9671A71BA723D9006B2D59 /* ASInfoMemberFlowLayout.h */,
 				6C9671A81BA723D9006B2D59 /* ASInfoMemberFlowLayout.m */,
-				6C4568441BA2EB55000B380A /* ASPhotosCollectionCell.h */,
-				6C4568451BA2EB55000B380A /* ASPhotosCollectionCell.m */,
+				6CB8A2BE1BB2CBA000FB8D50 /* ASCollectionPhotoCell.h */,
+				6CB8A2BF1BB2CBA000FB8D50 /* ASCollectionPhotoCell.m */,
 				6C9671AA1BA72407006B2D59 /* ASPhotosFlowLayout.h */,
 				6C9671AB1BA72407006B2D59 /* ASPhotosFlowLayout.m */,
 			);
@@ -455,21 +440,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6C25599A1BA21E920005622E /* ASPhotoUserCell.m in Sources */,
 				6C2AC5BF1BA42B27006C0DE6 /* ASFollower.m in Sources */,
 				6C45684D1BA33CC6000B380A /* ASAccessToken.m in Sources */,
 				6C4568511BA33E09000B380A /* ASServerManager.m in Sources */,
 				6C9671AF1BA74F64006B2D59 /* UIColor+HEX.m in Sources */,
 				6CF725901BA224B6003F935B /* ASGroupTVC.m in Sources */,
 				6C9671B21BA75623006B2D59 /* ASGrayCell.m in Sources */,
-				6C9B12061BA1572D00242620 /* ViewController.m in Sources */,
 				6C2AC5B91BA429B8006C0DE6 /* ASFriend.m in Sources */,
 				6C7C9F4E1BACBCFE00D2228F /* ASPhoto.m in Sources */,
 				6C9B12031BA1572D00242620 /* AppDelegate.m in Sources */,
 				6C2559911BA216D60005622E /* ASWallTextImageCell.m in Sources */,
 				6C451E8C1BA61B8800A879C9 /* ASGroup.m in Sources */,
 				6C9671A91BA723D9006B2D59 /* ASInfoMemberFlowLayout.m in Sources */,
-				6C4568461BA2EB55000B380A /* ASPhotosCollectionCell.m in Sources */,
 				6CF725941BA22804003F935B /* ASInfoMemberCollectionCell.m in Sources */,
 				6C2AC5C21BA42B4D006C0DE6 /* ASSubscription.m in Sources */,
 				6C9671AC1BA72407006B2D59 /* ASPhotosFlowLayout.m in Sources */,

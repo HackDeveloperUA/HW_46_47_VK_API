@@ -19,7 +19,7 @@
 #import "ASInfoMemberCollectionCell.h"
 #import "ASInfoMemberFlowLayout.h"
 
-#import "ASPhotosCollectionCell.h"
+//#import "ASPhotosCollectionCell.h"
 #import "ASPhotosFlowLayout.h"
 
 // Custom Cell
@@ -92,8 +92,6 @@ static NSString* identifierGray         = @"ASGrayCell";
     
     [super viewDidAppear:animated];
     
-    //[self getInfoFromServer];
-
     
     if (self.firstTimeAppear) {
         self.firstTimeAppear = NO;
