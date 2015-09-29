@@ -26,6 +26,7 @@
 #import "ASMainGroupCell.h"
 #import "ASSegmentPost.h"
 #import "ASGrayCell.h"
+#import "ASWallCell.h"
 
 // Networking
 #import "ASServerManager.h"
@@ -39,8 +40,7 @@
 static NSString* identifierMainGroup    = @"ASMainGroupCell";
 static NSString* identifierSegmentPost  = @"ASSegmentPost";
 static NSString* identifierGray         = @"ASGrayCell";
-
-
+static NSString* identifierWall         = @"ASWallCell";
 
 @interface ASGroupTVC () <UITableViewDataSource,      UITableViewDelegate ,
                           UICollectionViewDataSource, UICollectionViewDelegate,
@@ -52,6 +52,7 @@ static NSString* identifierGray         = @"ASGrayCell";
 @property (strong,nonatomic)  ASGroup *group;
 @property (strong, nonatomic) NSMutableArray* arrrayWall;
 @property (strong, nonatomic) NSArray* arrayDataCountres;
+
 @property (assign,nonatomic)  BOOL loadingData;
 @property (assign, nonatomic) BOOL firstTimeAppear;
 
@@ -101,6 +102,7 @@ static NSString* identifierGray         = @"ASGrayCell";
             NSLog(@"AUTHORIZED!");
             NSLog(@"%@ %@", user.firstName, user.lastName);
             [self getInfoFromServer];
+            [self getWallFromServer];
         }];
         
     }
@@ -141,6 +143,44 @@ static NSString* identifierGray         = @"ASGrayCell";
 -(void)  getWallFromServer {
     
     NSLog(@"[count ] =====  %d",[self.arrrayWall count]);
+    
+    
+    //////
+    
+    [[ASServerManager sharedManager] getGroupWall:@""
+                                       withDomain:@"iosdevcourse"
+                                       withOffset:[self.arrrayWall count]
+                                            count:20
+                                        onSuccess:^(NSArray *posts) {
+                                            
+        
+         if ([posts count] > 0) {
+            
+            NSMutableArray* arrPath = [NSMutableArray array];
+            
+            for (NSInteger i= [self.arrrayWall count]; i<=[posts count]+[self.arrrayWall count]-1; i++) {
+                
+                NSLog(@"Добавляем %ld",(long)i);
+                [arrPath addObject:[NSIndexPath indexPathForRow:i inSection:1]];
+            }
+            
+            
+            
+            [self.arrrayWall addObjectsFromArray:posts];
+            
+            [self.tableView beginUpdates];
+            [self.tableView insertRowsAtIndexPaths:arrPath withRowAnimation:UITableViewRowAnimationTop];
+            [self.tableView endUpdates];
+            
+            self.loadingData = NO;
+            
+        }
+        
+                                            
+                                        }
+                                       onFailure:^(NSError *error, NSInteger statusCode) {
+                                           
+                                       }];
 
 }
 
@@ -155,8 +195,8 @@ static NSString* identifierGray         = @"ASGrayCell";
         {
             self.loadingData = YES;
             NSLog(@"Подгружаю !");
-
-            //[self getWallFromServer];
+            
+            [self getWallFromServer];
         }
     }
 }
@@ -167,6 +207,7 @@ static NSString* identifierGray         = @"ASGrayCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
+
     id cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
     
     if ([cell isKindOfClass:[ASMainGroupCell class]]) {
@@ -184,6 +225,21 @@ static NSString* identifierGray         = @"ASGrayCell";
     }
     
 
+    // Заруб
+    
+    if ([cell isKindOfClass:[ASWallCell class]]) {
+
+        ASWall* wall = self.arrrayWall[indexPath.row];
+        ASWallCell* weakCell = (ASWallCell*)cell;
+        
+        static float heightPhoto  = 76.f;
+        static float heightShared = 50.f;
+               float heightText   = 36.f;
+
+
+        return 460 + [ASWallCell heightForTextWithPostModel:wall andWidthTextCell:self.view.frame.size.width];
+    }
+    
     
     return 10.f;
 }
@@ -213,6 +269,7 @@ static NSString* identifierGray         = @"ASGrayCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
+    
     if (indexPath.section == 0) {
         
         
@@ -308,10 +365,97 @@ static NSString* identifierGray         = @"ASGrayCell";
             
             return cell;
         }
+    }
+    
+    if (indexPath.section == 1) {
+
         
+        ASWallCell* cell = (ASWallCell*)[tableView dequeueReusableCellWithIdentifier:identifierWall];
+        
+        if (!cell) {
+            cell = [[ASWallCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                          reuseIdentifier:identifierWall];
+        }
+        ASWall* wall = self.arrrayWall[indexPath.row];
+        cell.textPost.text = wall.text;
+        
+     /*
+      @property (weak, nonatomic) IBOutlet UIImageView *ownerPhoto;
+      
+      @property (weak, nonatomic) IBOutlet UILabel *fullName;
+      @property (weak, nonatomic) IBOutlet UILabel *date;
+      @property (weak, nonatomic) IBOutlet UILabel *textPost;
+      
+      
+      @property (weak, nonatomic) IBOutlet UIView *attachmentsView;
+      @property (weak, nonatomic) IBOutlet UIView *sharedView;
+      
+      @property (weak, nonatomic) IBOutlet UILabel *commentLabel;
+      @property (weak, nonatomic) IBOutlet UIButton *commentButton;
+      
+      @property (weak, nonatomic) IBOutlet UILabel *likeLabel;
+      @property (weak, nonatomic) IBOutlet UIButton *likeButton;
+      
+      @property (weak, nonatomic) IBOutlet UILabel *repostLabel;
+      @property (weak, nonatomic) IBOutlet UIButton *repostButton;
+
+     */
+        
+        /*
+        __weak ASWallCell *weakCell = cell;
+        
+        NSURLRequest *request = [[NSURLRequest alloc]initWithURL:self.group.mainCommunityImageURL];
+        
+        
+        [cell.mainImageGroup setImageWithURLRequest:request
+                                   placeholderImage:nil
+                                            success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                
+                                                weakCell.mainImageGroup.image = image;
+                                                
+                                                CALayer *imageLayer = weakCell.mainImageGroup.layer;
+                                                [imageLayer setCornerRadius:40];
+                                                [imageLayer setBorderWidth:3];
+                                                [imageLayer setBorderColor:[UIColor whiteColor].CGColor];
+                                                [imageLayer setMasksToBounds:YES];
+                                            }
+                                            failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                                
+                                            }];
+        
+        
+        
+        
+        cell.fullNameGroup.text = self.group.fullName;
+        cell.typeGroup.text     = self.group.typeCommunity;
+        cell.statusGroup.text   = self.group.status;
+        
+        //@"Join community" : @"You are a member"
+        [cell.followButton setTitle:self.group.titleJoinButton forState: UIControlStateNormal];
+        [cell.followButton addTarget:self
+                              action:@selector(followButtonAction:)
+                    forControlEvents:UIControlEventTouchUpInside];
+        
+        
+        if ([cell.followButton.titleLabel.text isEqualToString:@"Join community"]) {
+            [cell.followButton setBackgroundColor:[UIColor colorWithRed:0.114 green:0.384 blue:0.941 alpha:1]];
+        }
+        else
+            
+            if ([cell.followButton.titleLabel.text isEqualToString:@"You are a member"])
+            {
+                [cell.followButton setBackgroundColor:[UIColor colorWithRed:1 green:0.176 blue:0.333 alpha:1]];
+            }
+        
+        cell.collectionView.collectionViewLayout = (UICollectionViewLayout*)[ASInfoMemberFlowLayout initFlowLayout];
+        */
+         
+        return cell;
+
         
         
     }
+    
     return nil;
 
 }

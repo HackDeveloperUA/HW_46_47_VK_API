@@ -56,6 +56,7 @@
 
 
 - (void) getGroupWall:(NSString*) groupID
+           withDomain:(NSString*) domain
            withOffset:(NSInteger) offset
                 count:(NSInteger) count
             onSuccess:(void(^)(NSArray* posts)) success

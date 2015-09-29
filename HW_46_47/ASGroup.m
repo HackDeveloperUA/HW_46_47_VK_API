@@ -87,7 +87,7 @@
         self.isEnablePostButton = isCanPost;
         
         
-        self.status    = [responseObject objectForKey:@"status"];
+       self.status    = [responseObject objectForKey:@"status"];
     
 
         NSString* urlString = [responseObject objectForKey:@"photo_200"];

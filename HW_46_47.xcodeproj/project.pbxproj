@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		6C25598B1BA2142A0005622E /* ASMainGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C25598A1BA2142A0005622E /* ASMainGroupCell.m */; };
 		6C25598E1BA215AB0005622E /* ASSegmentPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C25598D1BA215AB0005622E /* ASSegmentPost.m */; };
-		6C2559911BA216D60005622E /* ASWallTextImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2559901BA216D60005622E /* ASWallTextImageCell.m */; };
+		6C2559911BA216D60005622E /* ASWallCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2559901BA216D60005622E /* ASWallCell.m */; };
 		6C2559941BA216EB0005622E /* ASWallTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2559931BA216EB0005622E /* ASWallTextCell.m */; };
 		6C2559971BA21DF30005622E /* ASMainUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2559961BA21DF30005622E /* ASMainUserCell.m */; };
 		6C2AC5B91BA429B8006C0DE6 /* ASFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2AC5B81BA429B8006C0DE6 /* ASFriend.m */; };
@@ -58,8 +58,8 @@
 		6C25598A1BA2142A0005622E /* ASMainGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASMainGroupCell.m; sourceTree = "<group>"; };
 		6C25598C1BA215AB0005622E /* ASSegmentPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASSegmentPost.h; sourceTree = "<group>"; };
 		6C25598D1BA215AB0005622E /* ASSegmentPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASSegmentPost.m; sourceTree = "<group>"; };
-		6C25598F1BA216D60005622E /* ASWallTextImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASWallTextImageCell.h; sourceTree = "<group>"; };
-		6C2559901BA216D60005622E /* ASWallTextImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASWallTextImageCell.m; sourceTree = "<group>"; };
+		6C25598F1BA216D60005622E /* ASWallCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASWallCell.h; sourceTree = "<group>"; };
+		6C2559901BA216D60005622E /* ASWallCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASWallCell.m; sourceTree = "<group>"; };
 		6C2559921BA216EB0005622E /* ASWallTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASWallTextCell.h; sourceTree = "<group>"; };
 		6C2559931BA216EB0005622E /* ASWallTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASWallTextCell.m; sourceTree = "<group>"; };
 		6C2559951BA21DF30005622E /* ASMainUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASMainUserCell.h; sourceTree = "<group>"; };
@@ -149,8 +149,8 @@
 				6C25598A1BA2142A0005622E /* ASMainGroupCell.m */,
 				6C25598C1BA215AB0005622E /* ASSegmentPost.h */,
 				6C25598D1BA215AB0005622E /* ASSegmentPost.m */,
-				6C25598F1BA216D60005622E /* ASWallTextImageCell.h */,
-				6C2559901BA216D60005622E /* ASWallTextImageCell.m */,
+				6C25598F1BA216D60005622E /* ASWallCell.h */,
+				6C2559901BA216D60005622E /* ASWallCell.m */,
 				6C2559921BA216EB0005622E /* ASWallTextCell.h */,
 				6C2559931BA216EB0005622E /* ASWallTextCell.m */,
 				6C2559951BA21DF30005622E /* ASMainUserCell.h */,
@@ -449,7 +449,7 @@
 				6C2AC5B91BA429B8006C0DE6 /* ASFriend.m in Sources */,
 				6C7C9F4E1BACBCFE00D2228F /* ASPhoto.m in Sources */,
 				6C9B12031BA1572D00242620 /* AppDelegate.m in Sources */,
-				6C2559911BA216D60005622E /* ASWallTextImageCell.m in Sources */,
+				6C2559911BA216D60005622E /* ASWallCell.m in Sources */,
 				6C451E8C1BA61B8800A879C9 /* ASGroup.m in Sources */,
 				6C9671A91BA723D9006B2D59 /* ASInfoMemberFlowLayout.m in Sources */,
 				6CF725941BA22804003F935B /* ASInfoMemberCollectionCell.m in Sources */,

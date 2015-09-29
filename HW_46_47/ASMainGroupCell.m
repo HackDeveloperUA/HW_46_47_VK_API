@@ -35,7 +35,7 @@
     
     NSMutableParagraphStyle* paragraph = [[NSMutableParagraphStyle alloc] init];
     [paragraph setLineBreakMode:NSLineBreakByWordWrapping];
-    [paragraph setAlignment:NSTextAlignmentCenter];
+    [paragraph setAlignment:NSTextAlignmentLeft];
     
     NSDictionary* attributes =
     [NSDictionary dictionaryWithObjectsAndKeys:

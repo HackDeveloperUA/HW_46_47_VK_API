@@ -7,6 +7,8 @@
 //
 
 #import "ASWall.h"
+#import "ASPhoto.h"
+
 
 @implementation ASWall
 
@@ -14,22 +16,106 @@
 -(instancetype) initWithServerResponse:(NSDictionary*) responseObject {
     
     self = [super init];
+  
     if (self) {
         
-        self.type = [[responseObject objectForKey:@"attachment"] objectForKey:@"type"];
+        /*
+         @property (strong, nonatomic) NSString* type;
+         
+         @property (strong, nonatomic) NSString* text;
+         @property (strong, nonatomic) NSString* date;
+         
+         
+         @property (strong, nonatomic) NSString* comments;
+         @property (strong, nonatomic) NSString* likes;
+         @property (strong, nonatomic) NSString* reposts;
+         
+         @property (strong, nonatomic) NSString* fromID;
+         @property (strong, nonatomic) NSString* ownerID;
+         
+         
+         @property (strong, nonatomic) NSString* fullName;
+         @property (strong, nonatomic) NSURL*    urlPhoto;
+         @property (strong, nonatomic) NSMutableArray* attachments;
+        */
+       
+        /*
+        self.text = @"Далее автор переносит нас в Москву, Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву, Конец оскву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву,Далее автор переносит нас в Москву------------------------------------------------";
+       */
+        
+        self.text = [responseObject objectForKey:@"text"];
+        
+        NSDateFormatter *dateFormater = [[NSDateFormatter alloc]init];
+        [dateFormater setDateFormat:@"dd MMM yyyy "];
+        NSDate *dateTime = [NSDate dateWithTimeIntervalSince1970:[[responseObject objectForKey:@"date"] floatValue]];
+        NSString *date   = [dateFormater stringFromDate:dateTime];
+        
+        self.date        = date;
+        self.comments = [[[responseObject objectForKey:@"comments"] objectForKey:@"count"] stringValue];
+        self.likes    = [[[responseObject objectForKey:@"likes"]    objectForKey:@"count"] stringValue];
+        self.reposts  = [[[responseObject objectForKey:@"reposts"]  objectForKey:@"count"] stringValue];
+        
+        
+        self.fromID  = [[responseObject objectForKey:@"from_id"]  stringValue];
+        self.ownerID = [[responseObject objectForKey:@"owner_id"] stringValue];
+        
+        
+        NSDictionary* attachmentsDict = [responseObject objectForKey:@"attachments"];
+        self.attachments = [NSMutableArray array];
+
+        
+        if (![attachmentsDict isEqual:nil]) {
+            
+            //self.type        = [[responseObject objectForKey:@"attachments"] objectForKey:@"type"];
+            
+            for (NSDictionary* dict in [responseObject objectForKey:@"attachments"]) {
+                
+                
+                if ([[dict objectForKey:@"type"]  isEqual: @"photo"]) {
+                    
+                    ASPhoto* photo = [[ASPhoto alloc] initFromResponseWallGet:dict];
+                    [self.attachments addObject:photo];
+                }
+                
+                if ([[dict objectForKey:@"type"]  isEqual: @"video"]) {
+                    
+                }
+                
+            }
+        }
         
         if (!self.type) {
             self.type = [responseObject objectForKey:@"post_type"];
         }
         
-        
+    }
+ 
+    return self;
+}
+
+
+
+
+/*
+-(instancetype) initWithServerResponse:(NSDictionary*) responseObject {
+ 
+    self = [super init];
+    if (self) {
+ 
+        self.type = [[responseObject objectForKey:@"attachment"] objectForKey:@"type"];
+ 
+        if (!self.type) {
+            self.type = [responseObject objectForKey:@"post_type"];
+        }
+ 
+ 
         NSDateFormatter *dateFormater = [[NSDateFormatter alloc]init];
         [dateFormater setDateFormat:@"dd MMM yyyy "];
         NSDate *dateTime = [NSDate dateWithTimeIntervalSince1970:[[responseObject objectForKey:@"date"] floatValue]];
         NSString *date   = [dateFormater stringFromDate:dateTime];
         self.date        = date;
         self.text        = [responseObject objectForKey:@"text"];
-        
+ 
         self.comments = [[[responseObject objectForKey:@"comments"] objectForKey:@"count"] stringValue];
         self.likes    = [[[responseObject objectForKey:@"likes"]    objectForKey:@"count"] stringValue];
         self.reposts  = [[[responseObject objectForKey:@"reposts"]  objectForKey:@"count"] stringValue];
@@ -98,7 +184,7 @@
     
     return self;
     
-}
+}*/
 
 
 @end

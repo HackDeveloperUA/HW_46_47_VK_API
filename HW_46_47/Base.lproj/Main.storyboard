@@ -206,7 +206,7 @@
                                     <outlet property="postSegmentControl" destination="qdj-5d-pOV" id="QBK-eu-ILK"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ASWallTextImageCell" rowHeight="337" id="a2n-jo-CJL" customClass="ASWallTextImageCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ASWallTextImageCell" rowHeight="337" id="a2n-jo-CJL" customClass="ASWallCell">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="a2n-jo-CJL" id="Vbs-qg-v86">
@@ -337,9 +337,9 @@
                                     <outlet property="likeButton" destination="MjW-GY-KAn" id="tYC-i4-Mgp"/>
                                     <outlet property="likeLabel" destination="Ae3-6H-UWd" id="Ru2-L9-hJD"/>
                                     <outlet property="ownerPhoto" destination="2QP-oN-sSb" id="2ec-6D-eqs"/>
-                                    <outlet property="parentViewForLikeCommentRepost" destination="qed-pu-ihG" id="4N0-Rm-eOc"/>
                                     <outlet property="repostButton" destination="sdz-hh-4dC" id="0oj-8F-GQ6"/>
                                     <outlet property="repostLabel" destination="479-04-2Ah" id="LjI-77-8GT"/>
+                                    <outlet property="sharedView" destination="qed-pu-ihG" id="O9E-b1-8cJ"/>
                                     <outlet property="textPost" destination="OsC-de-k0U" id="RLT-HG-xZT"/>
                                 </connections>
                             </tableViewCell>
@@ -666,17 +666,17 @@
                                     <outlet property="postSegmentControl" destination="bFT-sj-N56" id="aj3-kn-Vlt"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ASWallTextImageCell" rowHeight="337" id="x6B-pb-S1R" customClass="ASWallTextImageCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ASWallCell" rowHeight="460" id="x6B-pb-S1R" customClass="ASWallCell">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x6B-pb-S1R" id="lS2-9b-4o5">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="pl_man" translatesAutoresizingMaskIntoConstraints="NO" id="duz-kr-ybg">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pl_man" translatesAutoresizingMaskIntoConstraints="NO" id="duz-kr-ybg">
                                             <rect key="frame" x="8" y="8" width="60" height="60"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="60" id="26m-4g-nk5"/>
-                                                <constraint firstAttribute="height" constant="60" id="bw6-td-9s3"/>
+                                                <constraint firstAttribute="width" constant="60" id="0dv-6v-CHc"/>
+                                                <constraint firstAttribute="height" constant="60" id="KcI-M0-PHU"/>
                                             </constraints>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -697,18 +697,19 @@
                                             <color key="textColor" red="0.30557528410000001" green="0.30557528410000001" blue="0.30557528410000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ICz-xf-3ex">
-                                            <rect key="frame" x="8" y="64" width="585" height="49"/>
-                                            <string key="text">Use the properties and methods defined in this class to set the title, message, and delegate of an alert view and configure the buttons.</string>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use the properties and methods defined" lineBreakMode="wordWrap" numberOfLines="999" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ICz-xf-3ex">
+                                            <rect key="frame" x="8" y="76" width="584" height="27"/>
+                                            <color key="backgroundColor" red="0.62049659993817063" green="1" blue="0.69813883342343064" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="pl_post2" translatesAutoresizingMaskIntoConstraints="NO" id="4BK-De-DUb">
-                                            <rect key="frame" x="8" y="111" width="584" height="179"/>
-                                        </imageView>
-                                        <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fr5-VQ-K1H" userLabel="parentView">
-                                            <rect key="frame" x="8" y="295" width="233" height="33"/>
+                                        <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pWf-FC-Cyv" userLabel="attachments">
+                                            <rect key="frame" x="8" y="111" width="584" height="299"/>
+                                            <color key="backgroundColor" red="0.54339764596505458" green="1" blue="0.80452064215472474" alpha="1" colorSpace="calibratedRGB"/>
+                                        </view>
+                                        <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fr5-VQ-K1H" userLabel="SharedView">
+                                            <rect key="frame" x="8" y="420" width="233" height="33"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yWZ-TR-bKY">
                                                     <rect key="frame" x="7" y="2" width="60" height="30"/>
@@ -766,44 +767,47 @@
                                                 </view>
                                             </subviews>
                                             <color key="backgroundColor" red="1" green="0.80961456949999999" blue="0.70941598319999999" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="33" id="9H1-4o-OCd"/>
+                                            </constraints>
                                         </view>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="4BK-De-DUb" firstAttribute="trailing" secondItem="lS2-9b-4o5" secondAttribute="trailingMargin" id="0If-X9-3AU"/>
-                                        <constraint firstItem="JLT-zL-ctK" firstAttribute="top" secondItem="gTU-Aa-9on" secondAttribute="bottom" id="1bi-Gp-STR"/>
-                                        <constraint firstItem="JLT-zL-ctK" firstAttribute="trailing" secondItem="lS2-9b-4o5" secondAttribute="trailingMargin" id="5zH-t5-HO0"/>
-                                        <constraint firstItem="duz-kr-ybg" firstAttribute="leading" secondItem="lS2-9b-4o5" secondAttribute="leading" constant="5" id="Hw7-z2-HvZ"/>
-                                        <constraint firstItem="gTU-Aa-9on" firstAttribute="leading" secondItem="duz-kr-ybg" secondAttribute="trailing" constant="8" id="Mmf-fd-c5g"/>
-                                        <constraint firstItem="JLT-zL-ctK" firstAttribute="leading" secondItem="duz-kr-ybg" secondAttribute="trailing" constant="8" id="N4Z-ZP-JZ3"/>
-                                        <constraint firstItem="duz-kr-ybg" firstAttribute="top" secondItem="lS2-9b-4o5" secondAttribute="top" constant="5" id="Ntc-eZ-39x"/>
-                                        <constraint firstItem="4BK-De-DUb" firstAttribute="top" secondItem="ICz-xf-3ex" secondAttribute="bottom" constant="-2" id="Sk0-hZ-KPo"/>
-                                        <constraint firstItem="fr5-VQ-K1H" firstAttribute="leading" secondItem="lS2-9b-4o5" secondAttribute="leading" constant="8" id="XKr-Fn-20t"/>
-                                        <constraint firstItem="ICz-xf-3ex" firstAttribute="leading" secondItem="lS2-9b-4o5" secondAttribute="leadingMargin" id="Xbv-32-DIh"/>
-                                        <constraint firstItem="gTU-Aa-9on" firstAttribute="top" secondItem="lS2-9b-4o5" secondAttribute="top" constant="5" id="ZSA-oX-zSq"/>
-                                        <constraint firstItem="ICz-xf-3ex" firstAttribute="top" secondItem="lS2-9b-4o5" secondAttribute="topMargin" constant="60" id="b4t-rj-mny"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="ICz-xf-3ex" secondAttribute="trailing" constant="-1" id="hD2-bE-1br"/>
-                                        <constraint firstAttribute="bottom" secondItem="fr5-VQ-K1H" secondAttribute="bottom" constant="8" id="lfY-hM-pVh"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="4BK-De-DUb" secondAttribute="bottom" constant="38" id="rll-ZR-l3c"/>
-                                        <constraint firstItem="4BK-De-DUb" firstAttribute="leading" secondItem="lS2-9b-4o5" secondAttribute="leadingMargin" id="wke-ZV-kVs"/>
-                                        <constraint firstAttribute="trailing" secondItem="gTU-Aa-9on" secondAttribute="trailing" constant="5" id="zGi-Iq-Rom"/>
+                                        <constraint firstItem="duz-kr-ybg" firstAttribute="top" secondItem="lS2-9b-4o5" secondAttribute="top" constant="8" id="03p-jr-xuR"/>
+                                        <constraint firstItem="ICz-xf-3ex" firstAttribute="leading" secondItem="lS2-9b-4o5" secondAttribute="leading" constant="8" id="7GB-EI-feE"/>
+                                        <constraint firstItem="gTU-Aa-9on" firstAttribute="top" secondItem="lS2-9b-4o5" secondAttribute="top" constant="8" id="7gU-tw-Lv7"/>
+                                        <constraint firstItem="gTU-Aa-9on" firstAttribute="leading" secondItem="duz-kr-ybg" secondAttribute="trailing" constant="8" id="Bg6-Xv-JvM"/>
+                                        <constraint firstAttribute="trailing" secondItem="JLT-zL-ctK" secondAttribute="trailing" constant="8" id="EMz-dY-cWI"/>
+                                        <constraint firstAttribute="trailing" secondItem="pWf-FC-Cyv" secondAttribute="trailing" constant="8" id="I41-mu-QYs"/>
+                                        <constraint firstAttribute="trailing" secondItem="gTU-Aa-9on" secondAttribute="trailing" constant="8" id="JQk-j8-OCy"/>
+                                        <constraint firstItem="JLT-zL-ctK" firstAttribute="top" secondItem="gTU-Aa-9on" secondAttribute="bottom" id="M17-Jq-Uad"/>
+                                        <constraint firstAttribute="bottomMargin" relation="lessThanOrEqual" secondItem="ICz-xf-3ex" secondAttribute="bottom" constant="348" id="PnP-u1-KTV"/>
+                                        <constraint firstItem="duz-kr-ybg" firstAttribute="leading" secondItem="lS2-9b-4o5" secondAttribute="leading" constant="8" id="Q8B-CS-ssd"/>
+                                        <constraint firstAttribute="trailing" secondItem="ICz-xf-3ex" secondAttribute="trailing" constant="8" id="SmY-PG-3Hj"/>
+                                        <constraint firstItem="pWf-FC-Cyv" firstAttribute="leading" secondItem="lS2-9b-4o5" secondAttribute="leading" constant="8" id="Vtg-yH-VGF"/>
+                                        <constraint firstItem="JLT-zL-ctK" firstAttribute="leading" secondItem="duz-kr-ybg" secondAttribute="trailing" constant="8" id="Vys-2A-ewc"/>
+                                        <constraint firstItem="fr5-VQ-K1H" firstAttribute="leading" secondItem="lS2-9b-4o5" secondAttribute="leading" constant="8" id="lba-XI-gHx"/>
+                                        <constraint firstAttribute="bottom" secondItem="fr5-VQ-K1H" secondAttribute="bottom" constant="6" id="rF4-62-lTR"/>
+                                        <constraint firstItem="ICz-xf-3ex" firstAttribute="top" secondItem="lS2-9b-4o5" secondAttribute="topMargin" constant="68" id="rM8-GI-kxw"/>
+                                        <constraint firstItem="fr5-VQ-K1H" firstAttribute="top" secondItem="pWf-FC-Cyv" secondAttribute="bottom" constant="10" id="xKk-6S-tXk"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="attachmentsView" destination="pWf-FC-Cyv" id="cQN-kj-IOq"/>
                                     <outlet property="commentButton" destination="iGN-vb-oks" id="uxo-QZ-esE"/>
                                     <outlet property="commentLabel" destination="nih-qX-5Fe" id="0vB-MK-v4X"/>
                                     <outlet property="date" destination="JLT-zL-ctK" id="6jS-Ka-pMp"/>
                                     <outlet property="fullName" destination="gTU-Aa-9on" id="Doy-wK-xja"/>
-                                    <outlet property="imagePost" destination="4BK-De-DUb" id="yit-Zq-MkK"/>
                                     <outlet property="likeButton" destination="Aio-fu-Fbt" id="UeI-yv-zqc"/>
                                     <outlet property="likeLabel" destination="KXf-Hz-lCn" id="1Ka-4R-b6o"/>
                                     <outlet property="ownerPhoto" destination="duz-kr-ybg" id="oUh-l1-ReA"/>
-                                    <outlet property="parentViewForLikeCommentRepost" destination="fr5-VQ-K1H" id="d5U-gX-iGy"/>
                                     <outlet property="repostButton" destination="ffF-PY-NWc" id="qc4-V8-Qgs"/>
                                     <outlet property="repostLabel" destination="U1y-Ke-0br" id="V3V-yC-z3V"/>
+                                    <outlet property="sharedView" destination="fr5-VQ-K1H" id="KeJ-IX-Nz1"/>
                                     <outlet property="textPost" destination="ICz-xf-3ex" id="XUs-8g-QJy"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ASWallTextCell" rowHeight="163" id="zMI-8A-vX3" customClass="ASWallTextCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ASWallTextCell" rowHeight="147" id="zMI-8A-vX3" customClass="ASWallTextCell">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zMI-8A-vX3" id="uON-aJ-9J5">

@@ -42,7 +42,7 @@ static NSString* identifierSegmentPost  = @"ASSegmentPost";
 static NSString* identifierGray         = @"ASGrayCell";
 
 
-static CGSize CGSizeResize(CGSize size) {
+static CGSize CGResizeFixHeight(CGSize size) {
     
     
     //size.width *= height / size.height;
@@ -538,9 +538,9 @@ static CGSize CGSizeResize(CGSize size) {
         
         
         CGSize   oldSize = CGSizeMake(photo.width, photo.height);
-        CGSize   newSize = CGSizeResize(oldSize);
+        CGSize   newSize = CGResizeFixHeight(oldSize);
         
-        return CGSizeResize(newSize);
+        return CGResizeFixHeight(newSize);
     }
     
     return  CGSizeMake(50, 50);

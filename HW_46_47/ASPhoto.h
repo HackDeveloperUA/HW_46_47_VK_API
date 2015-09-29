@@ -42,7 +42,8 @@
 @property (strong, nonatomic) UIImage* photo_1280image;
 
 
--(instancetype) initWithServerResponse:(NSDictionary*) responseObject;
+-(instancetype) initFromResponsePhotosGet:(NSDictionary*) responseObject;
+-(instancetype) initFromResponseWallGet:(NSDictionary*) responseObject;
 
 
 @end

@@ -76,6 +76,53 @@
 }
 
 
+-(instancetype) initFromResponseWallGet:(NSDictionary*) responseObject {
+    
+    self = [super init];
+    if (self) {
+        
+        /*
+         photo =     {
+             "access_key" = 516e727c7e75ab232c;
+             "album_id" = "-8";
+             date = 1443207639;
+             height = 960;
+             id = 383169142;
+        ->// "owner_id" = "-58860049";
+                 "photo_1280" = "https://pp.vk.me/c625227/v625227028/4a947/84hApk03fFA.jpg";
+                 "photo_130" = "https://pp.vk.me/c625227/v625227028/4a944/GzxIazTxwq4.jpg";
+                 "photo_604" = "https://pp.vk.me/c625227/v625227028/4a945/XympqwtaL5c.jpg";
+                 "photo_75" = "https://pp.vk.me/c625227/v625227028/4a943/72iuFwPJHdI.jpg";
+                 "photo_807" = "https://pp.vk.me/c625227/v625227028/4a946/FQgt8T30e_c.jpg";
+             text = "";
+             "user_id" = 32063028;
+             width = 1280;
+         };
+         type = photo;
+         */
+        
+        NSDictionary* dict = [responseObject objectForKey:@"photo"];
+        
+        self.owner_id = [[dict objectForKey:@"owner_id"] stringValue];
+        self.albumID  = [dict  objectForKey:@"album_id"];
+        
+        self.date     = [self parseDataWithDateFormetter:@"dd MMM yyyy " andDate:[dict objectForKey:@"date"]];
+        
+        self.height = [[dict objectForKey:@"height"] integerValue];
+        self.width  = [[dict objectForKey:@"width"]  integerValue];
+        
+        self.photo_75URL   = [NSURL URLWithString:[dict objectForKey:@"photo_75"]];
+        self.photo_130URL  = [NSURL URLWithString:[dict objectForKey:@"photo_130"]];
+        self.photo_604URL  = [NSURL URLWithString:[dict objectForKey:@"photo_604"]];
+        self.photo_807URL  = [NSURL URLWithString:[dict objectForKey:@"photo_807"]];
+        self.photo_1280URL = [NSURL URLWithString:[dict objectForKey:@"photo_1280"]];
+        
+    }
+    return self;
+}
+
+
+
 -(NSString*) parseDataWithDateFormetter:(NSString*)dateFormat andDate:(NSString*) date {
     
     

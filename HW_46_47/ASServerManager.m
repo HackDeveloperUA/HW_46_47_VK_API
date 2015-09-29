@@ -222,7 +222,7 @@ static NSString* kUserId = @"kUserId";
 
                                   for (NSDictionary* dict in items) {
                                       
-                                       ASPhoto* photo =  [[ASPhoto alloc] initWithServerResponse:dict];
+                                       ASPhoto* photo =  [[ASPhoto alloc] initFromResponsePhotosGet:dict];
                                        [objectsArray addObject:photo];
                                   }
                                   
@@ -309,7 +309,7 @@ static NSString* kUserId = @"kUserId";
      
                               success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
                                   
-                                  NSLog(@"JSON: %@",responseObject);
+                                //  NSLog(@"groups.getById JSON: %@",responseObject);
                                   
                                   NSArray* friendsArray = [responseObject objectForKey:@"response"];
                                   ASGroup* group = nil;
@@ -339,6 +339,7 @@ static NSString* kUserId = @"kUserId";
 
 
 - (void) getGroupWall:(NSString*) groupID
+           withDomain:(NSString*) domain
            withOffset:(NSInteger) offset
                 count:(NSInteger) count
             onSuccess:(void(^)(NSArray* posts)) success
@@ -348,55 +349,55 @@ static NSString* kUserId = @"kUserId";
         if (![groupID hasPrefix:@"-"]) {
             groupID = [@"-" stringByAppendingString:groupID];
         }
-        
-        NSDictionary* params =
-        [NSDictionary dictionaryWithObjectsAndKeys:
-         groupID,       @"owner_id",
-         @(count),      @"count",
+    
+        // [woRows setObject:forKey:] instead of [woRows setValue:forKey:]
+    
+    
+        NSMutableDictionary* params =
+        [NSMutableDictionary dictionaryWithObjectsAndKeys:
+         @"",           @"owner_id",
+         @"",           @"domain",
+         @"3",          @"count",
+         //@(count),      @"count",
          @(offset),     @"offset",
-         @"all",        @"filter", nil];
-        
+         @"all",        @"filter",
+         @"0",           @"extended",
+         @"5.37",       @"v",
+         self.accessToken.token, @"access_token", nil];
+    
+    
+    if (groupID.length > 1) {
+        [params setValue:groupID forKey:@"owner_id"];
+    }
+    else {
+        [params setValue:domain forKey:@"domain"];
+    }
+    
         
         [self.requestOperationManager  GET:@"wall.get"
                                 parameters:params
                                    success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
              
-                                     NSLog(@"JSON: %@", responseObject);
+                                     ///NSLog(@"wall.get JSON: %@", responseObject);
              
-                                     /*
-                                     NSArray* dictsArray = [responseObject objectForKey:@"response"];
-                                     
-                                     if ([dictsArray count] > 1) {
-                                         dictsArray = [dictsArray subarrayWithRange:NSMakeRange(1, (int)[dictsArray count] - 1)];
-                                     } else {
-                                         dictsArray = nil;
-                                     }
-                                     
-                                     NSMutableArray* objectsArray = [NSMutableArray array];
-                                     
-                                     for (NSDictionary* dict in dictsArray) {
-                                         ASPost* user = [[ASPost alloc] initWithServerResponse:dict];
-                                         [objectsArray addObject:user];
-                                     }
-                                     */
                                        
-                                       NSArray* wallArray = [responseObject objectForKey:@"response"];
+                                       NSArray* wallArray = [[responseObject objectForKey:@"response"] objectForKey:@"items"];
                                        NSMutableArray* objectsArray = [NSMutableArray array];
                                        
                                        
                                        if (wallArray) {
                                            
-                                           //-1
-                                           for (int i=1; i<[wallArray count]-1; i++) {
+                                           for (NSDictionary* dict in wallArray) {
                                                
-                                               NSDictionary* dict = [wallArray objectAtIndex:i];
-                                               NSLog(@"responce Object = %@",dict);
+                                               
+                                               NSLog(@"dict = %@ \n\n\n\n",dict);
                                                
                                                ASWall* wall = [[ASWall alloc] initWithServerResponse:dict];
                                                [objectsArray addObject:wall];
                                            }
-                                       }
-                                       
+                                           
+                                           
+                                      }
                                        
                                        
                                      if (success) {
