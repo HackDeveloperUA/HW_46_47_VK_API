@@ -63,4 +63,11 @@
             onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
 
 
+// --- GET INFO WALL --- //
+
+- (void) getInfoUserFromWall:(NSString*) userId
+                   onSuccess:(void(^)(NSDictionary* infoUser)) success
+                   onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
+    
+    
 @end

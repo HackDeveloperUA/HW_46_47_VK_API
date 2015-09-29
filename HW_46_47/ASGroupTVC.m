@@ -1,4 +1,4 @@
-//
+ //
 //  ASGroupTVC.m
 //  HW_46_47
 //
@@ -27,6 +27,7 @@
 #import "ASSegmentPost.h"
 #import "ASGrayCell.h"
 #import "ASWallCell.h"
+#import "ASWallTextCell.h"
 
 // Networking
 #import "ASServerManager.h"
@@ -41,6 +42,7 @@ static NSString* identifierMainGroup    = @"ASMainGroupCell";
 static NSString* identifierSegmentPost  = @"ASSegmentPost";
 static NSString* identifierGray         = @"ASGrayCell";
 static NSString* identifierWall         = @"ASWallCell";
+static NSString* identifierWallTextOnly  = @"ASWallTextCell";
 
 @interface ASGroupTVC () <UITableViewDataSource,      UITableViewDelegate ,
                           UICollectionViewDataSource, UICollectionViewDelegate,
@@ -142,10 +144,8 @@ static NSString* identifierWall         = @"ASWallCell";
 
 -(void)  getWallFromServer {
     
-    NSLog(@"[count ] =====  %d",[self.arrrayWall count]);
+     NSLog(@"[count ] =====  %d",[self.arrrayWall count]);
     
-    
-    //////
     
     [[ASServerManager sharedManager] getGroupWall:@""
                                        withDomain:@"iosdevcourse"
@@ -163,16 +163,16 @@ static NSString* identifierWall         = @"ASWallCell";
                 NSLog(@"Добавляем %ld",(long)i);
                 [arrPath addObject:[NSIndexPath indexPathForRow:i inSection:1]];
             }
-            
-            
+
             
             [self.arrrayWall addObjectsFromArray:posts];
             
+
             [self.tableView beginUpdates];
             [self.tableView insertRowsAtIndexPaths:arrPath withRowAnimation:UITableViewRowAnimationTop];
             [self.tableView endUpdates];
-            
-            self.loadingData = NO;
+
+             self.loadingData = NO;
             
         }
         
@@ -231,13 +231,29 @@ static NSString* identifierWall         = @"ASWallCell";
 
         ASWall* wall = self.arrrayWall[indexPath.row];
         ASWallCell* weakCell = (ASWallCell*)cell;
-        
-        static float heightPhoto  = 76.f;
-        static float heightShared = 50.f;
-               float heightText   = 36.f;
-
-
+     
+        weakCell.attachmentsView.backgroundColor = [UIColor blackColor];
         return 460 + [ASWallCell heightForTextWithPostModel:wall andWidthTextCell:self.view.frame.size.width];
+    }
+    
+    
+    if ([cell isKindOfClass:[ASWallTextCell class]]) {
+    
+        ASWall* wall = self.arrrayWall[indexPath.row];
+
+        static float heightPhoto  = 60.f;
+        static float heightShared = 33.f;
+               float heightText   = 36.f;
+        
+        static float offsetBeforePhoto                = 8.f;
+        static float offsetBetweenPhotoAndText        = 9.f;
+        static float offsetBetweenTextAndShared       = 20.f;
+        static float offsetAfterShared                = 9.f;
+    
+        heightText = [ASWallCell heightForTextWithPostModel:wall andWidthTextCell:self.view.frame.size.width];
+        
+        return (offsetBeforePhoto + heightPhoto) + (offsetBetweenPhotoAndText + heightText) + (offsetBetweenTextAndShared + heightShared + offsetAfterShared);
+    
     }
     
     
@@ -369,90 +385,107 @@ static NSString* identifierWall         = @"ASWallCell";
     
     if (indexPath.section == 1) {
 
-        
-        ASWallCell* cell = (ASWallCell*)[tableView dequeueReusableCellWithIdentifier:identifierWall];
-        
-        if (!cell) {
-            cell = [[ASWallCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                          reuseIdentifier:identifierWall];
-        }
         ASWall* wall = self.arrrayWall[indexPath.row];
-        cell.textPost.text = wall.text;
-        
-     /*
-      @property (weak, nonatomic) IBOutlet UIImageView *ownerPhoto;
-      
-      @property (weak, nonatomic) IBOutlet UILabel *fullName;
-      @property (weak, nonatomic) IBOutlet UILabel *date;
-      @property (weak, nonatomic) IBOutlet UILabel *textPost;
-      
-      
-      @property (weak, nonatomic) IBOutlet UIView *attachmentsView;
-      @property (weak, nonatomic) IBOutlet UIView *sharedView;
-      
-      @property (weak, nonatomic) IBOutlet UILabel *commentLabel;
-      @property (weak, nonatomic) IBOutlet UIButton *commentButton;
-      
-      @property (weak, nonatomic) IBOutlet UILabel *likeLabel;
-      @property (weak, nonatomic) IBOutlet UIButton *likeButton;
-      
-      @property (weak, nonatomic) IBOutlet UILabel *repostLabel;
-      @property (weak, nonatomic) IBOutlet UIButton *repostButton;
 
-     */
         
-        /*
-        __weak ASWallCell *weakCell = cell;
+        if ([wall.attachments count] > 0) {
+            
         
-        NSURLRequest *request = [[NSURLRequest alloc]initWithURL:self.group.mainCommunityImageURL];
-        
-        
-        [cell.mainImageGroup setImageWithURLRequest:request
+            ASWallCell* cell = (ASWallCell*)[tableView dequeueReusableCellWithIdentifier:identifierWall];
+            
+            if (!cell) {
+                cell = [[ASWallCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                              reuseIdentifier:identifierWall];
+            }
+            cell.textPost.text = wall.text;
+            cell.attachmentsView.backgroundColor = [UIColor redColor];
+            //[cell.ownerPhoto setImageWithURL:wall.urlPhoto placeholderImage:[UIImage imageNamed:@"pl_man"]];
+
+            
+            __weak ASWallCell *weakCell = cell;
+            
+            NSURLRequest *request = [[NSURLRequest alloc]initWithURL:wall.urlPhoto];
+            
+            [cell.ownerPhoto setImageWithURLRequest:request
                                    placeholderImage:nil
                                             success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
                                                 
-                                                weakCell.mainImageGroup.image = image;
+                                                weakCell.fullName.text = wall.fullName;
+                                                weakCell.ownerPhoto.image = image;
                                                 
-                                                CALayer *imageLayer = weakCell.mainImageGroup.layer;
-                                                [imageLayer setCornerRadius:40];
-                                                [imageLayer setBorderWidth:3];
-                                                [imageLayer setBorderColor:[UIColor whiteColor].CGColor];
-                                                [imageLayer setMasksToBounds:YES];
                                             }
                                             failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                                                 
                                             }];
-        
-        
-        
-        
-        cell.fullNameGroup.text = self.group.fullName;
-        cell.typeGroup.text     = self.group.typeCommunity;
-        cell.statusGroup.text   = self.group.status;
-        
-        //@"Join community" : @"You are a member"
-        [cell.followButton setTitle:self.group.titleJoinButton forState: UIControlStateNormal];
-        [cell.followButton addTarget:self
-                              action:@selector(followButtonAction:)
-                    forControlEvents:UIControlEventTouchUpInside];
-        
-        
-        if ([cell.followButton.titleLabel.text isEqualToString:@"Join community"]) {
-            [cell.followButton setBackgroundColor:[UIColor colorWithRed:0.114 green:0.384 blue:0.941 alpha:1]];
-        }
-        else
-            
-            if ([cell.followButton.titleLabel.text isEqualToString:@"You are a member"])
-            {
-                [cell.followButton setBackgroundColor:[UIColor colorWithRed:1 green:0.176 blue:0.333 alpha:1]];
-            }
-        
-        cell.collectionView.collectionViewLayout = (UICollectionViewLayout*)[ASInfoMemberFlowLayout initFlowLayout];
-        */
-         
-        return cell;
+           // weakCell.fullName.text = wall.fullName;
+            weakCell.date.text     = wall.date;
 
+            
+            
+            
+            return cell;
+      
+            
+        } else {
+            
+            
+            ASWallTextCell* cell = (ASWallTextCell*)[tableView dequeueReusableCellWithIdentifier:identifierWallTextOnly];
+            
+            if (!cell) {
+                cell = [[ASWallTextCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                         reuseIdentifier:identifierWallTextOnly];
+            }
+            cell.textPost.text = wall.text;
+            cell.textPost.text = wall.text;
+            cell.fullName.text = wall.fullName;
+            cell.date.text     = wall.date;
+            
+            //[cell.ownerPhoto setImageWithURL:wall.urlPhoto placeholderImage:[UIImage imageNamed:@"pl_man"]];
+
+            /*
+            [[ASServerManager sharedManager] getInfoUserFromWall:wall.fromID
+                                                       onSuccess:^(NSDictionary *infoUser) {
+                                                        
+                                                       NSLog(@" getInfoUserFromWall ");
+
+                                                       NSString* fullName = [NSString stringWithFormat:@"%@ %@",[infoUser objectForKey:@"first_name"],[infoUser objectForKey:@"last_name"]];
+                                                       wall.fullName = fullName;
+                                                       wall.urlPhoto = [NSURL URLWithString:[infoUser objectForKey:@"photo_400_orig"]];
+                                                       
+                                                       
+                                                       }
+                                                       onFailure:^(NSError *error, NSInteger statusCode) {
+                                                           
+                                                       }];
+            cell.fullName.text = wall.fullName;
+            cell.date.text     = wall.date;
+            [cell.ownerPhoto setImageWithURL:wall.urlPhoto placeholderImage:[UIImage imageNamed:@"pl_man"]];
+            */
+            
+            
+            __weak ASWallTextCell *weakCell = cell;
+            
+            NSURLRequest *request = [[NSURLRequest alloc]initWithURL:wall.urlPhoto];
+            
+            [cell.ownerPhoto setImageWithURLRequest:request
+                                       placeholderImage:nil
+                                                success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                    
+                                                    weakCell.ownerPhoto.image = image;
+                                                    
+                                                }
+                                                failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                                    
+                                                }];
+            weakCell.fullName.text = wall.fullName;
+            weakCell.date.text     = wall.date;
+
+            
+             return cell;
+
+        }
         
+    
         
     }
     

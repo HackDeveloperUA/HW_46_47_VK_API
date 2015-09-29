@@ -22,7 +22,6 @@
 
 +(CGFloat) heightForAttachmentsWithPostModel:(ASWall*) wall andWidthTextCell:(CGFloat) widthCellText {
     
-    
     return 10;
 }
 

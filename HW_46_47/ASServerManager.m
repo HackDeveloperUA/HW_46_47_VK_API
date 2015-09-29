@@ -357,11 +357,10 @@ static NSString* kUserId = @"kUserId";
         [NSMutableDictionary dictionaryWithObjectsAndKeys:
          @"",           @"owner_id",
          @"",           @"domain",
-         @"3",          @"count",
-         //@(count),      @"count",
+         @(count),          @"count",
          @(offset),     @"offset",
          @"all",        @"filter",
-         @"0",           @"extended",
+         @"1",           @"extended",
          @"5.37",       @"v",
          self.accessToken.token, @"access_token", nil];
     
@@ -391,12 +390,43 @@ static NSString* kUserId = @"kUserId";
                                                
                                                
                                                NSLog(@"dict = %@ \n\n\n\n",dict);
-                                               
                                                ASWall* wall = [[ASWall alloc] initWithServerResponse:dict];
+                                               
+                                               [self getInfoUserFromWall:wall.fromID
+                                                               onSuccess:^(NSDictionary *infoUser) {
+                                                                   
+                                                                   NSString* fullName = [NSString stringWithFormat:@"%@ %@",[infoUser objectForKey:@"first_name"],
+                                                                                         [infoUser objectForKey:@"last_name"]];
+                                                                   wall.fullName = fullName;
+                                                                   wall.urlPhoto = [NSURL URLWithString:[infoUser objectForKey:@"photo_400_orig"]];
+                                                                   //[objectsArray addObject:wall];
+
+                                                               } onFailure:^(NSError *error, NSInteger statusCode) {
+                                                                   
+                                                               }];
+                                                
+                                               
                                                [objectsArray addObject:wall];
                                            }
                                            
                                            
+                                           /*
+                                           for (ASWall* wall in objectsArray) {
+                                               
+                                               [self getInfoUserFromWall:wall.fromID
+                                                               onSuccess:^(NSDictionary *infoUser) {
+                                                                   
+                                                                   NSString* fullName = [NSString stringWithFormat:@"%@ %@",[infoUser objectForKey:@"first_name"],
+                                                                                                                            [infoUser objectForKey:@"last_name"]];
+                                                                   wall.fullName = fullName;
+                                                                   wall.urlPhoto = [NSURL URLWithString:[infoUser objectForKey:@"photo_400_orig"]];
+                                                                   
+                                                               } onFailure:^(NSError *error, NSInteger statusCode) {
+                                                                   
+                                                               }];
+                                             
+                                           }
+                                       */
                                       }
                                        
                                        
@@ -411,8 +441,47 @@ static NSString* kUserId = @"kUserId";
                  failure(error, operation.response.statusCode);
              }
          }];
-    }
+}
 
+///////
+
+- (void) getInfoUserFromWall:(NSString*) userId
+                   onSuccess:(void(^)(NSDictionary* infoUser)) success
+                   onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure {
+    
+    NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            userId,      @"user_ids",
+                            @"photo_400_orig,online,last_seen",  @"fields",
+                            @"nom",      @"name_case",
+                            @"5.37",     @"v",
+                            self.accessToken.token, @"access_token" ,nil];
+    
+    //      "photo_400_orig,online,last_seen",  @"fields",
+
+
+    [self.requestOperationManager GET:@"users.get"
+                           parameters:params
+     
+                              success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
+                                  
+                                  NSArray* wallArray = [responseObject objectForKey:@"response"];
+                                  
+                                  NSDictionary* dict = wallArray[0];
+                                  
+                                  if (success) {
+                                      success(dict);
+                                  }
+                              }
+     
+                              failure:^(AFHTTPRequestOperation *operation, NSError* error){
+                                  
+                                  NSLog(@"Error: %@",error);
+                                  if (failure) {
+                                      failure(error, operation.response.statusCode);
+                                  }
+                              }];
+
+}
 
 
 

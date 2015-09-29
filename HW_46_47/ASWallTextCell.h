@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ASWall.h"
 
 @interface ASWallTextCell : UITableViewCell
 
@@ -14,27 +15,21 @@
 @property (weak, nonatomic) IBOutlet UIImageView *ownerPhoto;
 
 @property (weak, nonatomic) IBOutlet UILabel *fullName;
-
 @property (weak, nonatomic) IBOutlet UILabel *date;
-
-
 @property (weak, nonatomic) IBOutlet UILabel *textPost;
 
-@property (weak, nonatomic) IBOutlet UIView *parentViewForLikeCommentRepost;
 
-
+@property (weak, nonatomic) IBOutlet UIView *sharedView;
 
 @property (weak, nonatomic) IBOutlet UILabel *commentLabel;
 @property (weak, nonatomic) IBOutlet UIButton *commentButton;
 
-
-
 @property (weak, nonatomic) IBOutlet UILabel *likeLabel;
 @property (weak, nonatomic) IBOutlet UIButton *likeButton;
-
 
 @property (weak, nonatomic) IBOutlet UILabel *repostLabel;
 @property (weak, nonatomic) IBOutlet UIButton *repostButton;
 
++(CGFloat) heightForAttachmentsWithPostModel:(ASWall*) wall andWidthTextCell:(CGFloat) widthCellText;
 
 @end
