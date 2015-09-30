@@ -26,6 +26,7 @@ static NSString* kUserId = @"kUserId";
 
 @property (strong, nonatomic) AFHTTPRequestOperationManager* requestOperationManager;
 @property (strong, nonatomic) ASAccessToken* accessToken;
+@property (strong,nonatomic) dispatch_queue_t requestQueue;
 
 @end
 
@@ -49,6 +50,7 @@ static NSString* kUserId = @"kUserId";
     
     self = [super init];
     if (self) {
+        self.requestQueue = dispatch_queue_create("iOSDevCourse.requestVk", DISPATCH_QUEUE_PRIORITY_DEFAULT);
         self.requestOperationManager = [[AFHTTPRequestOperationManager alloc]initWithBaseURL:[NSURL URLWithString:@"https://api.vk.com/method/"]];
         self.accessToken = [[ASAccessToken alloc]init];
         [self loadSettings];
@@ -489,120 +491,51 @@ static NSString* kUserId = @"kUserId";
                                success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
                                                                       
                                    
+                    dispatch_async(self.requestQueue, ^{
+ 
+                                   
                                    NSArray*   wallArray     = [[responseObject objectForKey:@"response"] objectForKey:@"items"];
                                    NSArray*   profilesArray = [[responseObject objectForKey:@"response"] objectForKey:@"profiles"];
                                    NSArray*   groupArray    = [[responseObject objectForKey:@"response"] objectForKey:@"groups"];
 
                                    NSMutableArray *arrayWithProfiles = [[NSMutableArray alloc]init];
                                   
-                                   NSMutableArray* objectsArray = [NSMutableArray array];
-                                   
+                                   NSMutableDictionary* profilesBase = [NSMutableDictionary dictionary];
+
                                    
                                    if (wallArray) {
+                                   
                                        
+                                       for (NSDictionary* dict in profilesArray) {
+                                           [profilesBase setValue:dict forKey:[[dict objectForKey:@"id"] stringValue]];
+                                       }
                                        
-                                       int i,j;
-                                       
-                                       for (i=0,j=0; i<[wallArray count]; i++,j++) {
+                                     
+                                       for (int i=0; i<[wallArray count]; i++) {
                                            
                                            NSDictionary* dictItem    = wallArray[i];
-                                           NSDictionary* dictProfile;
-                                           NSDictionary* dictGroup;
-                                           
-                                           NSMutableDictionary* profilesBase = [NSMutableDictionary dictionary];
-
-                                           
                                            ASWall* wall = [[ASWall alloc] initWithServerResponse:dictItem];
                                            
                                            if (![wall.fromID hasPrefix:@"-"]) {
-                                           
-                                                   if ([profilesBase valueForKey:wall.fromID] == nil) {
-                                                       dictProfile = profilesArray[i];
-                                                       [profilesBase setObject:dictProfile forKey:wall.fromID];
-                                                       wall.user = [[ASUser alloc] initWithServerResponse:dictProfile];
-                                                   } else {
-                                                       wall.user = [[ASUser alloc] initWithServerResponse:[profilesBase valueForKey:wall.fromID]];
-                                                   }
-                                               
+                                               wall.user = [[ASUser alloc] initWithServerResponse:[profilesBase objectForKey:wall.fromID]];
                                            } else {
-                                           
                                                wall.group = [[ASGroup alloc] initWithServerResponse:[groupArray firstObject]];
+  
+                                           }
                                            
-                                                }
-                                           
-                                           
-                                           
-                                           /*
-                                           if (![wall.fromID hasPrefix:@"-"]) {
-                                               
-                                
-                                                   if (nil == profilesBase[wall.fromID]) {
-                                                   
-                                                        dictProfile = profilesArray[i];
-                                                       [profilesBase setValue:dictProfile forKey:wall.fromID];
-                                                  
-                                                   } else {
-                                                       wall.user = [[ASUser alloc] initWithServerResponse:profilesBase[wall.fromID]];
-                                                          }
-                                               
-                                           } else {
-                                               
-                                               
-                                               if (nil == groupsBase[wall.fromID]) {
-                                                   
-                                                   dictGroup = groupArray[i];
-                                                   [groupsBase setValue:dictGroup forKey:wall.fromID];
-                                                   
-                                               } else {
-                                                   wall.group = [[ASGroup alloc] initWithServerResponse:groupsBase[wall.fromID]];
-                                                   }
-                                               
-                                           }*/
-                                           
-                                           
-                                           
-                                           
-                                       
-                                           
-                                           
-                                           
-                                           /*
-                                           if (![wall.fromID hasPrefix:@"-"]) {
-                                           
-                                                               // Чушь ^ но работает
-                                                               //if (j>=[profilesArray count]) {
-                                                               //    j=[profilesArray count]-2;
-                                                               // }
-                                               
-                                            //NSPredicate *predicate = [NSPredicate predicateWithFormat:@"userID == %@", wall.fromID];
-                                            //NSArray *filteredArray = [myArray filteredArrayUsingPredicate:predicate];
-                                            //NSArray* filteredArray = [profileSet filterUsingPredicate:predicate];
-                                            //id firstFoundObject = nil;
-                                            //firstFoundObject =  filteredArray.count > 0 ? filteredArray.firstObject : nil;
-                                            
-                                            
-                                            
-                                               dictProfile = profilesArray[j];
-                                               wall.user = [[ASUser alloc] initWithServerResponse:dictProfile];
-                                         
-                                           } else {
-                                               j--;
-                                               dictGroup   = [groupArray firstObject];
-                                               wall.group = [[ASGroup alloc] initWithServerResponse:dictGroup];
- 
-                                           }*/
-                                       
                                            [arrayWithProfiles addObject:wall];
-
                                        }
                                        
+                               
                                    }
-                                   
-                                   
-                                   if (success) {
-                                       success(arrayWithProfiles);
-                                   }
-                                   
+                    
+                                   dispatch_async(dispatch_get_main_queue(), ^{
+     
+                                       if (success) {
+                                           success(arrayWithProfiles);
+                                       }
+                                   });
+            });
                                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                    NSLog(@"Error: %@", error);
                                    

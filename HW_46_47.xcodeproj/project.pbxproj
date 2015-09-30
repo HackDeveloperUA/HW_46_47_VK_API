@@ -27,6 +27,7 @@
 		6C9671AC1BA72407006B2D59 /* ASPhotosFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9671AB1BA72407006B2D59 /* ASPhotosFlowLayout.m */; };
 		6C9671AF1BA74F64006B2D59 /* UIColor+HEX.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9671AE1BA74F64006B2D59 /* UIColor+HEX.m */; };
 		6C9671B21BA75623006B2D59 /* ASGrayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9671B11BA75623006B2D59 /* ASGrayCell.m */; };
+		6C9AF67A1BBC4E4100531726 /* ASCheckImageSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9AF6791BBC4E4100531726 /* ASCheckImageSize.m */; };
 		6C9B12001BA1572D00242620 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B11FF1BA1572D00242620 /* main.m */; };
 		6C9B12031BA1572D00242620 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B12021BA1572D00242620 /* AppDelegate.m */; };
 		6C9B12091BA1572D00242620 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6C9B12071BA1572D00242620 /* Main.storyboard */; };
@@ -94,6 +95,8 @@
 		6C9671AE1BA74F64006B2D59 /* UIColor+HEX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HEX.m"; sourceTree = "<group>"; };
 		6C9671B01BA75623006B2D59 /* ASGrayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASGrayCell.h; sourceTree = "<group>"; };
 		6C9671B11BA75623006B2D59 /* ASGrayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASGrayCell.m; sourceTree = "<group>"; };
+		6C9AF6781BBC4E4100531726 /* ASCheckImageSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASCheckImageSize.h; sourceTree = "<group>"; };
+		6C9AF6791BBC4E4100531726 /* ASCheckImageSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASCheckImageSize.m; sourceTree = "<group>"; };
 		6C9B11FA1BA1572D00242620 /* HW_46_47.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HW_46_47.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C9B11FE1BA1572D00242620 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6C9B11FF1BA1572D00242620 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -236,6 +239,8 @@
 			children = (
 				6C45684B1BA33CC6000B380A /* ASAccessToken.h */,
 				6C45684C1BA33CC6000B380A /* ASAccessToken.m */,
+				6C9AF6781BBC4E4100531726 /* ASCheckImageSize.h */,
+				6C9AF6791BBC4E4100531726 /* ASCheckImageSize.m */,
 				6C45684E1BA33D4E000B380A /* Server */,
 				6C4568401BA2DECF000B380A /* View Controllers */,
 				6C7C9F4B1BACBCCA00D2228F /* Primitive Model */,
@@ -443,6 +448,7 @@
 				6C2AC5BF1BA42B27006C0DE6 /* ASFollower.m in Sources */,
 				6C45684D1BA33CC6000B380A /* ASAccessToken.m in Sources */,
 				6C4568511BA33E09000B380A /* ASServerManager.m in Sources */,
+				6C9AF67A1BBC4E4100531726 /* ASCheckImageSize.m in Sources */,
 				6C9671AF1BA74F64006B2D59 /* UIColor+HEX.m in Sources */,
 				6CF725901BA224B6003F935B /* ASGroupTVC.m in Sources */,
 				6C9671B21BA75623006B2D59 /* ASGrayCell.m in Sources */,

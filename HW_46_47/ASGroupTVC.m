@@ -132,6 +132,10 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
                                NSLog(@"Пришло = %d",[posts count]);
 
                                if ([posts count] > 0) {
+                                 
+                                   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    
+                                   
                                    
                                    NSMutableArray* arrPath = [NSMutableArray array];
                                    
@@ -143,17 +147,20 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
                                    
                                    
                                    [self.arrrayWall addObjectsFromArray:posts];
-                                   
-                                   
-                                   [self.tableView beginUpdates];
-                                   [self.tableView insertRowsAtIndexPaths:arrPath withRowAnimation:UITableViewRowAnimationTop];
-                                   [self.tableView endUpdates];
-                                   
-                                   self.loadingData = NO;
-                                   
+                           
+                                   dispatch_sync(dispatch_get_main_queue(), ^{
+                                       
+                                       [self.tableView beginUpdates];
+                                       [self.tableView insertRowsAtIndexPaths:arrPath withRowAnimation:UITableViewRowAnimationFade];
+                                       [self.tableView endUpdates];
+                                       self.loadingData = NO;
+                                       
+                                   });
+                                       
+                                   });
+  
                                }
-
-   
+    
                                                
                                            } onFailure:^(NSError *error, NSInteger statusCode) {
                                                
@@ -476,6 +483,13 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
                 [cell.ownerPhoto setImageWithURL:wall.group.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
             }
             
+            cell.commentLabel.text = wall.comments;
+            cell.likeLabel.text    = wall.likes;
+            cell.repostLabel.text  = wall.reposts;
+            
+            //[cell.commentButton addTarget:self action:@selector(likeRepostCommentAction:) forControlEvents:UIControlEventTouchUpInside];
+            //[cell.likeButton     addTarget:self action:@selector(likeRepostCommentAction:) forControlEvents:UIControlEventTouchUpInside];
+            //[cell.repostButton     addTarget:self action:@selector(likeRepostCommentAction:) forControlEvents:UIControlEventTouchUpInside];
             
             return cell;
       
@@ -494,66 +508,46 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
 
             if (wall.user) {
                 cell.fullName.text = [NSString stringWithFormat:@"%@ %@",wall.user.firstName, wall.user.lastName];
-                [cell.ownerPhoto setImageWithURL:wall.user.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
+                //[cell.ownerPhoto setImageWithURL:wall.user.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
+            
             } else if (wall.group) {
                 
                 cell.fullName.text = wall.group.fullName; //[NSString stringWithFormat:@"%@ %@",wall.user.firstName, wall.user.lastName];
-                [cell.ownerPhoto setImageWithURL:wall.group.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
+                //[cell.ownerPhoto setImageWithURL:wall.group.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
             }
             
-            /*
+            cell.commentLabel.text = wall.comments;
+            cell.likeLabel.text    = wall.likes;
+            cell.repostLabel.text  = wall.reposts;
             
-             ownerPhoto;
-             
-             @property (weak, nonatomic) IBOutlet UILabel *fullName;
-             @property (weak, nonatomic) IBOutlet UILabel *date;
-             @property (weak, nonatomic) IBOutlet UILabel *textPost;
-
-             
-             */
+            //[cell.commentButton addTarget:self action:@selector(likeRepostCommentAction:) forControlEvents:UIControlEventTouchUpInside];
+            //[cell.likeButton     addTarget:self action:@selector(likeRepostCommentAction:) forControlEvents:UIControlEventTouchUpInside];
+            //[cell.repostButton     addTarget:self action:@selector(likeRepostCommentAction:) forControlEvents:UIControlEventTouchUpInside];
             
-            
-            
-            //[cell.ownerPhoto setImageWithURL:wall.urlPhoto placeholderImage:[UIImage imageNamed:@"pl_man"]];
-
-            /*
-            [[ASServerManager sharedManager] getInfoUserFromWall:wall.fromID
-                                                       onSuccess:^(NSDictionary *infoUser) {
-                                                        
-                                                       NSLog(@" getInfoUserFromWall ");
-
-                                                       NSString* fullName = [NSString stringWithFormat:@"%@ %@",[infoUser objectForKey:@"first_name"],[infoUser objectForKey:@"last_name"]];
-                                                       wall.fullName = fullName;
-                                                       wall.urlPhoto = [NSURL URLWithString:[infoUser objectForKey:@"photo_400_orig"]];
-                                                       
-                                                       
-                                                       }
-                                                       onFailure:^(NSError *error, NSInteger statusCode) {
-                                                           
-                                                       }];
-            cell.fullName.text = wall.fullName;
-            cell.date.text     = wall.date;
-            [cell.ownerPhoto setImageWithURL:wall.urlPhoto placeholderImage:[UIImage imageNamed:@"pl_man"]];
-            */
-            
-            /*
             __weak ASWallTextCell *weakCell = cell;
             
-            NSURLRequest *request = [[NSURLRequest alloc]initWithURL:wall.urlPhoto];
+            NSURL* url = [[NSURL alloc] init];
+            if (wall.user.photo_100URL) {
+                url = wall.user.photo_100URL;
+            } else {
+                url = wall.group.photo_100URL;
+            }
             
+            NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url];
+
             [cell.ownerPhoto setImageWithURLRequest:request
-                                       placeholderImage:nil
-                                                success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                    
-                                                    weakCell.ownerPhoto.image = image;
-                                                    
-                                                }
-                                                failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                                                    
-                                                }];
-            weakCell.fullName.text = wall.fullName;
-            weakCell.date.text     = wall.date;
-            */
+                                   placeholderImage:nil
+                                            success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                
+                                                weakCell.ownerPhoto.image = image;
+                                                
+                                            }
+                                            failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                                
+                                            }];
+            
+            
+            
             
              return cell;
 
