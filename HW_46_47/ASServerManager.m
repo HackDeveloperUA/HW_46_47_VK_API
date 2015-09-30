@@ -381,6 +381,7 @@ static NSString* kUserId = @"kUserId";
              
                                        
                                        NSArray* wallArray = [[responseObject objectForKey:@"response"] objectForKey:@"items"];
+                                       
                                        NSMutableArray* objectsArray = [NSMutableArray array];
                                        
                                        
@@ -424,7 +425,6 @@ static NSString* kUserId = @"kUserId";
                                                                } onFailure:^(NSError *error, NSInteger statusCode) {
                                                                    
                                                                }];
-                                             
                                            }
                                        */
                                       }
@@ -442,6 +442,183 @@ static NSString* kUserId = @"kUserId";
              }
          }];
 }
+
+
+
+/// NEW
+
+
+
+
+- (void)  getNewGroupWall:(NSString*) groupID
+               withDomain:(NSString*) domain
+               withOffset:(NSInteger) offset
+                    count:(NSInteger) count
+                onSuccess:(void(^)(NSArray* posts)) success
+                onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure {
+    
+    
+    if (![groupID hasPrefix:@"-"]) {
+        groupID = [@"-" stringByAppendingString:groupID];
+    }
+    
+    
+    
+    NSMutableDictionary* params =
+    [NSMutableDictionary dictionaryWithObjectsAndKeys:
+     @"",           @"owner_id",
+     @"",           @"domain",
+     @(count),      @"count",
+     @(offset),     @"offset",
+     @"all",        @"filter",
+     @"1",          @"extended",
+     @"5.37",       @"v",
+     self.accessToken.token, @"access_token", nil];
+    
+    
+    if (groupID.length > 1) {
+        [params setValue:groupID forKey:@"owner_id"];
+    }
+    else {
+        [params setValue:domain forKey:@"domain"];
+    }
+    
+    
+    [self.requestOperationManager  GET:@"wall.get"
+                            parameters:params
+                               success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
+                                                                      
+                                   
+                                   NSArray*   wallArray     = [[responseObject objectForKey:@"response"] objectForKey:@"items"];
+                                   NSArray*   profilesArray = [[responseObject objectForKey:@"response"] objectForKey:@"profiles"];
+                                   NSArray*   groupArray    = [[responseObject objectForKey:@"response"] objectForKey:@"groups"];
+
+                                   NSMutableArray *arrayWithProfiles = [[NSMutableArray alloc]init];
+                                  
+                                   NSMutableArray* objectsArray = [NSMutableArray array];
+                                   
+                                   
+                                   if (wallArray) {
+                                       
+                                       
+                                       int i,j;
+                                       
+                                       for (i=0,j=0; i<[wallArray count]; i++,j++) {
+                                           
+                                           NSDictionary* dictItem    = wallArray[i];
+                                           NSDictionary* dictProfile;
+                                           NSDictionary* dictGroup;
+                                           
+                                           NSMutableDictionary* profilesBase = [NSMutableDictionary dictionary];
+
+                                           
+                                           ASWall* wall = [[ASWall alloc] initWithServerResponse:dictItem];
+                                           
+                                           if (![wall.fromID hasPrefix:@"-"]) {
+                                           
+                                                   if ([profilesBase valueForKey:wall.fromID] == nil) {
+                                                       dictProfile = profilesArray[i];
+                                                       [profilesBase setObject:dictProfile forKey:wall.fromID];
+                                                       wall.user = [[ASUser alloc] initWithServerResponse:dictProfile];
+                                                   } else {
+                                                       wall.user = [[ASUser alloc] initWithServerResponse:[profilesBase valueForKey:wall.fromID]];
+                                                   }
+                                               
+                                           } else {
+                                           
+                                               wall.group = [[ASGroup alloc] initWithServerResponse:[groupArray firstObject]];
+                                           
+                                                }
+                                           
+                                           
+                                           
+                                           /*
+                                           if (![wall.fromID hasPrefix:@"-"]) {
+                                               
+                                
+                                                   if (nil == profilesBase[wall.fromID]) {
+                                                   
+                                                        dictProfile = profilesArray[i];
+                                                       [profilesBase setValue:dictProfile forKey:wall.fromID];
+                                                  
+                                                   } else {
+                                                       wall.user = [[ASUser alloc] initWithServerResponse:profilesBase[wall.fromID]];
+                                                          }
+                                               
+                                           } else {
+                                               
+                                               
+                                               if (nil == groupsBase[wall.fromID]) {
+                                                   
+                                                   dictGroup = groupArray[i];
+                                                   [groupsBase setValue:dictGroup forKey:wall.fromID];
+                                                   
+                                               } else {
+                                                   wall.group = [[ASGroup alloc] initWithServerResponse:groupsBase[wall.fromID]];
+                                                   }
+                                               
+                                           }*/
+                                           
+                                           
+                                           
+                                           
+                                       
+                                           
+                                           
+                                           
+                                           /*
+                                           if (![wall.fromID hasPrefix:@"-"]) {
+                                           
+                                                               // Чушь ^ но работает
+                                                               //if (j>=[profilesArray count]) {
+                                                               //    j=[profilesArray count]-2;
+                                                               // }
+                                               
+                                            //NSPredicate *predicate = [NSPredicate predicateWithFormat:@"userID == %@", wall.fromID];
+                                            //NSArray *filteredArray = [myArray filteredArrayUsingPredicate:predicate];
+                                            //NSArray* filteredArray = [profileSet filterUsingPredicate:predicate];
+                                            //id firstFoundObject = nil;
+                                            //firstFoundObject =  filteredArray.count > 0 ? filteredArray.firstObject : nil;
+                                            
+                                            
+                                            
+                                               dictProfile = profilesArray[j];
+                                               wall.user = [[ASUser alloc] initWithServerResponse:dictProfile];
+                                         
+                                           } else {
+                                               j--;
+                                               dictGroup   = [groupArray firstObject];
+                                               wall.group = [[ASGroup alloc] initWithServerResponse:dictGroup];
+ 
+                                           }*/
+                                       
+                                           [arrayWithProfiles addObject:wall];
+
+                                       }
+                                       
+                                   }
+                                   
+                                   
+                                   if (success) {
+                                       success(arrayWithProfiles);
+                                   }
+                                   
+                               } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                   NSLog(@"Error: %@", error);
+                                   
+                                   if (failure) {
+                                       failure(error, operation.response.statusCode);
+                                   }
+                               }];
+ 
+    
+}
+
+
+
+
+
+
 
 ///////
 

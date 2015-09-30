@@ -15,6 +15,12 @@
 @property (strong, nonatomic) NSString* fullName;
 @property (strong, nonatomic) NSString* groupID;
 
+@property (strong, nonatomic) NSURL* mainImageURL;
+@property (strong, nonatomic) NSURL* photo_50URL;
+@property (strong, nonatomic) NSURL* photo_100URL;
+@property (strong, nonatomic) NSURL* mainCommunityImageURL;
+
+
 @property (strong, nonatomic) NSString* members;
 @property (strong, nonatomic) NSString* topics;
 @property (strong, nonatomic) NSString* docs;
@@ -28,7 +34,6 @@
 @property (strong, nonatomic) NSString* descriptionCommunity;
 @property (strong, nonatomic) NSString* status;
 
-@property (strong, nonatomic) NSURL* mainCommunityImageURL;
 
 -(instancetype) initWithServerResponse:(NSDictionary*) responseObject;
 

@@ -90,6 +90,10 @@
        self.status    = [responseObject objectForKey:@"status"];
     
 
+        self.photo_50URL  = [NSURL URLWithString:[responseObject objectForKey:@"photo_50"]];
+        self.photo_100URL = [NSURL URLWithString:[responseObject objectForKey:@"photo_100"]];
+        
+
         NSString* urlString = [responseObject objectForKey:@"photo_200"];
         
         if (urlString) {

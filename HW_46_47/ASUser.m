@@ -40,6 +40,9 @@
             self.mainImageURL = [NSURL URLWithString:urlString];
         }
         
+        self.photo_50URL  = [NSURL URLWithString:[responseObject objectForKey:@"photo_50"]];
+        self.photo_100URL = [NSURL URLWithString:[responseObject objectForKey:@"photo_100"]];
+
         // counteres
         
         self.albums     = [[[responseObject objectForKey:@"counters"]  objectForKey:@"albums"] stringValue];

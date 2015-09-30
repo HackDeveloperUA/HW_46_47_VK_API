@@ -69,5 +69,14 @@
                    onSuccess:(void(^)(NSDictionary* infoUser)) success
                    onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
     
-    
+// --- NEW !!! WALL & INFO
+
+
+- (void)  getNewGroupWall:(NSString*) groupID
+               withDomain:(NSString*) domain
+               withOffset:(NSInteger) offset
+                    count:(NSInteger) count
+                onSuccess:(void(^)(NSArray* posts)) success
+                onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
+
 @end

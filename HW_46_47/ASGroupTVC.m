@@ -76,6 +76,7 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
     [super viewDidLoad];
     
 
+    self.group = [[ASGroup alloc] init];
     self.arrrayWall  = [NSMutableArray array];
 
     self.loadingData = YES;
@@ -103,8 +104,11 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
             
             NSLog(@"AUTHORIZED!");
             NSLog(@"%@ %@", user.firstName, user.lastName);
+         
             [self getInfoFromServer];
-            [self getWallFromServer];
+            [self getNewWallFromServer];
+          //  [self getInfoFromServer];
+          //  [self getWallFromServer];
         }];
         
     }
@@ -114,6 +118,53 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
 
 #pragma mark - GET-InfoServer
 
+-(void)  getNewWallFromServer {
+    
+    
+    [[ASServerManager sharedManager] getNewGroupWall:@""
+                                          withDomain:@"iosdevcourse"
+                                          withOffset:[self.arrrayWall count]
+                                               count:20
+                                           onSuccess:^(NSArray *posts) {
+                                               
+                                               
+                               NSLog(@"Попал сюда = getNewWallFromServer");
+                               NSLog(@"Пришло = %d",[posts count]);
+
+                               if ([posts count] > 0) {
+                                   
+                                   NSMutableArray* arrPath = [NSMutableArray array];
+                                   
+                                   for (NSInteger i= [self.arrrayWall count]; i<=[posts count]+[self.arrrayWall count]-1; i++) {
+                                       
+                                       NSLog(@"Добавляем %ld",(long)i);
+                                       [arrPath addObject:[NSIndexPath indexPathForRow:i inSection:1]];
+                                   }
+                                   
+                                   
+                                   [self.arrrayWall addObjectsFromArray:posts];
+                                   
+                                   
+                                   [self.tableView beginUpdates];
+                                   [self.tableView insertRowsAtIndexPaths:arrPath withRowAnimation:UITableViewRowAnimationTop];
+                                   [self.tableView endUpdates];
+                                   
+                                   self.loadingData = NO;
+                                   
+                               }
+
+   
+                                               
+                                           } onFailure:^(NSError *error, NSInteger statusCode) {
+                                               
+                                           }];
+    
+    
+    
+}
+
+
+
 -(void)  getInfoFromServer {
 
     //58860049 iosdevcourse
@@ -121,6 +172,7 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
         
             self.arrayDataCountres = [NSArray array];
             self.navigationItem.title = group.fullName;
+        
             self.groupID = group.groupID;
             self.group = group;
         
@@ -153,7 +205,6 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
                                             count:20
                                         onSuccess:^(NSArray *posts) {
                                             
-        
          if ([posts count] > 0) {
             
             NSMutableArray* arrPath = [NSMutableArray array];
@@ -189,16 +240,30 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
+
     
-    if ((scrollView.contentOffset.y + scrollView.frame.size.height) >= scrollView.contentSize.height) {
-        if (!self.loadingData)
-        {
-            self.loadingData = YES;
-            NSLog(@"Подгружаю !");
+    if ([UITableView isSubclassOfClass:[UIScrollView class]]) {
+        
+        UITableView* tableView = (UITableView*)scrollView;
+
+        if (tableView.tag == 300) {
+           
+            if ((scrollView.contentOffset.y + scrollView.frame.size.height) >= scrollView.contentSize.height) {
+                if (!self.loadingData)
+                {
+                    self.loadingData = YES;
+                    NSLog(@"Подгружаю !");
+                    
+                    [self getNewWallFromServer];
+                    // [self getWallFromServer];
+                }
+            }
             
-            [self getWallFromServer];
         }
     }
+    
+    
+    
 }
 
 
@@ -397,30 +462,19 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
                 cell = [[ASWallCell alloc] initWithStyle:UITableViewCellStyleDefault
                                               reuseIdentifier:identifierWall];
             }
-            cell.textPost.text = wall.text;
             cell.attachmentsView.backgroundColor = [UIColor redColor];
-            //[cell.ownerPhoto setImageWithURL:wall.urlPhoto placeholderImage:[UIImage imageNamed:@"pl_man"]];
-
+          
+            cell.textPost.text = wall.text;
+            cell.date.text     = wall.date;
             
-            __weak ASWallCell *weakCell = cell;
-            
-            NSURLRequest *request = [[NSURLRequest alloc]initWithURL:wall.urlPhoto];
-            
-            [cell.ownerPhoto setImageWithURLRequest:request
-                                   placeholderImage:nil
-                                            success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                
-                                                weakCell.fullName.text = wall.fullName;
-                                                weakCell.ownerPhoto.image = image;
-                                                
-                                            }
-                                            failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                                                
-                                            }];
-           // weakCell.fullName.text = wall.fullName;
-            weakCell.date.text     = wall.date;
-
-            
+            if (wall.user) {
+                cell.fullName.text = [NSString stringWithFormat:@"%@ %@",wall.user.firstName, wall.user.lastName];
+                [cell.ownerPhoto setImageWithURL:wall.user.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
+            } else if (wall.group) {
+                
+                cell.fullName.text = wall.group.fullName; //[NSString stringWithFormat:@"%@ %@",wall.user.firstName, wall.user.lastName];
+                [cell.ownerPhoto setImageWithURL:wall.group.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
+            }
             
             
             return cell;
@@ -436,9 +490,29 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
                                          reuseIdentifier:identifierWallTextOnly];
             }
             cell.textPost.text = wall.text;
-            cell.textPost.text = wall.text;
-            cell.fullName.text = wall.fullName;
             cell.date.text     = wall.date;
+
+            if (wall.user) {
+                cell.fullName.text = [NSString stringWithFormat:@"%@ %@",wall.user.firstName, wall.user.lastName];
+                [cell.ownerPhoto setImageWithURL:wall.user.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
+            } else if (wall.group) {
+                
+                cell.fullName.text = wall.group.fullName; //[NSString stringWithFormat:@"%@ %@",wall.user.firstName, wall.user.lastName];
+                [cell.ownerPhoto setImageWithURL:wall.group.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
+            }
+            
+            /*
+            
+             ownerPhoto;
+             
+             @property (weak, nonatomic) IBOutlet UILabel *fullName;
+             @property (weak, nonatomic) IBOutlet UILabel *date;
+             @property (weak, nonatomic) IBOutlet UILabel *textPost;
+
+             
+             */
+            
+            
             
             //[cell.ownerPhoto setImageWithURL:wall.urlPhoto placeholderImage:[UIImage imageNamed:@"pl_man"]];
 
@@ -462,7 +536,7 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
             [cell.ownerPhoto setImageWithURL:wall.urlPhoto placeholderImage:[UIImage imageNamed:@"pl_man"]];
             */
             
-            
+            /*
             __weak ASWallTextCell *weakCell = cell;
             
             NSURLRequest *request = [[NSURLRequest alloc]initWithURL:wall.urlPhoto];
@@ -479,7 +553,7 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
                                                 }];
             weakCell.fullName.text = wall.fullName;
             weakCell.date.text     = wall.date;
-
+            */
             
              return cell;
 
