@@ -13,6 +13,7 @@
 #import "ASWall.h"
 #import "ASFriend.h"
 #import "ASGroup.h"
+#import "ASPhoto.h"
 
 
 // Collection View
@@ -26,7 +27,7 @@
 #import "ASMainGroupCell.h"
 #import "ASSegmentPost.h"
 #import "ASGrayCell.h"
-#import "ASWallCell.h"
+#import "ASWallAttachmentCell.h"
 #import "ASWallTextCell.h"
 
 // Networking
@@ -37,12 +38,25 @@
 // HEX
 #import "UIColor+HEX.h"
 
+#import "ASImageViewGallery.h"
+
 
 static NSString* identifierMainGroup    = @"ASMainGroupCell";
 static NSString* identifierSegmentPost  = @"ASSegmentPost";
 static NSString* identifierGray         = @"ASGrayCell";
 static NSString* identifierWall         = @"ASWallCell";
 static NSString* identifierWallTextOnly  = @"ASWallTextCell";
+
+
+static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
+    
+    size.width *= height / size.height;
+    size.height = height;
+    
+    return size;
+}
+
+
 
 @interface ASGroupTVC () <UITableViewDataSource,      UITableViewDelegate ,
                           UICollectionViewDataSource, UICollectionViewDelegate,
@@ -60,6 +74,9 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
 
 //@property (strong,nonatomic)  UIRefreshControl *refresh;
 //@property (strong,nonatomic)  NSMutableArray *imageViewSize;
+
+@property (strong,nonatomic) NSMutableArray *imageViewSize;
+
 @end
 
 
@@ -78,6 +95,8 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
 
     self.group = [[ASGroup alloc] init];
     self.arrrayWall  = [NSMutableArray array];
+
+    self.imageViewSize  = [NSMutableArray array];
 
     self.loadingData = YES;
     self.firstTimeAppear = YES;
@@ -106,9 +125,8 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
             NSLog(@"%@ %@", user.firstName, user.lastName);
          
             [self getInfoFromServer];
-            [self getNewWallFromServer];
-          //  [self getInfoFromServer];
-          //  [self getWallFromServer];
+            [self getWallFromServer];
+      
         }];
         
     }
@@ -118,11 +136,11 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
 
 #pragma mark - GET-InfoServer
 
--(void)  getNewWallFromServer {
+-(void)  getWallFromServer {
     
     
     [[ASServerManager sharedManager] getNewGroupWall:@""
-                                          withDomain:@"iosdevcourse"
+                                          withDomain:@"okoloxcoda"
                                           withOffset:[self.arrrayWall count]
                                                count:20
                                            onSuccess:^(NSArray *posts) {
@@ -133,12 +151,15 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
 
                                if ([posts count] > 0) {
                                  
-                                   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                                   
+
+                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
     
+                            
                                    
-                                   
+
                                    NSMutableArray* arrPath = [NSMutableArray array];
-                                   
+
                                    for (NSInteger i= [self.arrrayWall count]; i<=[posts count]+[self.arrrayWall count]-1; i++) {
                                        
                                        NSLog(@"Добавляем %ld",(long)i);
@@ -146,13 +167,23 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
                                    }
                                    
                                    
-                                   [self.arrrayWall addObjectsFromArray:posts];
-                           
-                                   dispatch_sync(dispatch_get_main_queue(), ^{
+                                    [self.arrrayWall addObjectsFromArray:posts];
+
+                                 for (int i = (int)[self.arrrayWall count] - (int)[posts count]; i < [self.arrrayWall count]; i++) {
+                        
+                                       CGSize newSize = [self setFramesToImageViews:nil imageFrames:[[self.arrrayWall objectAtIndex:i] attachments] toFitSize:CGSizeMake(302, 400)];
                                        
-                                       [self.tableView beginUpdates];
-                                       [self.tableView insertRowsAtIndexPaths:arrPath withRowAnimation:UITableViewRowAnimationFade];
-                                       [self.tableView endUpdates];
+                                       [self.imageViewSize addObject:[NSNumber numberWithFloat:roundf(newSize.height)]];
+                                   }
+                                       
+                                       
+   
+                                   dispatch_sync(dispatch_get_main_queue(), ^{
+
+                                    [self.tableView beginUpdates];
+                                    [self.tableView insertRowsAtIndexPaths:arrPath withRowAnimation:UITableViewRowAnimationFade];
+                                    [self.tableView endUpdates];
+                                   //    [self.tableView reloadData];
                                        self.loadingData = NO;
                                        
                                    });
@@ -175,7 +206,7 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
 -(void)  getInfoFromServer {
 
     //58860049 iosdevcourse
-    [[ASServerManager sharedManager] getGroupInfoID:@"iosdevcourse" onSuccess:^(ASGroup *group) {
+    [[ASServerManager sharedManager] getGroupInfoID:@"okoloxcoda" onSuccess:^(ASGroup *group) {
         
             self.arrayDataCountres = [NSArray array];
             self.navigationItem.title = group.fullName;
@@ -188,8 +219,6 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
             [self.tableView reloadData];
             self.loadingData = NO;
         
-          //[self getWallFromServer];
-            
         
     } onFailure:^(NSError *error, NSInteger statusCode) {
         
@@ -198,49 +227,6 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
 }
 
 
-
-#pragma mark - GET-WallServer
-
--(void)  getWallFromServer {
-    
-     NSLog(@"[count ] =====  %d",[self.arrrayWall count]);
-    
-    
-    [[ASServerManager sharedManager] getGroupWall:@""
-                                       withDomain:@"iosdevcourse"
-                                       withOffset:[self.arrrayWall count]
-                                            count:20
-                                        onSuccess:^(NSArray *posts) {
-                                            
-         if ([posts count] > 0) {
-            
-            NSMutableArray* arrPath = [NSMutableArray array];
-            
-            for (NSInteger i= [self.arrrayWall count]; i<=[posts count]+[self.arrrayWall count]-1; i++) {
-                
-                NSLog(@"Добавляем %ld",(long)i);
-                [arrPath addObject:[NSIndexPath indexPathForRow:i inSection:1]];
-            }
-
-            
-            [self.arrrayWall addObjectsFromArray:posts];
-            
-
-            [self.tableView beginUpdates];
-            [self.tableView insertRowsAtIndexPaths:arrPath withRowAnimation:UITableViewRowAnimationTop];
-            [self.tableView endUpdates];
-
-             self.loadingData = NO;
-            
-        }
-        
-                                            
-                                        }
-                                       onFailure:^(NSError *error, NSInteger statusCode) {
-                                           
-                                       }];
-
-}
 
 #pragma mark - UIScrollViewDelegate
 
@@ -261,8 +247,7 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
                     self.loadingData = YES;
                     NSLog(@"Подгружаю !");
                     
-                    [self getNewWallFromServer];
-                    // [self getWallFromServer];
+                    [self getWallFromServer];
                 }
             }
             
@@ -299,13 +284,31 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
 
     // Заруб
     
-    if ([cell isKindOfClass:[ASWallCell class]]) {
+    if ([cell isKindOfClass:[ASWallAttachmentCell class]]) {
 
+
+        
+        /*
         ASWall* wall = self.arrrayWall[indexPath.row];
-        ASWallCell* weakCell = (ASWallCell*)cell;
+        ASWallAttachmentCell* weakCell = (ASWallAttachmentCell*)cell;
      
         weakCell.attachmentsView.backgroundColor = [UIColor blackColor];
-        return 460 + [ASWallCell heightForTextWithPostModel:wall andWidthTextCell:self.view.frame.size.width];
+        
+        return 460 + [ASWallAttachmentCell heightForTextWithPostModel:wall andWidthTextCell:self.view.frame.size.width];
+        */
+        
+        ASWall* wall = self.arrrayWall[indexPath.row];
+        float height = 0;
+
+       // if ([wall.attachments count] > 0) {
+            
+        height = height + [[self.imageViewSize objectAtIndex:indexPath.row]floatValue];
+        NSLog(@"height = %f",height);
+        
+        //return 46 + 10 + height + 20;
+        
+        return 67 + 8 + height + [ASWallAttachmentCell heightForTextWithPostModel:wall andWidthTextCell:self.view.frame.size.width-16] + 8 + 15 + 33;
+        
     }
     
     
@@ -322,8 +325,7 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
         static float offsetBetweenTextAndShared       = 20.f;
         static float offsetAfterShared                = 9.f;
     
-        heightText = [ASWallCell heightForTextWithPostModel:wall andWidthTextCell:self.view.frame.size.width];
-        
+        heightText = [ASWallTextCell heightForAttachmentsWithPostModel:wall andWidthTextCell:self.view.frame.size.width];
         return (offsetBeforePhoto + heightPhoto) + (offsetBetweenPhotoAndText + heightText) + (offsetBetweenTextAndShared + heightShared + offsetAfterShared);
     
     }
@@ -463,17 +465,18 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
         if ([wall.attachments count] > 0) {
             
         
-            ASWallCell* cell = (ASWallCell*)[tableView dequeueReusableCellWithIdentifier:identifierWall];
+            ASWallAttachmentCell* cell = (ASWallAttachmentCell*)[tableView dequeueReusableCellWithIdentifier:identifierWall];
             
             if (!cell) {
-                cell = [[ASWallCell alloc] initWithStyle:UITableViewCellStyleDefault
+                cell = [[ASWallAttachmentCell alloc] initWithStyle:UITableViewCellStyleDefault
                                               reuseIdentifier:identifierWall];
             }
-            cell.attachmentsView.backgroundColor = [UIColor redColor];
           
+            
             cell.textPost.text = wall.text;
             cell.date.text     = wall.date;
-            
+            if ([cell viewWithTag:11]) [[cell viewWithTag:11] removeFromSuperview];
+
             if (wall.user) {
                 cell.fullName.text = [NSString stringWithFormat:@"%@ %@",wall.user.firstName, wall.user.lastName];
                 [cell.ownerPhoto setImageWithURL:wall.user.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
@@ -482,6 +485,27 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
                 cell.fullName.text = wall.group.fullName; //[NSString stringWithFormat:@"%@ %@",wall.user.firstName, wall.user.lastName];
                 [cell.ownerPhoto setImageWithURL:wall.group.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
             }
+            
+            
+            CGPoint point = CGPointZero;
+        
+            NSLog(@"CGRectGetMaxY(cell.textPost.frame) = %f",CGRectGetMaxY(cell.textPost.frame));
+            NSLog(@"ширина = %f",cell.textPost.bounds.size.width);
+            
+            float sizeText = [self heightLabelOfTextForString:cell.textPost.text fontSize:14.f widthLabel:CGRectGetWidth(self.view.bounds)-2*8];
+            point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame),sizeText+60+16);
+
+            
+            ASImageViewGallery *galery = [[ASImageViewGallery alloc]initWithImageArray:wall.attachments startPoint:point];
+            galery.tag = 11;
+            
+            //CGPoint p2 = galery.center;
+            //p2.x  = cell.center.x;
+            //galery.center = CGPointMake(p2.x, p2.y);
+            
+            [cell addSubview:galery];
+            
+        
             
             cell.commentLabel.text = wall.comments;
             cell.likeLabel.text    = wall.likes;
@@ -655,48 +679,151 @@ static NSString* identifierWallTextOnly  = @"ASWallTextCell";
     
     NSLog(@"followButtonAction");
 }
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
+#pragma mark - TextImageConfigure
 
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
+- (CGSize)setFramesToImageViews:(NSArray *)imageViews imageFrames:(NSArray *)imageFrames toFitSize:(CGSize)frameSize {
+    
+    int N = (int)imageFrames.count;
+    CGRect newFrames[N];
+    
+    float ideal_height = MAX(frameSize.height, frameSize.width) / N;
+    float seq[N];
+    float total_width = 0;
+    
+    ////
+    ////
+    ////
+    
+    for (int i = 0; i < [imageFrames count]; i++) {
+        
+        if ([[imageFrames objectAtIndex:i] isKindOfClass:[ASPhoto class]]) {
+            ASPhoto *image = [imageFrames objectAtIndex:i];
+            CGSize size = CGSizeMake(image.width, image.height);
+            CGSize newSize = CGSizeResizeToHeight(size, ideal_height);
+            newFrames[i] = (CGRect) {{0, 0}, newSize};
+            seq[i] = newSize.width;
+            total_width += seq[i];
+        }
+        
+        
+    }
+    
+    int K = (int)roundf(total_width / frameSize.width);
+    
+    float M[N][K];
+    float D[N][K];
+    
+    for (int i = 0 ; i < N; i++)
+        for (int j = 0; j < K; j++)
+            D[i][j] = 0;
+    
+    for (int i = 0; i < K; i++)
+        M[0][i] = seq[0];
+    
+    for (int i = 0; i < N; i++)
+        M[i][0] = seq[i] + (i ? M[i-1][0] : 0);
+    
+    float cost;
+    for (int i = 1; i < N; i++) {
+        for (int j = 1; j < K; j++) {
+            M[i][j] = INT_MAX;
+            
+            for (int k = 0; k < i; k++) {
+                cost = MAX(M[k][j-1], M[i][0]-M[k][0]);
+                if (M[i][j] > cost) {
+                    M[i][j] = cost;
+                    D[i][j] = k;
+                }
+            }
+        }
+    }
+    
+    int k1 = K-1;
+    int n1 = N-1;
+    int ranges[N][2];
+    while (k1 >= 0) {
+        ranges[k1][0] = D[n1][k1]+1;
+        ranges[k1][1] = n1;
+        
+        n1 = D[n1][k1];
+        k1--;
+    }
+    ranges[0][0] = 0;
+    
+    float cellDistance = 5;
+    float heightOffset = cellDistance, widthOffset;
+    float frameWidth;
+    for (int i = 0; i < K; i++) {
+        float rowWidth = 0;
+        frameWidth = frameSize.width - ((ranges[i][1] - ranges[i][0]) + 2) * cellDistance;
+        
+        for (int j = ranges[i][0]; j <= ranges[i][1]; j++) {
+            rowWidth += newFrames[j].size.width;
+        }
+        
+        float ratio = frameWidth / rowWidth;
+        widthOffset = 0;
+        
+        for (int j = ranges[i][0]; j <= ranges[i][1]; j++) {
+            newFrames[j].size.width *= ratio;
+            newFrames[j].size.height *= ratio;
+            newFrames[j].origin.x = widthOffset + (j - (ranges[i][0]) + 1) * cellDistance;
+            newFrames[j].origin.y = heightOffset;
+            
+            widthOffset += newFrames[j].size.width;
+        }
+        heightOffset += newFrames[ranges[i][0]].size.height + cellDistance;
+    }
+    
+    return CGSizeMake(frameSize.width, heightOffset);
 }
-*/
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+
+
+- (CGRect)heightTextView:(UITextView *)view {
+    
+    CGFloat fixedWidth = view.frame.size.width;
+    CGSize newSize = [view sizeThatFits:CGSizeMake(fixedWidth, MAXFLOAT)];
+    CGRect newFrame = view.frame;
+    if (newSize.height > 200) {
+        newFrame.size = CGSizeMake(fmaxf(newSize.width, fixedWidth),150);
+    } else {
+        newFrame.size = CGSizeMake(fmaxf(newSize.width, fixedWidth), newSize.height);
+    }
+    
+    return newFrame;
 }
-*/
+
+
+
+- (CGFloat)heightLabelOfTextForString:(NSString *)aString fontSize:(CGFloat)fontSize widthLabel:(CGFloat)width {
+    
+    UIFont* font = [UIFont systemFontOfSize:fontSize];
+    
+    NSShadow* shadow = [[NSShadow alloc] init];
+    shadow.shadowOffset = CGSizeMake(0, -1);
+    shadow.shadowBlurRadius = 0;
+    
+    NSMutableParagraphStyle* paragraph = [[NSMutableParagraphStyle alloc] init];
+    [paragraph setLineBreakMode:NSLineBreakByWordWrapping];
+    [paragraph setAlignment:NSTextAlignmentLeft];
+    
+    NSDictionary* attributes = [NSDictionary dictionaryWithObjectsAndKeys: font, NSFontAttributeName, paragraph, NSParagraphStyleAttributeName,shadow, NSShadowAttributeName, nil];
+    
+    CGRect rect = [aString boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
+                                        options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                     attributes:attributes
+                                        context:nil];
+    
+    return rect.size.height;
+}
+
+
+
+
+
 
 @end

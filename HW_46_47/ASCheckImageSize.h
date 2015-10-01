@@ -11,6 +11,5 @@
 @interface ASCheckImageSize : NSObject
 
 
--(NSArray*) 
 
 @end

@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		6C25598B1BA2142A0005622E /* ASMainGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C25598A1BA2142A0005622E /* ASMainGroupCell.m */; };
 		6C25598E1BA215AB0005622E /* ASSegmentPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C25598D1BA215AB0005622E /* ASSegmentPost.m */; };
-		6C2559911BA216D60005622E /* ASWallCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2559901BA216D60005622E /* ASWallCell.m */; };
+		6C2559911BA216D60005622E /* ASWallAttachmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2559901BA216D60005622E /* ASWallAttachmentCell.m */; };
 		6C2559941BA216EB0005622E /* ASWallTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2559931BA216EB0005622E /* ASWallTextCell.m */; };
 		6C2559971BA21DF30005622E /* ASMainUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2559961BA21DF30005622E /* ASMainUserCell.m */; };
 		6C2AC5B91BA429B8006C0DE6 /* ASFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C2AC5B81BA429B8006C0DE6 /* ASFriend.m */; };
@@ -22,6 +22,11 @@
 		6C45684D1BA33CC6000B380A /* ASAccessToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C45684C1BA33CC6000B380A /* ASAccessToken.m */; };
 		6C4568511BA33E09000B380A /* ASServerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C4568501BA33E09000B380A /* ASServerManager.m */; };
 		6C4568541BA33ECE000B380A /* ASUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C4568531BA33ECE000B380A /* ASUser.m */; };
+		6C6A8F261BBD38680064AA3E /* ASImageViewGallery.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A8F251BBD38680064AA3E /* ASImageViewGallery.m */; };
+		6C6A8F2F1BBD425E0064AA3E /* MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A8F291BBD425E0064AA3E /* MHFacebookImageViewer.m */; };
+		6C6A8F301BBD425F0064AA3E /* Done.png in Resources */ = {isa = PBXBuildFile; fileRef = 6C6A8F2B1BBD425E0064AA3E /* Done.png */; };
+		6C6A8F311BBD425F0064AA3E /* Done@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6C6A8F2C1BBD425E0064AA3E /* Done@2x.png */; };
+		6C6A8F321BBD425F0064AA3E /* UIImageView+MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A8F2E1BBD425E0064AA3E /* UIImageView+MHFacebookImageViewer.m */; };
 		6C7C9F4E1BACBCFE00D2228F /* ASPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C7C9F4D1BACBCFE00D2228F /* ASPhoto.m */; };
 		6C9671A91BA723D9006B2D59 /* ASInfoMemberFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9671A81BA723D9006B2D59 /* ASInfoMemberFlowLayout.m */; };
 		6C9671AC1BA72407006B2D59 /* ASPhotosFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9671AB1BA72407006B2D59 /* ASPhotosFlowLayout.m */; };
@@ -59,8 +64,8 @@
 		6C25598A1BA2142A0005622E /* ASMainGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASMainGroupCell.m; sourceTree = "<group>"; };
 		6C25598C1BA215AB0005622E /* ASSegmentPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASSegmentPost.h; sourceTree = "<group>"; };
 		6C25598D1BA215AB0005622E /* ASSegmentPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASSegmentPost.m; sourceTree = "<group>"; };
-		6C25598F1BA216D60005622E /* ASWallCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASWallCell.h; sourceTree = "<group>"; };
-		6C2559901BA216D60005622E /* ASWallCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASWallCell.m; sourceTree = "<group>"; };
+		6C25598F1BA216D60005622E /* ASWallAttachmentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASWallAttachmentCell.h; sourceTree = "<group>"; };
+		6C2559901BA216D60005622E /* ASWallAttachmentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASWallAttachmentCell.m; sourceTree = "<group>"; };
 		6C2559921BA216EB0005622E /* ASWallTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASWallTextCell.h; sourceTree = "<group>"; };
 		6C2559931BA216EB0005622E /* ASWallTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASWallTextCell.m; sourceTree = "<group>"; };
 		6C2559951BA21DF30005622E /* ASMainUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASMainUserCell.h; sourceTree = "<group>"; };
@@ -85,6 +90,14 @@
 		6C4568501BA33E09000B380A /* ASServerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASServerManager.m; sourceTree = "<group>"; };
 		6C4568521BA33ECE000B380A /* ASUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASUser.h; sourceTree = "<group>"; };
 		6C4568531BA33ECE000B380A /* ASUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASUser.m; sourceTree = "<group>"; };
+		6C6A8F241BBD38680064AA3E /* ASImageViewGallery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASImageViewGallery.h; sourceTree = "<group>"; };
+		6C6A8F251BBD38680064AA3E /* ASImageViewGallery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASImageViewGallery.m; sourceTree = "<group>"; };
+		6C6A8F281BBD425E0064AA3E /* MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHFacebookImageViewer.h; sourceTree = "<group>"; };
+		6C6A8F291BBD425E0064AA3E /* MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHFacebookImageViewer.m; sourceTree = "<group>"; };
+		6C6A8F2B1BBD425E0064AA3E /* Done.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Done.png; sourceTree = "<group>"; };
+		6C6A8F2C1BBD425E0064AA3E /* Done@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Done@2x.png"; sourceTree = "<group>"; };
+		6C6A8F2D1BBD425E0064AA3E /* UIImageView+MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+MHFacebookImageViewer.h"; sourceTree = "<group>"; };
+		6C6A8F2E1BBD425E0064AA3E /* UIImageView+MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+MHFacebookImageViewer.m"; sourceTree = "<group>"; };
 		6C7C9F4C1BACBCFE00D2228F /* ASPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASPhoto.h; sourceTree = "<group>"; };
 		6C7C9F4D1BACBCFE00D2228F /* ASPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASPhoto.m; sourceTree = "<group>"; };
 		6C9671A71BA723D9006B2D59 /* ASInfoMemberFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASInfoMemberFlowLayout.h; sourceTree = "<group>"; };
@@ -152,8 +165,8 @@
 				6C25598A1BA2142A0005622E /* ASMainGroupCell.m */,
 				6C25598C1BA215AB0005622E /* ASSegmentPost.h */,
 				6C25598D1BA215AB0005622E /* ASSegmentPost.m */,
-				6C25598F1BA216D60005622E /* ASWallCell.h */,
-				6C2559901BA216D60005622E /* ASWallCell.m */,
+				6C25598F1BA216D60005622E /* ASWallAttachmentCell.h */,
+				6C2559901BA216D60005622E /* ASWallAttachmentCell.m */,
 				6C2559921BA216EB0005622E /* ASWallTextCell.h */,
 				6C2559931BA216EB0005622E /* ASWallTextCell.m */,
 				6C2559951BA21DF30005622E /* ASMainUserCell.h */,
@@ -173,6 +186,8 @@
 				6CF7258F1BA224B6003F935B /* ASGroupTVC.m */,
 				6C4568411BA2DF3C000B380A /* ASUserDetailTVC.h */,
 				6C4568421BA2DF3C000B380A /* ASUserDetailTVC.m */,
+				6C6A8F241BBD38680064AA3E /* ASImageViewGallery.h */,
+				6C6A8F251BBD38680064AA3E /* ASImageViewGallery.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -203,6 +218,27 @@
 				6C4568501BA33E09000B380A /* ASServerManager.m */,
 			);
 			name = Server;
+			sourceTree = "<group>";
+		};
+		6C6A8F271BBD425E0064AA3E /* MHFBImageViewController */ = {
+			isa = PBXGroup;
+			children = (
+				6C6A8F281BBD425E0064AA3E /* MHFacebookImageViewer.h */,
+				6C6A8F291BBD425E0064AA3E /* MHFacebookImageViewer.m */,
+				6C6A8F2A1BBD425E0064AA3E /* Resources */,
+				6C6A8F2D1BBD425E0064AA3E /* UIImageView+MHFacebookImageViewer.h */,
+				6C6A8F2E1BBD425E0064AA3E /* UIImageView+MHFacebookImageViewer.m */,
+			);
+			path = MHFBImageViewController;
+			sourceTree = "<group>";
+		};
+		6C6A8F2A1BBD425E0064AA3E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6C6A8F2B1BBD425E0064AA3E /* Done.png */,
+				6C6A8F2C1BBD425E0064AA3E /* Done@2x.png */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		6C7C9F4B1BACBCCA00D2228F /* Primitive Model */ = {
@@ -252,6 +288,7 @@
 				6C9B120A1BA1572D00242620 /* Images.xcassets */,
 				6C9671AD1BA74F64006B2D59 /* UIColor+HEX.h */,
 				6C9671AE1BA74F64006B2D59 /* UIColor+HEX.m */,
+				6C6A8F271BBD425E0064AA3E /* MHFBImageViewController */,
 				6C9B11FD1BA1572D00242620 /* Supporting Files */,
 			);
 			path = HW_46_47;
@@ -391,8 +428,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C6A8F311BBD425F0064AA3E /* Done@2x.png in Resources */,
 				6C9B12091BA1572D00242620 /* Main.storyboard in Resources */,
 				6C9B120E1BA1572D00242620 /* LaunchScreen.xib in Resources */,
+				6C6A8F301BBD425F0064AA3E /* Done.png in Resources */,
 				6C9B120B1BA1572D00242620 /* Images.xcassets in Resources */,
 				6CB8A2BD1BB2C93400FB8D50 /* CVPhotoCell.xib in Resources */,
 			);
@@ -455,7 +494,8 @@
 				6C2AC5B91BA429B8006C0DE6 /* ASFriend.m in Sources */,
 				6C7C9F4E1BACBCFE00D2228F /* ASPhoto.m in Sources */,
 				6C9B12031BA1572D00242620 /* AppDelegate.m in Sources */,
-				6C2559911BA216D60005622E /* ASWallCell.m in Sources */,
+				6C2559911BA216D60005622E /* ASWallAttachmentCell.m in Sources */,
+				6C6A8F321BBD425F0064AA3E /* UIImageView+MHFacebookImageViewer.m in Sources */,
 				6C451E8C1BA61B8800A879C9 /* ASGroup.m in Sources */,
 				6C9671A91BA723D9006B2D59 /* ASInfoMemberFlowLayout.m in Sources */,
 				6CF725941BA22804003F935B /* ASInfoMemberCollectionCell.m in Sources */,
@@ -463,9 +503,11 @@
 				6C9671AC1BA72407006B2D59 /* ASPhotosFlowLayout.m in Sources */,
 				6C4568541BA33ECE000B380A /* ASUser.m in Sources */,
 				6C2559971BA21DF30005622E /* ASMainUserCell.m in Sources */,
+				6C6A8F2F1BBD425E0064AA3E /* MHFacebookImageViewer.m in Sources */,
 				6C4568491BA2FF23000B380A /* ASLoginVC.m in Sources */,
 				6C2559941BA216EB0005622E /* ASWallTextCell.m in Sources */,
 				6C25598B1BA2142A0005622E /* ASMainGroupCell.m in Sources */,
+				6C6A8F261BBD38680064AA3E /* ASImageViewGallery.m in Sources */,
 				6C9B12001BA1572D00242620 /* main.m in Sources */,
 				6CB8A2C01BB2CBA000FB8D50 /* ASCollectionPhotoCell.m in Sources */,
 				6C25598E1BA215AB0005622E /* ASSegmentPost.m in Sources */,

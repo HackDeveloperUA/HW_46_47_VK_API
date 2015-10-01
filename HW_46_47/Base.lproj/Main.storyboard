@@ -206,7 +206,7 @@
                                     <outlet property="postSegmentControl" destination="qdj-5d-pOV" id="QBK-eu-ILK"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ASWallTextImageCell" rowHeight="337" id="a2n-jo-CJL" customClass="ASWallCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ASWallTextImageCell" rowHeight="337" id="a2n-jo-CJL" customClass="ASWallAttachmentCell">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="a2n-jo-CJL" id="Vbs-qg-v86">
@@ -666,7 +666,7 @@
                                     <outlet property="postSegmentControl" destination="bFT-sj-N56" id="aj3-kn-Vlt"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ASWallCell" rowHeight="460" id="x6B-pb-S1R" customClass="ASWallCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ASWallCell" rowHeight="163" id="x6B-pb-S1R" customClass="ASWallAttachmentCell">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x6B-pb-S1R" id="lS2-9b-4o5">
@@ -697,19 +697,14 @@
                                             <color key="textColor" red="0.30557528410000001" green="0.30557528410000001" blue="0.30557528410000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use the properties and methods defined" lineBreakMode="wordWrap" numberOfLines="999" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ICz-xf-3ex">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Use the properties and methods defined" lineBreakMode="wordWrap" numberOfLines="999" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ICz-xf-3ex">
                                             <rect key="frame" x="8" y="76" width="584" height="27"/>
-                                            <color key="backgroundColor" red="0.62049659993817063" green="1" blue="0.69813883342343064" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pWf-FC-Cyv" userLabel="attachments">
-                                            <rect key="frame" x="8" y="111" width="584" height="299"/>
-                                            <color key="backgroundColor" red="0.54339764596505458" green="1" blue="0.80452064215472474" alpha="1" colorSpace="calibratedRGB"/>
-                                        </view>
                                         <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fr5-VQ-K1H" userLabel="SharedView">
-                                            <rect key="frame" x="8" y="420" width="233" height="33"/>
+                                            <rect key="frame" x="8" y="119" width="233" height="33"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yWZ-TR-bKY">
                                                     <rect key="frame" x="7" y="2" width="60" height="30"/>
@@ -766,7 +761,6 @@
                                                     </subviews>
                                                 </view>
                                             </subviews>
-                                            <color key="backgroundColor" red="1" green="0.80961456949999999" blue="0.70941598319999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="33" id="9H1-4o-OCd"/>
                                             </constraints>
@@ -778,22 +772,17 @@
                                         <constraint firstItem="gTU-Aa-9on" firstAttribute="top" secondItem="lS2-9b-4o5" secondAttribute="top" constant="8" id="7gU-tw-Lv7"/>
                                         <constraint firstItem="gTU-Aa-9on" firstAttribute="leading" secondItem="duz-kr-ybg" secondAttribute="trailing" constant="8" id="Bg6-Xv-JvM"/>
                                         <constraint firstAttribute="trailing" secondItem="JLT-zL-ctK" secondAttribute="trailing" constant="8" id="EMz-dY-cWI"/>
-                                        <constraint firstAttribute="trailing" secondItem="pWf-FC-Cyv" secondAttribute="trailing" constant="8" id="I41-mu-QYs"/>
                                         <constraint firstAttribute="trailing" secondItem="gTU-Aa-9on" secondAttribute="trailing" constant="8" id="JQk-j8-OCy"/>
                                         <constraint firstItem="JLT-zL-ctK" firstAttribute="top" secondItem="gTU-Aa-9on" secondAttribute="bottom" id="M17-Jq-Uad"/>
-                                        <constraint firstAttribute="bottomMargin" relation="lessThanOrEqual" secondItem="ICz-xf-3ex" secondAttribute="bottom" constant="348" id="PnP-u1-KTV"/>
                                         <constraint firstItem="duz-kr-ybg" firstAttribute="leading" secondItem="lS2-9b-4o5" secondAttribute="leading" constant="8" id="Q8B-CS-ssd"/>
                                         <constraint firstAttribute="trailing" secondItem="ICz-xf-3ex" secondAttribute="trailing" constant="8" id="SmY-PG-3Hj"/>
-                                        <constraint firstItem="pWf-FC-Cyv" firstAttribute="leading" secondItem="lS2-9b-4o5" secondAttribute="leading" constant="8" id="Vtg-yH-VGF"/>
                                         <constraint firstItem="JLT-zL-ctK" firstAttribute="leading" secondItem="duz-kr-ybg" secondAttribute="trailing" constant="8" id="Vys-2A-ewc"/>
                                         <constraint firstItem="fr5-VQ-K1H" firstAttribute="leading" secondItem="lS2-9b-4o5" secondAttribute="leading" constant="8" id="lba-XI-gHx"/>
                                         <constraint firstAttribute="bottom" secondItem="fr5-VQ-K1H" secondAttribute="bottom" constant="6" id="rF4-62-lTR"/>
                                         <constraint firstItem="ICz-xf-3ex" firstAttribute="top" secondItem="lS2-9b-4o5" secondAttribute="topMargin" constant="68" id="rM8-GI-kxw"/>
-                                        <constraint firstItem="fr5-VQ-K1H" firstAttribute="top" secondItem="pWf-FC-Cyv" secondAttribute="bottom" constant="10" id="xKk-6S-tXk"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="attachmentsView" destination="pWf-FC-Cyv" id="cQN-kj-IOq"/>
                                     <outlet property="commentButton" destination="iGN-vb-oks" id="uxo-QZ-esE"/>
                                     <outlet property="commentLabel" destination="nih-qX-5Fe" id="0vB-MK-v4X"/>
                                     <outlet property="date" destination="JLT-zL-ctK" id="6jS-Ka-pMp"/>

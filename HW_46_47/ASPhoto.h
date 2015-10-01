@@ -24,9 +24,11 @@
 @property (strong, nonatomic) NSString* likesCount;
 @property (assign, nonatomic) BOOL      canComment;
 
-
+// --->
 @property (assign, nonatomic) NSInteger height;
 @property (assign, nonatomic) NSInteger width;
+
+// --->
 
 
 @property (strong, nonatomic) NSURL* photo_75URL;
