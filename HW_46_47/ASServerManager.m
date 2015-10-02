@@ -493,12 +493,10 @@ static NSString* kUserId = @"kUserId";
                     onSuccess:(void(^)(NSDictionary* result))success
                     onFailure:(void(^)(NSError* error, NSInteger statusCode))failure {
     
-    
-   
+
     if (![groupID hasPrefix:@"-"]) {
         groupID = [@"-" stringByAppendingString:groupID];
     }
-    
     
     NSDictionary *parameters = @{@"type"            : type,
                                  @"owner_id"        : groupID,
@@ -506,8 +504,43 @@ static NSString* kUserId = @"kUserId";
                                  @"v"               : @"5.37",
                                  @"access_token"    : self.accessToken.token };
     
-    
     [self.requestOperationManager POST:@"likes.delete" parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
+        
+        if (success) {
+            success(responseObject);
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error, operation.response.statusCode);
+        }
+    }];
+    
+}
+
+- (void)repostOnMyWall:(NSString*)groupID
+                inPost:(NSString*)postID
+           withMessage:(NSString*)message
+             onSuccess:(void(^)(NSDictionary* result))success
+             onFailure:(void(^)(NSError* error, NSInteger statusCode))failure {
+
+    
+    
+    
+    if (![groupID hasPrefix:@"-"]) {
+        groupID = [@"-" stringByAppendingString:groupID];
+    }
+    
+    NSString *object = [NSString stringWithFormat:@"wall%@_%@",groupID,postID];
+    
+    NSDictionary *parameters = @{@"object"          : object,
+                                 @"message"         : message,
+                                 @"v"               : @"5.37",
+                                 @"ref"             : @"",
+                                 @"access_token"    : self.accessToken.token };
+    
+    [self.requestOperationManager POST:@"wall.repost" parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
+        
         
         
         if (success) {
@@ -521,6 +554,14 @@ static NSString* kUserId = @"kUserId";
         }
     }];
     
+
+    
+    
 }
+
+
+
+
+
 
 @end

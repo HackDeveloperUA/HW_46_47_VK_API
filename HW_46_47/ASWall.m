@@ -36,38 +36,12 @@
          self.canLike   = [[[responseObject objectForKey:@"likes"]    objectForKey:@"can_like"]boolValue];
          self.canRepost = [[[responseObject objectForKey:@"reposts"]  objectForKey:@"user_reposted"]boolValue];
         
-        self.postID = [responseObject objectForKey:@"id"];
-
-        /*
-         
-         can_edit: 1,
-         can_delete: 1,
-         can_pin: 1,
-         post_source: {
-         type: 'vk'
-         },
-         
-         comments: {
-         count: 0,
-         can_post: 1
-         },
-         
-         likes: {
-         count: 2,
-         user_likes: 1,
-         can_like: 0,
-         can_publish: 0
-         },
-         
-         reposts: {
-         count: 3,
-         user_reposted: 1
-         }
-         
-         */
-
+       // cell.commentLabel.text = ([wall.comments length]>3) ? ([NSString stringWithFormat:@"%@k",[wall.comments substringToIndex:1]]) : (wall.comments);
+        
+        self.canRepost = ([[[responseObject objectForKey:@"reposts"]  objectForKey:@"user_reposted"]boolValue] == NO)  ? (self.canRepost=YES) : (self.canRepost=NO);
         
         
+        self.postID  = [responseObject objectForKey:@"id"];
         self.fromID  = [[responseObject objectForKey:@"from_id"]  stringValue];
         self.ownerID = [[responseObject objectForKey:@"owner_id"] stringValue];
         

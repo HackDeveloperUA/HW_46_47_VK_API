@@ -78,6 +78,13 @@
                     onSuccess:(void(^)(NSDictionary* result))success
                     onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
 
+
+- (void)repostOnMyWall:(NSString*)groupID
+                inPost:(NSString*)postID
+           withMessage:(NSString*)message
+             onSuccess:(void(^)(NSDictionary* result))success
+             onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
+
 @end
 
 

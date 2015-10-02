@@ -76,7 +76,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 //@property (strong,nonatomic)  NSMutableArray *imageViewSize;
 
 @property (strong,nonatomic) NSMutableArray *imageViewSize;
-
+@property (assign, nonatomic) NSInteger indexPathWallForRepost;
 @end
 
 
@@ -487,7 +487,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                 [cell.ownerPhoto setImageWithURL:wall.user.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
             } else if (wall.group) {
                 
-                cell.fullName.text = wall.group.fullName; //[NSString stringWithFormat:@"%@ %@",wall.user.firstName, wall.user.lastName];
+                cell.fullName.text = wall.group.fullName;
                 [cell.ownerPhoto setImageWithURL:wall.group.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
             }
             
@@ -496,10 +496,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             
             
                 CGPoint point = CGPointZero;
-            
-                NSLog(@"CGRectGetMaxY(cell.textPost.frame) = %f",CGRectGetMaxY(cell.textPost.frame));
-                NSLog(@"ширина = %f",cell.textPost.bounds.size.width);
-                
+       
             float sizeText = [self heightLabelOfTextForString:cell.textPost.text fontSize:14.f widthLabel:CGRectGetWidth(self.view.bounds)-2*8];
             point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame),sizeText+60+16);
 
@@ -521,11 +518,24 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             [cell.likeButton     addTarget:self action:@selector(addLikeOnPost:) forControlEvents:UIControlEventTouchUpInside];
              cell.likeButton.tag = indexPath.row;
            
+            
             if (wall.canLike == NO) {
                cell.likeView.backgroundColor =  [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:0.5];
             } else {
                 cell.likeView.backgroundColor = [UIColor clearColor];
                   }
+            
+            
+            [cell.repostButton     addTarget:self action:@selector(addRepost:) forControlEvents:UIControlEventTouchUpInside];
+            cell.repostButton.tag = indexPath.row;
+            
+            if (wall.canRepost == NO) {
+                cell.repostView.backgroundColor =  [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:0.5];
+            } else {
+                cell.repostView.backgroundColor = [UIColor clearColor];
+            }
+            
+            
             
             
             //[cell.commentButton addTarget:self action:@selector(likeRepostCommentAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -572,6 +582,16 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                 cell.likeView.backgroundColor = [UIColor clearColor];
             }
             
+            [cell.repostButton     addTarget:self action:@selector(addRepost:) forControlEvents:UIControlEventTouchUpInside];
+            cell.repostButton.tag = indexPath.row;
+            
+            if (wall.canRepost == NO) {
+                cell.repostView.backgroundColor =  [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:0.5];
+            } else {
+                cell.repostView.backgroundColor = [UIColor clearColor];
+            }
+            
+            
             //[cell.commentButton addTarget:self action:@selector(likeRepostCommentAction:) forControlEvents:UIControlEventTouchUpInside];
             //[cell.likeButton     addTarget:self action:@selector(likeRepostCommentAction:) forControlEvents:UIControlEventTouchUpInside];
             //[cell.repostButton     addTarget:self action:@selector(likeRepostCommentAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -597,9 +617,6 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                                             failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                                                 
                                             }];
-            
-            
-            
             
              return cell;
 
@@ -714,32 +731,11 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     
     ASWall* wall = self.arrrayWall[sender.tag];
     
-    /*
-     if (comment.can_like) {
-     [[TTServerManager sharedManager]postLikeOnWall:iOSDevCourseGroupID inPost:comment.coment_id type:@"topic_comment" onSuccess:^(NSDictionary *result) {
-     
-     NSDictionary *objects = [result objectForKey:@"response"];
-     
-     comment.can_like = NO;
-     comment.like_count = [[objects objectForKey:@"likes"] stringValue];
-     
-     [self.tableView reloadData];
-     
-     } onFailure:^(NSError *error, NSInteger statusCode) {
-     NSLog(@"%@",error);
-     }];
-     
-     }
-     
-    */
-    
+ 
     if (wall.canLike) {
     
-        [[ASServerManager sharedManager] postAddLikeOnWall:self.groupID
-                                                    inPost:wall.postID
-                                                      type:wall.type
+        [[ASServerManager sharedManager] postAddLikeOnWall:self.groupID  inPost:wall.postID  type:wall.type
                                                  onSuccess:^(NSDictionary *result) {
-                                                     
                                                      
                                                      NSDictionary* response = [result objectForKey:@"response"];
                                                      
@@ -754,9 +750,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     } else {
     
     
-        [[ASServerManager sharedManager] postDeleteLikeOnWall:self.groupID
-                                                       inPost:wall.postID
-                                                         type:wall.type
+        [[ASServerManager sharedManager] postDeleteLikeOnWall:self.groupID inPost:wall.postID  type:wall.type
                                                     onSuccess:^(NSDictionary *result) {
 
                                                         NSDictionary* response = [result objectForKey:@"response"];
@@ -770,15 +764,56 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                                                     onFailure:^(NSError *error, NSInteger statusCode) {
                                                         
                                                     }];
-        
-        
-        
     }
-    
-    
 }
 
 
+
+-(void) addRepost:(UIButton*) sender {
+
+
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Add your comment" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"OK", nil];
+    
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    alert.tag = 12;
+    
+    [alert show];
+    self.indexPathWallForRepost = sender.tag;
+   
+    NSLog(@"after alert show");
+    
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 12) {
+       
+        if (buttonIndex == 1) {
+            UITextField *textfield = [alertView textFieldAtIndex:0];
+            NSLog(@"username: %@", textfield.text);
+            
+            ASWall* wall = self.arrrayWall[self.indexPathWallForRepost];
+            
+            [[ASServerManager sharedManager] repostOnMyWall:wall.ownerID inPost:wall.postID withMessage:textfield.text
+                                                  onSuccess:^(NSDictionary *result) {
+                                                      
+                                               
+                                                      NSDictionary* response = [result objectForKey:@"response"];
+                                                      
+                                                      wall.canRepost = NO;
+                                                      wall.reposts   = [[response objectForKey:@"reposts_count"] stringValue];
+                                                      [self.tableView reloadData];
+
+                                                      self.indexPathWallForRepost = nil;
+                                                  }
+                                                  onFailure:^(NSError *error, NSInteger statusCode) {
+                                                      
+                                                  }];
+            
+            
+        }
+    }
+}
 
 
 
