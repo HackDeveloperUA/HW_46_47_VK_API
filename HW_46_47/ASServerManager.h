@@ -54,24 +54,6 @@
                   onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
 
 
-
-- (void) getGroupWall:(NSString*) groupID
-           withDomain:(NSString*) domain
-           withOffset:(NSInteger) offset
-                count:(NSInteger) count
-            onSuccess:(void(^)(NSArray* posts)) success
-            onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
-
-
-// --- GET INFO WALL --- //
-
-- (void) getInfoUserFromWall:(NSString*) userId
-                   onSuccess:(void(^)(NSDictionary* infoUser)) success
-                   onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
-    
-// --- NEW !!! WALL & INFO
-
-
 - (void)  getNewGroupWall:(NSString*) groupID
                withDomain:(NSString*) domain
                withOffset:(NSInteger) offset
@@ -79,4 +61,43 @@
                 onSuccess:(void(^)(NSArray* posts)) success
                 onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
 
+
+// --- LIKE / REPOST / COMMENT --- //
+
+
+- (void) postAddLikeOnWall:(NSString*)groupID
+                    inPost:(NSString*)postID
+                      type:(NSString *)type
+                 onSuccess:(void(^)(NSDictionary* result))success
+                 onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
+
+
+- (void) postDeleteLikeOnWall:(NSString*)groupID
+                       inPost:(NSString*)postID
+                         type:(NSString *)type
+                    onSuccess:(void(^)(NSDictionary* result))success
+                    onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

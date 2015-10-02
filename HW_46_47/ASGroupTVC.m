@@ -138,9 +138,10 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 
 -(void)  getWallFromServer {
     
-    
+    //58860049 iosdevcourse clfrn
+
     [[ASServerManager sharedManager] getNewGroupWall:@""
-                                          withDomain:@"clfrn"
+                                          withDomain:@"iosdevcourse"
                                           withOffset:[self.arrrayWall count]
                                                count:20
                                            onSuccess:^(NSArray *posts) {
@@ -209,7 +210,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 -(void)  getInfoFromServer {
 
     //58860049 iosdevcourse clfrn
-    [[ASServerManager sharedManager] getGroupInfoID:@"clfrn" onSuccess:^(ASGroup *group) {
+    [[ASServerManager sharedManager] getGroupInfoID:@"iosdevcourse" onSuccess:^(ASGroup *group) {
         
             self.arrayDataCountres = [NSArray array];
             self.navigationItem.title = group.fullName;
@@ -404,6 +405,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             cell.typeGroup.text     = self.group.typeCommunity;
             cell.statusGroup.text   = self.group.status;
             
+            //648fc4
             //@"Join community" : @"You are a member"
             [cell.followButton setTitle:self.group.titleJoinButton forState: UIControlStateNormal];
             [cell.followButton addTarget:self
@@ -411,8 +413,10 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                       forControlEvents:UIControlEventTouchUpInside];
             
             
+            
+            
             if ([cell.followButton.titleLabel.text isEqualToString:@"Join community"]) {
-                [cell.followButton setBackgroundColor:[UIColor colorWithRed:0.114 green:0.384 blue:0.941 alpha:1]];
+                cell.followButton.backgroundColor = [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:1.000];
             }
             else
            
@@ -475,9 +479,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                                               reuseIdentifier:identifierWall];
             }
           
-            
-            cell.textPost.text = wall.text;
-            cell.date.text     = wall.date;
+        
             if ([cell viewWithTag:11]) [[cell viewWithTag:11] removeFromSuperview];
 
             if (wall.user) {
@@ -489,37 +491,44 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                 [cell.ownerPhoto setImageWithURL:wall.group.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
             }
             
+            cell.textPost.text = wall.text;
+            cell.date.text     = wall.date;
             
-            CGPoint point = CGPointZero;
-        
-            NSLog(@"CGRectGetMaxY(cell.textPost.frame) = %f",CGRectGetMaxY(cell.textPost.frame));
-            NSLog(@"ширина = %f",cell.textPost.bounds.size.width);
             
+                CGPoint point = CGPointZero;
+            
+                NSLog(@"CGRectGetMaxY(cell.textPost.frame) = %f",CGRectGetMaxY(cell.textPost.frame));
+                NSLog(@"ширина = %f",cell.textPost.bounds.size.width);
+                
             float sizeText = [self heightLabelOfTextForString:cell.textPost.text fontSize:14.f widthLabel:CGRectGetWidth(self.view.bounds)-2*8];
             point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame),sizeText+60+16);
 
             
-            //ASImageViewGallery *galery = [[ASImageViewGallery alloc]initWithImageArray:wall.attachments startPoint:point];
             float offSet = 8.f;
             CGSize sizeAttachment = CGSizeMake(CGRectGetWidth(self.view.bounds)-2*offSet, CGRectGetWidth(self.view.bounds)-2*offSet);
+           
             ASImageViewGallery *galery = [[ASImageViewGallery alloc]initWithImageArray:wall.attachments startPoint:point withSizeView:sizeAttachment];
-
             galery.tag = 11;
-            
-            //CGPoint p2 = galery.center;
-            //p2.x  = cell.center.x;
-            //galery.center = CGPointMake(p2.x, p2.y);
-            
             [cell addSubview:galery];
             
-        
+     
+            cell.commentLabel.text = ([wall.comments length]>3) ? ([NSString stringWithFormat:@"%@k",[wall.comments substringToIndex:1]]) : (wall.comments);
+            cell.likeLabel.text    = ([wall.likes length]>3)    ? ([NSString stringWithFormat:@"%@k",[wall.likes substringToIndex:1]])    : (wall.likes);
+            cell.repostLabel.text  = ([wall.reposts length]>3)  ? ([NSString stringWithFormat:@"%@k",[wall.reposts substringToIndex:1]])  : (wall.reposts);
+
+    
             
-            cell.commentLabel.text = wall.comments;
-            cell.likeLabel.text    = wall.likes;
-            cell.repostLabel.text  = wall.reposts;
+            [cell.likeButton     addTarget:self action:@selector(addLikeOnPost:) forControlEvents:UIControlEventTouchUpInside];
+             cell.likeButton.tag = indexPath.row;
+           
+            if (wall.canLike == NO) {
+               cell.likeView.backgroundColor =  [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:0.5];
+            } else {
+                cell.likeView.backgroundColor = [UIColor clearColor];
+                  }
+            
             
             //[cell.commentButton addTarget:self action:@selector(likeRepostCommentAction:) forControlEvents:UIControlEventTouchUpInside];
-            //[cell.likeButton     addTarget:self action:@selector(likeRepostCommentAction:) forControlEvents:UIControlEventTouchUpInside];
             //[cell.repostButton     addTarget:self action:@selector(likeRepostCommentAction:) forControlEvents:UIControlEventTouchUpInside];
             
             return cell;
@@ -534,9 +543,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                 cell = [[ASWallTextCell alloc] initWithStyle:UITableViewCellStyleDefault
                                          reuseIdentifier:identifierWallTextOnly];
             }
-            cell.textPost.text = wall.text;
-            cell.date.text     = wall.date;
-
+          
             if (wall.user) {
                 cell.fullName.text = [NSString stringWithFormat:@"%@ %@",wall.user.firstName, wall.user.lastName];
                 //[cell.ownerPhoto setImageWithURL:wall.user.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
@@ -546,10 +553,24 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                 cell.fullName.text = wall.group.fullName; //[NSString stringWithFormat:@"%@ %@",wall.user.firstName, wall.user.lastName];
                 //[cell.ownerPhoto setImageWithURL:wall.group.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
             }
+            cell.textPost.text = wall.text;
+            cell.date.text     = wall.date;
+
             
-            cell.commentLabel.text = wall.comments;
-            cell.likeLabel.text    = wall.likes;
-            cell.repostLabel.text  = wall.reposts;
+            
+            cell.commentLabel.text = ([wall.comments length]>3) ? ([NSString stringWithFormat:@"%@k",[wall.comments substringToIndex:1]]) : (wall.comments);
+            cell.likeLabel.text    = ([wall.likes length]>3)    ? ([NSString stringWithFormat:@"%@k",[wall.likes substringToIndex:1]])    : (wall.likes);
+            cell.repostLabel.text  = ([wall.reposts length]>3)  ? ([NSString stringWithFormat:@"%@k",[wall.reposts substringToIndex:1]])  : (wall.reposts);
+            
+        
+            [cell.likeButton     addTarget:self action:@selector(addLikeOnPost:) forControlEvents:UIControlEventTouchUpInside];
+            cell.likeButton.tag = indexPath.row;
+            
+            if (wall.canLike == NO) {
+                cell.likeView.backgroundColor =  [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:0.5];
+            } else {
+                cell.likeView.backgroundColor = [UIColor clearColor];
+            }
             
             //[cell.commentButton addTarget:self action:@selector(likeRepostCommentAction:) forControlEvents:UIControlEventTouchUpInside];
             //[cell.likeButton     addTarget:self action:@selector(likeRepostCommentAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -686,6 +707,79 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     
     NSLog(@"followButtonAction");
 }
+
+
+
+-(void) addLikeOnPost:(UIButton*) sender {
+    
+    ASWall* wall = self.arrrayWall[sender.tag];
+    
+    /*
+     if (comment.can_like) {
+     [[TTServerManager sharedManager]postLikeOnWall:iOSDevCourseGroupID inPost:comment.coment_id type:@"topic_comment" onSuccess:^(NSDictionary *result) {
+     
+     NSDictionary *objects = [result objectForKey:@"response"];
+     
+     comment.can_like = NO;
+     comment.like_count = [[objects objectForKey:@"likes"] stringValue];
+     
+     [self.tableView reloadData];
+     
+     } onFailure:^(NSError *error, NSInteger statusCode) {
+     NSLog(@"%@",error);
+     }];
+     
+     }
+     
+    */
+    
+    if (wall.canLike) {
+    
+        [[ASServerManager sharedManager] postAddLikeOnWall:self.groupID
+                                                    inPost:wall.postID
+                                                      type:wall.type
+                                                 onSuccess:^(NSDictionary *result) {
+                                                     
+                                                     
+                                                     NSDictionary* response = [result objectForKey:@"response"];
+                                                     
+                                                     wall.canLike = NO;
+                                                     wall.likes   = [[response objectForKey:@"likes"] stringValue];
+                                                     [self.tableView reloadData];
+                                                     
+                                                 }
+                                                 onFailure:^(NSError *error, NSInteger statusCode) {
+                                                     
+                                                 }];
+    } else {
+    
+    
+        [[ASServerManager sharedManager] postDeleteLikeOnWall:self.groupID
+                                                       inPost:wall.postID
+                                                         type:wall.type
+                                                    onSuccess:^(NSDictionary *result) {
+
+                                                        NSDictionary* response = [result objectForKey:@"response"];
+                                                        
+                                                        wall.canLike = YES;
+                                                        wall.likes   = [[response objectForKey:@"likes"] stringValue];
+                                                        [self.tableView reloadData];
+                                                        
+
+                                                    }
+                                                    onFailure:^(NSError *error, NSInteger statusCode) {
+                                                        
+                                                    }];
+        
+        
+        
+    }
+    
+    
+}
+
+
+
 
 
 #pragma mark - TextImageConfigure

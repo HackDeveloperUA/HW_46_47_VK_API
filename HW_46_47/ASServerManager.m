@@ -340,110 +340,6 @@ static NSString* kUserId = @"kUserId";
 
 
 
-- (void) getGroupWall:(NSString*) groupID
-           withDomain:(NSString*) domain
-           withOffset:(NSInteger) offset
-                count:(NSInteger) count
-            onSuccess:(void(^)(NSArray* posts)) success
-            onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure {
-    
-        
-        if (![groupID hasPrefix:@"-"]) {
-            groupID = [@"-" stringByAppendingString:groupID];
-        }
-    
-        // [woRows setObject:forKey:] instead of [woRows setValue:forKey:]
-    
-    
-        NSMutableDictionary* params =
-        [NSMutableDictionary dictionaryWithObjectsAndKeys:
-         @"",           @"owner_id",
-         @"",           @"domain",
-         @(count),          @"count",
-         @(offset),     @"offset",
-         @"all",        @"filter",
-         @"1",           @"extended",
-         @"5.37",       @"v",
-         self.accessToken.token, @"access_token", nil];
-    
-    
-    if (groupID.length > 1) {
-        [params setValue:groupID forKey:@"owner_id"];
-    }
-    else {
-        [params setValue:domain forKey:@"domain"];
-    }
-    
-        
-        [self.requestOperationManager  GET:@"wall.get"
-                                parameters:params
-                                   success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
-             
-                                     ///NSLog(@"wall.get JSON: %@", responseObject);
-             
-                                       
-                                       NSArray* wallArray = [[responseObject objectForKey:@"response"] objectForKey:@"items"];
-                                       
-                                       NSMutableArray* objectsArray = [NSMutableArray array];
-                                       
-                                       
-                                       if (wallArray) {
-                                           
-                                           for (NSDictionary* dict in wallArray) {
-                                               
-                                               
-                                               NSLog(@"dict = %@ \n\n\n\n",dict);
-                                               ASWall* wall = [[ASWall alloc] initWithServerResponse:dict];
-                                               
-                                               [self getInfoUserFromWall:wall.fromID
-                                                               onSuccess:^(NSDictionary *infoUser) {
-                                                                   
-                                                                   NSString* fullName = [NSString stringWithFormat:@"%@ %@",[infoUser objectForKey:@"first_name"],
-                                                                                         [infoUser objectForKey:@"last_name"]];
-                                                                   wall.fullName = fullName;
-                                                                   wall.urlPhoto = [NSURL URLWithString:[infoUser objectForKey:@"photo_400_orig"]];
-                                                                   //[objectsArray addObject:wall];
-
-                                                               } onFailure:^(NSError *error, NSInteger statusCode) {
-                                                                   
-                                                               }];
-                                                
-                                               
-                                               [objectsArray addObject:wall];
-                                           }
-                                           
-                                           
-                                           /*
-                                           for (ASWall* wall in objectsArray) {
-                                               
-                                               [self getInfoUserFromWall:wall.fromID
-                                                               onSuccess:^(NSDictionary *infoUser) {
-                                                                   
-                                                                   NSString* fullName = [NSString stringWithFormat:@"%@ %@",[infoUser objectForKey:@"first_name"],
-                                                                                                                            [infoUser objectForKey:@"last_name"]];
-                                                                   wall.fullName = fullName;
-                                                                   wall.urlPhoto = [NSURL URLWithString:[infoUser objectForKey:@"photo_400_orig"]];
-                                                                   
-                                                               } onFailure:^(NSError *error, NSInteger statusCode) {
-                                                                   
-                                                               }];
-                                           }
-                                       */
-                                      }
-                                       
-                                       
-                                     if (success) {
-                                         success(objectsArray);
-                                     }
-             
-         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-             NSLog(@"Error: %@", error);
-             
-             if (failure) {
-                 failure(error, operation.response.statusCode);
-             }
-         }];
-}
 
 
 
@@ -547,52 +443,84 @@ static NSString* kUserId = @"kUserId";
     
 }
 
-
-
-
-
-
-
 ///////
 
-- (void) getInfoUserFromWall:(NSString*) userId
-                   onSuccess:(void(^)(NSDictionary* infoUser)) success
-                   onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure {
-    
-    NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
-                            userId,      @"user_ids",
-                            @"photo_400_orig,online,last_seen",  @"fields",
-                            @"nom",      @"name_case",
-                            @"5.37",     @"v",
-                            self.accessToken.token, @"access_token" ,nil];
-    
-    //      "photo_400_orig,online,last_seen",  @"fields",
 
+- (void) postAddLikeOnWall:(NSString*)groupID
+                    inPost:(NSString*)postID
+                      type:(NSString *)type
+                 onSuccess:(void(^)(NSDictionary* result))success
+                 onFailure:(void(^)(NSError* error, NSInteger statusCode))failure {
+    
+    
+    // Буть осторожен ! С добавлением минуса , потом когда будем использовать под пользователя
+    
+    if (![groupID hasPrefix:@"-"]) {
+        groupID = [@"-" stringByAppendingString:groupID];
+    }
+    
 
-    [self.requestOperationManager GET:@"users.get"
-                           parameters:params
-     
-                              success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
-                                  
-                                  NSArray* wallArray = [responseObject objectForKey:@"response"];
-                                  
-                                  NSDictionary* dict = wallArray[0];
-                                  
-                                  if (success) {
-                                      success(dict);
-                                  }
-                              }
-     
-                              failure:^(AFHTTPRequestOperation *operation, NSError* error){
-                                  
-                                  NSLog(@"Error: %@",error);
-                                  if (failure) {
-                                      failure(error, operation.response.statusCode);
-                                  }
-                              }];
+    
+    NSDictionary *parameters = @{@"type"            : type,
+                                 @"owner_id"        : groupID,
+                                 @"item_id"         : postID,
+                                 @"v"               : @"5.37",
+                                 @"ref"             : @"",
+                                 @"access_token"    : self.accessToken.token };
+    
+   
+    [self.requestOperationManager POST:@"likes.add" parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
+        
+        
+        if (success) {
+            success(responseObject);
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        if (failure) {
+            failure(error, operation.response.statusCode);
+        }
+    }];
 
 }
 
 
+
+- (void) postDeleteLikeOnWall:(NSString*)groupID
+                       inPost:(NSString*)postID
+                         type:(NSString *)type
+                    onSuccess:(void(^)(NSDictionary* result))success
+                    onFailure:(void(^)(NSError* error, NSInteger statusCode))failure {
+    
+    
+   
+    if (![groupID hasPrefix:@"-"]) {
+        groupID = [@"-" stringByAppendingString:groupID];
+    }
+    
+    
+    NSDictionary *parameters = @{@"type"            : type,
+                                 @"owner_id"        : groupID,
+                                 @"item_id"         : postID,
+                                 @"v"               : @"5.37",
+                                 @"access_token"    : self.accessToken.token };
+    
+    
+    [self.requestOperationManager POST:@"likes.delete" parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
+        
+        
+        if (success) {
+            success(responseObject);
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        if (failure) {
+            failure(error, operation.response.statusCode);
+        }
+    }];
+    
+}
 
 @end

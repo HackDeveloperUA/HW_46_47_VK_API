@@ -18,17 +18,22 @@
 @property (weak, nonatomic) IBOutlet UILabel *textPost;
 
 
-@property (weak, nonatomic) IBOutlet UIView *attachmentsView;
 @property (weak, nonatomic) IBOutlet UIView *sharedView;
 
+
+@property (weak, nonatomic) IBOutlet UIView *commentView;
 @property (weak, nonatomic) IBOutlet UILabel *commentLabel;
 @property (weak, nonatomic) IBOutlet UIButton *commentButton;
 
+@property (weak, nonatomic) IBOutlet UIView *likeView;
 @property (weak, nonatomic) IBOutlet UILabel *likeLabel;
 @property (weak, nonatomic) IBOutlet UIButton *likeButton;
 
+@property (weak, nonatomic) IBOutlet UIView *repostView;
 @property (weak, nonatomic) IBOutlet UILabel *repostLabel;
 @property (weak, nonatomic) IBOutlet UIButton *repostButton;
+
+
 
 //+(CGFloat) heightForTextInWall:(NSString*) text;
 //+(CGFloat) heightForTextInWall:(NSString*) text andWidthTextCell:(CGFloat) widthCellText;
