@@ -20,7 +20,7 @@
 @property (nonatomic, strong) NSMutableArray *imageViews;
 @property (nonatomic, strong) NSMutableArray *framesArray;
 
-- (instancetype) initWithImageArray:(NSArray *)imageArray startPoint:(CGPoint)point;
+- (instancetype) initWithImageArray:(NSArray *)imageArray startPoint:(CGPoint)point withSizeView:(CGSize) sizeView;
 
 @end
 

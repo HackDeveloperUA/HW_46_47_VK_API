@@ -140,7 +140,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     
     
     [[ASServerManager sharedManager] getNewGroupWall:@""
-                                          withDomain:@"okoloxcoda"
+                                          withDomain:@"clfrn"
                                           withOffset:[self.arrrayWall count]
                                                count:20
                                            onSuccess:^(NSArray *posts) {
@@ -171,8 +171,11 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 
                                  for (int i = (int)[self.arrrayWall count] - (int)[posts count]; i < [self.arrrayWall count]; i++) {
                         
-                                       CGSize newSize = [self setFramesToImageViews:nil imageFrames:[[self.arrrayWall objectAtIndex:i] attachments] toFitSize:CGSizeMake(302, 400)];
-                                       
+                                     /// !!!
+                                     //CGSize newSize = [self setFramesToImageViews:nil imageFrames:[[self.arrrayWall objectAtIndex:i] attachments] toFitSize:CGSizeMake(self.view.frame.size.width-16, 400)];
+            CGSize newSize = [self setFramesToImageViews:nil imageFrames:[[self.arrrayWall objectAtIndex:i] attachments] toFitSize:CGSizeMake(self.view.frame.size.width-16, self.view.frame.size.width-16)];
+                                     
+                                     NSLog(@"self.view.frame.size.width-16 = %f",self.view.frame.size.width-16);
                                        [self.imageViewSize addObject:[NSNumber numberWithFloat:roundf(newSize.height)]];
                                    }
                                        
@@ -205,8 +208,8 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 
 -(void)  getInfoFromServer {
 
-    //58860049 iosdevcourse
-    [[ASServerManager sharedManager] getGroupInfoID:@"okoloxcoda" onSuccess:^(ASGroup *group) {
+    //58860049 iosdevcourse clfrn
+    [[ASServerManager sharedManager] getGroupInfoID:@"clfrn" onSuccess:^(ASGroup *group) {
         
             self.arrayDataCountres = [NSArray array];
             self.navigationItem.title = group.fullName;
@@ -496,7 +499,11 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame),sizeText+60+16);
 
             
-            ASImageViewGallery *galery = [[ASImageViewGallery alloc]initWithImageArray:wall.attachments startPoint:point];
+            //ASImageViewGallery *galery = [[ASImageViewGallery alloc]initWithImageArray:wall.attachments startPoint:point];
+            float offSet = 8.f;
+            CGSize sizeAttachment = CGSizeMake(CGRectGetWidth(self.view.bounds)-2*offSet, CGRectGetWidth(self.view.bounds)-2*offSet);
+            ASImageViewGallery *galery = [[ASImageViewGallery alloc]initWithImageArray:wall.attachments startPoint:point withSizeView:sizeAttachment];
+
             galery.tag = 11;
             
             //CGPoint p2 = galery.center;

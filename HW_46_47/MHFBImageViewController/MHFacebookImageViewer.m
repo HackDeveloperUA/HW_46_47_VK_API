@@ -148,7 +148,7 @@ static const CGFloat kMinImageScale = 1.0f;
     _panGesture.cancelsTouchesInView = NO;
     _panGesture.delegate = self;
      __weak UITableView * weakSuperView = (UITableView*) view.superview.superview.superview.superview.superview;
-    [weakSuperView.panGestureRecognizer requireGestureRecognizerToFail:_panGesture];
+    //[weakSuperView.panGestureRecognizer requireGestureRecognizerToFail:_panGesture];
     [view addGestureRecognizer:_panGesture];
     [_gestures addObject:_panGesture];
 

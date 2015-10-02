@@ -45,8 +45,9 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 }
 
 
-- (instancetype) initWithImageArray:(NSArray *)imageArray startPoint:(CGPoint)point {
+- (instancetype) initWithImageArray:(NSArray *)imageArray startPoint:(CGPoint)point withSizeView:(CGSize) sizeView {
     
+
     self = [super init];
     if (self) {
         self.images = imageArray;
@@ -94,9 +95,10 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             
             
         }
-        
-        CGSize newSize = [self setFramesToImageViews:self.imageViews imageFrames:self.framesArray toFitSize:CGSizeMake(302, 400)];
-        
+
+        //CGSize newSize = [self setFramesToImageViews:self.imageViews imageFrames:self.framesArray toFitSize:CGSizeMake(302, 400)];
+        CGSize newSize = [self setFramesToImageViews:self.imageViews imageFrames:self.framesArray toFitSize:CGSizeMake(sizeView.width, sizeView.height)];
+
         self.frame = CGRectMake(self.point.x, self.point.y, newSize.width, newSize.height);
     }
     
