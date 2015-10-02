@@ -85,6 +85,16 @@
              onSuccess:(void(^)(NSDictionary* result))success
              onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
 
+
+-(void) getCommentFromPost:(NSString*) groupID
+                    inPost:(NSString*) postID
+                withOffset:(NSInteger) offset
+                     count:(NSInteger) count
+                 onSuccess:(void(^)(NSArray* comments)) success
+                 onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
+
+
+
 @end
 
 

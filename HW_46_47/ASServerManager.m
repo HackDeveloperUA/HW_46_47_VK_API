@@ -15,6 +15,7 @@
 #import "ASGroup.h"
 #import "ASWall.h"
 #import "ASPhoto.h"
+#import "ASComment.h"
 
 static NSString* kToken = @"kToken";
 static NSString* kExpirationDate = @"kExpirationDate";
@@ -553,14 +554,125 @@ static NSString* kUserId = @"kUserId";
             failure(error, operation.response.statusCode);
         }
     }];
-    
-
-    
-    
 }
 
 
 
+
+-(void) getCommentFromPost:(NSString*) groupID
+                    inPost:(NSString*) postID
+                withOffset:(NSInteger) offset
+                     count:(NSInteger) count
+                 onSuccess:(void(^)(NSArray* comments)) success
+                 onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure {
+    
+  
+    if (![groupID hasPrefix:@"-"]) {
+        groupID = [@"-" stringByAppendingString:groupID];
+    }
+    
+    
+    
+    NSMutableDictionary* params =
+    [NSMutableDictionary dictionaryWithObjectsAndKeys:
+     groupID,       @"owner_id",
+     postID ,       @"post_id",
+     
+     @"1",          @"need_likes",
+     //@"asc",        @"sort",
+      @"desc",       @"sort",
+     @"0",          @"preview_length",
+     @(count),      @"count",
+     @(offset),     @"offset",
+     @"1",          @"extended",
+     @"5.37",       @"v",
+     self.accessToken.token, @"access_token", nil];
+    
+    
+ 
+    
+    [self.requestOperationManager  GET:@"wall.getComments"
+                            parameters:params
+                               success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
+                                   
+                                   
+                                   
+                                   dispatch_async(self.requestQueue, ^{
+                                       
+                                       
+                                       NSArray*   commentArray  = [[responseObject objectForKey:@"response"] objectForKey:@"items"];
+                                       NSArray*   profilesArray = [[responseObject objectForKey:@"response"] objectForKey:@"profiles"];
+                                       NSArray*   groupArray    = [[responseObject objectForKey:@"response"] objectForKey:@"groups"];
+                                       
+                                       NSMutableArray *arrayWithComment = [[NSMutableArray alloc]init];
+                                       
+                                       NSMutableDictionary* profilesBase = [NSMutableDictionary dictionary];
+                                       
+                                       
+                                       if (commentArray) {
+                                           
+                                           
+                                           for (NSDictionary* dict in profilesArray) {
+                                               [profilesBase setValue:dict forKey:[[dict objectForKey:@"id"] stringValue]];
+                                           }
+                                           
+                                           
+                                           /*
+                                           for (int i=0; i<[commentArray count]; i++) {
+                                               
+                                               NSDictionary* dictItem    = commentArray[i];
+                                               ASComment* comment = [[ASComment alloc] initWithServerResponse:dictItem];
+                                               
+                                               if (![comment.fromID hasPrefix:@"-"]) {
+                                                   comment.user = [[ASUser alloc] initWithServerResponse:[profilesBase objectForKey:comment.fromID]];
+                                               } else {
+                                                   comment.group = [[ASGroup alloc] initWithServerResponse:[groupArray firstObject]];
+                                                   
+                                               }
+                                               
+                                               [arrayWithComment addObject:comment];
+                                           }*/
+                                           
+                                           for (int i=20; i>=0; i=i-1) {
+                                               NSLog(@"В обратку i = %d",i);
+                                           }
+                                           
+                                           for (int i=[commentArray count]-1; i>=0; i--) {
+                                               
+                                               NSDictionary* dictItem    = commentArray[i];
+                                               ASComment* comment = [[ASComment alloc] initWithServerResponse:dictItem];
+                                               
+                                               if (![comment.fromID hasPrefix:@"-"]) {
+                                                   comment.user = [[ASUser alloc] initWithServerResponse:[profilesBase objectForKey:comment.fromID]];
+                                               } else {
+                                                   comment.group = [[ASGroup alloc] initWithServerResponse:[groupArray firstObject]];  }
+                                               
+                                               [arrayWithComment addObject:comment];
+                                           }
+                                           
+                                           
+                                       }
+                                       
+                                       dispatch_async(dispatch_get_main_queue(), ^{
+                                           
+                                           if (success) {
+                                               success(arrayWithComment);
+                                           }
+                                       });
+                                   });
+                                   
+                                
+                                   
+                               } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                   NSLog(@"Error: %@", error);
+                                   
+                                   if (failure) {
+                                       failure(error, operation.response.statusCode);
+                                   }
+                               }];
+
+    
+}
 
 
 

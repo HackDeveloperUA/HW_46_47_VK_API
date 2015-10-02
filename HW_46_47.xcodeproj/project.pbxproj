@@ -40,6 +40,8 @@
 		6C9B121A1BA1572D00242620 /* HW_46_47Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B12191BA1572D00242620 /* HW_46_47Tests.m */; };
 		6CB8A2BD1BB2C93400FB8D50 /* CVPhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6CB8A2BC1BB2C93400FB8D50 /* CVPhotoCell.xib */; };
 		6CB8A2C01BB2CBA000FB8D50 /* ASCollectionPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CB8A2BF1BB2CBA000FB8D50 /* ASCollectionPhotoCell.m */; };
+		6CCBDA761BBEE76000B3A478 /* ASDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCBDA751BBEE76000B3A478 /* ASDetailTVC.m */; };
+		6CCBDA791BBEF4F300B3A478 /* ASComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCBDA781BBEF4F300B3A478 /* ASComment.m */; };
 		6CF725901BA224B6003F935B /* ASGroupTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CF7258F1BA224B6003F935B /* ASGroupTVC.m */; };
 		6CF725941BA22804003F935B /* ASInfoMemberCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CF725931BA22804003F935B /* ASInfoMemberCollectionCell.m */; };
 		F40777EBAAFB296CF1E9751E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5531970FBAF8A94A6D75370A /* libPods.a */; };
@@ -121,6 +123,10 @@
 		6CB8A2BC1BB2C93400FB8D50 /* CVPhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CVPhotoCell.xib; sourceTree = "<group>"; };
 		6CB8A2BE1BB2CBA000FB8D50 /* ASCollectionPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASCollectionPhotoCell.h; sourceTree = "<group>"; };
 		6CB8A2BF1BB2CBA000FB8D50 /* ASCollectionPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASCollectionPhotoCell.m; sourceTree = "<group>"; };
+		6CCBDA741BBEE76000B3A478 /* ASDetailTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASDetailTVC.h; sourceTree = "<group>"; };
+		6CCBDA751BBEE76000B3A478 /* ASDetailTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASDetailTVC.m; sourceTree = "<group>"; };
+		6CCBDA771BBEF4F300B3A478 /* ASComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASComment.h; sourceTree = "<group>"; };
+		6CCBDA781BBEF4F300B3A478 /* ASComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASComment.m; sourceTree = "<group>"; };
 		6CF7258E1BA224B6003F935B /* ASGroupTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASGroupTVC.h; sourceTree = "<group>"; };
 		6CF7258F1BA224B6003F935B /* ASGroupTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASGroupTVC.m; sourceTree = "<group>"; };
 		6CF725921BA22804003F935B /* ASInfoMemberCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASInfoMemberCollectionCell.h; sourceTree = "<group>"; };
@@ -181,6 +187,8 @@
 				6C4568481BA2FF23000B380A /* ASLoginVC.m */,
 				6CF7258E1BA224B6003F935B /* ASGroupTVC.h */,
 				6CF7258F1BA224B6003F935B /* ASGroupTVC.m */,
+				6CCBDA741BBEE76000B3A478 /* ASDetailTVC.h */,
+				6CCBDA751BBEE76000B3A478 /* ASDetailTVC.m */,
 				6C4568411BA2DF3C000B380A /* ASUserDetailTVC.h */,
 				6C4568421BA2DF3C000B380A /* ASUserDetailTVC.m */,
 				6C6A8F241BBD38680064AA3E /* ASImageViewGallery.h */,
@@ -198,6 +206,8 @@
 				6C2AC5B81BA429B8006C0DE6 /* ASFriend.m */,
 				6C2AC5BA1BA42A4E006C0DE6 /* ASWall.h */,
 				6C2AC5BB1BA42A4E006C0DE6 /* ASWall.m */,
+				6CCBDA771BBEF4F300B3A478 /* ASComment.h */,
+				6CCBDA781BBEF4F300B3A478 /* ASComment.m */,
 				6C451E8A1BA61B8800A879C9 /* ASGroup.h */,
 				6C451E8B1BA61B8800A879C9 /* ASGroup.m */,
 				6C2AC5BD1BA42B27006C0DE6 /* ASFollower.h */,
@@ -484,6 +494,7 @@
 				6C4568511BA33E09000B380A /* ASServerManager.m in Sources */,
 				6C9671AF1BA74F64006B2D59 /* UIColor+HEX.m in Sources */,
 				6CF725901BA224B6003F935B /* ASGroupTVC.m in Sources */,
+				6CCBDA791BBEF4F300B3A478 /* ASComment.m in Sources */,
 				6C9671B21BA75623006B2D59 /* ASGrayCell.m in Sources */,
 				6C2AC5B91BA429B8006C0DE6 /* ASFriend.m in Sources */,
 				6C7C9F4E1BACBCFE00D2228F /* ASPhoto.m in Sources */,
@@ -499,6 +510,7 @@
 				6C2559971BA21DF30005622E /* ASMainUserCell.m in Sources */,
 				6C6A8F2F1BBD425E0064AA3E /* MHFacebookImageViewer.m in Sources */,
 				6C4568491BA2FF23000B380A /* ASLoginVC.m in Sources */,
+				6CCBDA761BBEE76000B3A478 /* ASDetailTVC.m in Sources */,
 				6C2559941BA216EB0005622E /* ASWallTextCell.m in Sources */,
 				6C25598B1BA2142A0005622E /* ASMainGroupCell.m in Sources */,
 				6C6A8F261BBD38680064AA3E /* ASImageViewGallery.m in Sources */,

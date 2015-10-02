@@ -38,7 +38,9 @@
 // HEX
 #import "UIColor+HEX.h"
 
+// Controllers
 #import "ASImageViewGallery.h"
+#import "ASDetailTVC.h"
 
 
 static NSString* identifierMainGroup    = @"ASMainGroupCell";
@@ -162,21 +164,21 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                                    NSMutableArray* arrPath = [NSMutableArray array];
 
                                    for (NSInteger i= [self.arrrayWall count]; i<=[posts count]+[self.arrrayWall count]-1; i++) {
-                                       
-                                       NSLog(@"Добавляем %ld",(long)i);
+                                
+                                        NSLog(@"Добавляем %ld",(long)i);
                                        [arrPath addObject:[NSIndexPath indexPathForRow:i inSection:1]];
                                    }
                                    
                                    
                                     [self.arrrayWall addObjectsFromArray:posts];
-
-                                 for (int i = (int)[self.arrrayWall count] - (int)[posts count]; i < [self.arrrayWall count]; i++) {
+                               
+                                   
+                                    for (int i = (int)[self.arrrayWall count] - (int)[posts count]; i < [self.arrrayWall count]; i++) {
                         
-                                     /// !!!
-                                     //CGSize newSize = [self setFramesToImageViews:nil imageFrames:[[self.arrrayWall objectAtIndex:i] attachments] toFitSize:CGSizeMake(self.view.frame.size.width-16, 400)];
-            CGSize newSize = [self setFramesToImageViews:nil imageFrames:[[self.arrrayWall objectAtIndex:i] attachments] toFitSize:CGSizeMake(self.view.frame.size.width-16, self.view.frame.size.width-16)];
+                               
+                                   CGSize newSize = [self setFramesToImageViews:nil imageFrames:[[self.arrrayWall objectAtIndex:i] attachments]
+                                               toFitSize:CGSizeMake(self.view.frame.size.width-16, self.view.frame.size.width-16)];
                                      
-                                     NSLog(@"self.view.frame.size.width-16 = %f",self.view.frame.size.width-16);
                                        [self.imageViewSize addObject:[NSNumber numberWithFloat:roundf(newSize.height)]];
                                    }
                                        
@@ -187,8 +189,21 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                                     [self.tableView beginUpdates];
                                     [self.tableView insertRowsAtIndexPaths:arrPath withRowAnimation:UITableViewRowAnimationFade];
                                     [self.tableView endUpdates];
-                                   //    [self.tableView reloadData];
-                                       self.loadingData = NO;
+
+                                       /*
+                                       NSRange range = {0, 20};
+                                       [self.arrrayWall insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:range]];
+                                       
+                                       for (NSInteger i=0; i<=[posts count]-1; i++) {
+                                            
+                                       NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+                                       
+                                       [self.tableView beginUpdates];
+                                       [self.tableView insertRowsAtIndexPaths:arrPath withRowAnimation:UITableViewRowAnimationBottom];
+                                       [self.tableView endUpdates];
+                                       */
+                                       
+                                    self.loadingData = NO;
                                        
                                    });
                                        
@@ -535,11 +550,9 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                 cell.repostView.backgroundColor = [UIColor clearColor];
             }
             
-            
-            
-            
-            //[cell.commentButton addTarget:self action:@selector(likeRepostCommentAction:) forControlEvents:UIControlEventTouchUpInside];
-            //[cell.repostButton     addTarget:self action:@selector(likeRepostCommentAction:) forControlEvents:UIControlEventTouchUpInside];
+        
+            [cell.commentButton addTarget:self action:@selector(showComment:) forControlEvents:UIControlEventTouchUpInside];
+            cell.commentButton.tag = indexPath.row;
             
             return cell;
       
@@ -556,12 +569,10 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
           
             if (wall.user) {
                 cell.fullName.text = [NSString stringWithFormat:@"%@ %@",wall.user.firstName, wall.user.lastName];
-                //[cell.ownerPhoto setImageWithURL:wall.user.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
             
             } else if (wall.group) {
                 
-                cell.fullName.text = wall.group.fullName; //[NSString stringWithFormat:@"%@ %@",wall.user.firstName, wall.user.lastName];
-                //[cell.ownerPhoto setImageWithURL:wall.group.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
+                cell.fullName.text = wall.group.fullName;
             }
             cell.textPost.text = wall.text;
             cell.date.text     = wall.date;
@@ -582,6 +593,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                 cell.likeView.backgroundColor = [UIColor clearColor];
             }
             
+            
             [cell.repostButton     addTarget:self action:@selector(addRepost:) forControlEvents:UIControlEventTouchUpInside];
             cell.repostButton.tag = indexPath.row;
             
@@ -591,11 +603,10 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                 cell.repostView.backgroundColor = [UIColor clearColor];
             }
             
-            
-            //[cell.commentButton addTarget:self action:@selector(likeRepostCommentAction:) forControlEvents:UIControlEventTouchUpInside];
-            //[cell.likeButton     addTarget:self action:@selector(likeRepostCommentAction:) forControlEvents:UIControlEventTouchUpInside];
-            //[cell.repostButton     addTarget:self action:@selector(likeRepostCommentAction:) forControlEvents:UIControlEventTouchUpInside];
-            
+            [cell.commentButton addTarget:self action:@selector(showComment:) forControlEvents:UIControlEventTouchUpInside];
+            cell.commentButton.tag = indexPath.row;
+
+        
             __weak ASWallTextCell *weakCell = cell;
             
             NSURL* url = [[NSURL alloc] init];
@@ -783,6 +794,38 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     NSLog(@"after alert show");
     
 }
+
+
+-(void) showComment:(UIButton*) sender {
+    
+    /*
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    ASUserTVC *detailVC = (ASUserTVC *)[storyboard  instantiateViewControllerWithIdentifier:@"ASUserTVC"];
+    ASFriend *friend = [self.arrayFriends objectAtIndex:indexPath.row];
+    
+    detailVC.userID = friend.userID;
+    NSLog(@"friend.userID = %@ ",friend.userID);
+    
+    [self.navigationController pushViewController:detailVC animated:YES];
+   [self presentViewController:viewController animated:YES completion:nil];
+    */
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+
+    ASDetailTVC* detailVC = (ASDetailTVC*)[storyboard instantiateViewControllerWithIdentifier:@"ASDetailTVC"];
+    detailVC.group  = self.group;
+    detailVC.wall   = self.arrrayWall[sender.tag];
+    detailVC.postID = [[self.arrrayWall objectAtIndex:sender.tag] postID];
+    
+    [self.navigationController pushViewController:detailVC animated:YES];
+
+    
+}
+
+
+
+#pragma mark - UIAlertViewDelegate
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
