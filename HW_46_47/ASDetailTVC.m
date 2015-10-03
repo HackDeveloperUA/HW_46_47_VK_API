@@ -29,19 +29,11 @@
 
 
 float        offset = 8.f;
-float        heightText   = 27.f;
+//float        heightText   = 27.f;
 
 
-static float heightPhoto  = 40.f;
-static float heightShared = 33.f;
 
-static float offsetBeforePhoto                = 8.f;
-static float offsetBetweenPhotoAndText        = 3.f;
-static float offsetBetweenTextAndShared       = 8.f;
-static float offsetAfterShared                = 6.f;
-
-
-static NSString* identifierWall      = @"ASWallAttachmentCell";
+static NSString* identifierWall      = @"ASWallCell";
 
 static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     
@@ -51,12 +43,21 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     return size;
 }
 
+static float heightPhoto  = 60.f;
+static float heightShared = 33.f;
+
+static float offsetBeforePhoto                = 8.f;
+static float offsetBetweenPhotoAndText        = 8.f;
+static float offsetBetweenTextAndShared       = 16.f;
+static float offsetAfterShared                = 10.f;
+
 
 
 @interface ASDetailTVC () <UITableViewDataSource, UITableViewDelegate>
 
 
 @property (strong, nonatomic) NSMutableArray* arrayComments;
+@property (strong, nonatomic) NSMutableArray* arrrayWall;
 
 @property (assign,nonatomic)  BOOL loadingData;
 @property (assign,nonatomic)  BOOL firstTimeAppear;
@@ -77,6 +78,8 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     NSLog(@"viewDidLoad ASDetailTVC");
     //self.group = [[ASGroup alloc] init];
    
+    
+    
     self.arrayComments  = [NSMutableArray array];
     self.imageViewSize  = [NSMutableArray array];
     
@@ -110,7 +113,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
         
         
         [self getCommentFromServerOnSuccess:^(BOOL success) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.arrayComments.count inSection:0]
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.arrayComments.count inSection:1]
                                 atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         
         }];
@@ -135,42 +138,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     [[ASServerManager sharedManager] getCommentFromPost:ownerID inPost:self.postID withOffset:[self.arrayComments count] count:20
                                               onSuccess:^(NSArray *comments) {
                                                   
-                                    /*
-                                     NSMutableArray* arrPath = [NSMutableArray array];
-                                     NSMutableArray* tempArray = nil;
-                                     NSArray* comment = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10",@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
-                                     
-                                     if (self.arrayComments) {
-                                     tempArray = [NSMutableArray arrayWithArray:self.arrayComments];
-                                     } else {
-                                     tempArray = [NSMutableArray array];
-                                     }
-                                     
-                                     NSInteger newStudentIndex = 0;
-                                     NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange: NSMakeRange(0,[comment count])];
-                                     
-                                     [tempArray insertObjects:comment atIndexes:indexes];
-                                     self.arrayComments = tempArray;
-                                     
-                                     for (int i=1; i<=[comment count]; i++) {
-                                     [arrPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
-                                     }
-                                     
-                                     [self.tableView beginUpdates];
-                                     [self.tableView insertRowsAtIndexPaths:arrPath withRowAnimation:UITableViewRowAnimationLeft];
-                                     [self.tableView endUpdates];
-                                     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.arrayComments.count inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-            
-                                    */
-                                       
-                                                  /*
-                                                   for (NSInteger i=0; i<=[comments count]; i++) {
-                                                   
-                                                   CGSize newSize = [self setFramesToImageViews:nil imageFrames:[[self.arrayComments objectAtIndex:i] attachments]
-                                                   toFitSize:CGSizeMake(self.view.frame.size.width-16, self.view.frame.size.width-16)];
-                                                   
-                                                   [self.imageViewSize addObject:[NSNumber numberWithFloat:roundf(newSize.height)]];
-                                                   }*/
+        
                                                   
                                                   
         if ([comments count] > 0) {
@@ -195,7 +163,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                
                
                for (int i=1; i<=[comments count]; i++) {
-                   [arrPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+                   [arrPath addObject:[NSIndexPath indexPathForRow:i inSection:1]];
                }
            /////////
                
@@ -209,7 +177,6 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                                                     imageFrames:[[self.arrayComments objectAtIndex:i] attachments]
                                                       toFitSize:CGSizeMake(self.view.frame.size.width-16, self.view.frame.size.width-16)];
                    
-                   //[self.imageViewSize addObject:[NSNumber numberWithFloat:roundf(newSize.height)]];
                    [self.imageViewSize insertObject:[NSNumber numberWithFloat:roundf(newSize.height)] atIndex:i];
                }
                
@@ -231,9 +198,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                           
                       });
                      });
-
-                          
-                }
+                   }
                                               } onFailure:^(NSError *error, NSInteger statusCode) {
                                                   
                                               }];
@@ -254,23 +219,50 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     
     if ([cell isKindOfClass:[ASWallAttachmentCell class]]) {
     
+        if (indexPath.row == 0) {
+          
         
-        ASComment* commet = self.arrayComments [indexPath.row-1];
-        
-        float  height = 0;
-        float  heightText   = 27.f;
-        
-        if (![commet.text isEqualToString:@""]) {
-            height = height + (int)[self heightLabelOfTextForString:commet.text fontSize:14.f widthLabel:self.view.frame.size.width-(offset*2)];
-        }
-        
-        
-        if ([commet.attachments count] > 0) {
-            height = height + [[self.imageViewSize objectAtIndex:indexPath.row-1]floatValue];
-        }
-        
-        return (offsetBeforePhoto+heightPhoto)+(offsetBetweenPhotoAndText+height)+(offsetBetweenTextAndShared+heightShared)+(offsetAfterShared);
+            float height = 0;
+            
+            if (![self.wall.text isEqualToString:@""]) {
+                height = height + (int)[self heightLabelOfTextForString:self.wall.text fontSize:14.f widthLabel:self.view.frame.size.width-(offset*2)];
+            }
+            
+            if ([self.wall.attachments count] > 0) {
+                height = height + self.wall.imageViewSize;//[[self.imageViewSize objectAtIndex:indexPath.row]floatValue];
+            }
+            
+            return (offsetBeforePhoto + heightPhoto) + (offsetBetweenPhotoAndText + height) + (offsetBetweenTextAndShared + heightShared + offsetAfterShared);
+            
+            
+            
+        } else {
+            
+            static float heightPhoto  = 40.f;
+            static float heightShared = 33.f;
+            
+            static float offsetBeforePhoto                = 8.f;
+            static float offsetBetweenPhotoAndText        = 3.f;
+            static float offsetBetweenTextAndShared       = 8.f;
+            static float offsetAfterShared                = 6.f;
+            
 
+   
+                ASComment* commet = self.arrayComments [indexPath.row-1];
+
+                float  height = 0;
+
+                if (![commet.text isEqualToString:@""]) {
+                    height = height + (int)[self heightLabelOfTextForString:commet.text fontSize:14.f widthLabel:self.view.frame.size.width-(offset*2)];
+                }
+
+
+                if ([commet.attachments count] > 0) {
+                    height = height + [[self.imageViewSize objectAtIndex:indexPath.row-1]floatValue];
+                }
+
+                return (offsetBeforePhoto+heightPhoto)+(offsetBetweenPhotoAndText+height)+(offsetBetweenTextAndShared+heightShared)+(offsetAfterShared);
+              }
     }
     
     
@@ -283,12 +275,20 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-    return [self.arrayComments count]+1;
+    
+    if (section == 0) {
+        return 1;
+    }
+    
+    if (section == 1) {
+        return [self.arrayComments count]+1;
+    }
+    return 0;
 }
 
 
@@ -296,10 +296,114 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
  
     
 
-    
-    
-    
     if (indexPath.section == 0) {
+        
+        
+        ASWallAttachmentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifierWall];
+        
+        if (!cell) {
+            cell = [[ASWallAttachmentCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierWall];
+        }
+        
+        
+        if (self.wall.user) {
+            cell.fullName.text = [NSString stringWithFormat:@"%@ %@",self.wall.user.firstName, self.wall.user.lastName];
+            [cell.ownerPhoto setImageWithURL:self.wall.user.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
+        } else if (self.wall.group) {
+            
+            cell.fullName.text = self.wall.group.fullName;
+            [cell.ownerPhoto setImageWithURL:self.wall.group.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
+        }
+        
+        cell.textPost.text = self.wall.text;
+        cell.date.text     = self.wall.date;
+        
+        
+
+        
+        cell.commentLabel.text = ([self.wall.comments length]>3) ? ([NSString stringWithFormat:@"%@k",[self.wall.comments substringToIndex:1]]) : (self.wall.comments);
+        cell.likeLabel.text    = ([self.wall.likes length]>3)    ? ([NSString stringWithFormat:@"%@k",[self.wall.likes substringToIndex:1]])    : (self.wall.likes);
+        cell.repostLabel.text  = ([self.wall.reposts length]>3)  ? ([NSString stringWithFormat:@"%@k",[self.wall.reposts substringToIndex:1]])  : (self.wall.reposts);
+        
+        
+        
+        [cell.likeButton     addTarget:self action:@selector(addLikeOnPost:) forControlEvents:UIControlEventTouchUpInside];
+        cell.likeButton.tag = indexPath.row;
+        
+        
+        if (self.wall.canLike == NO) {
+            cell.likeView.backgroundColor =  [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:0.5];
+        } else {
+            cell.likeView.backgroundColor = [UIColor clearColor];
+        }
+        
+        
+        [cell.repostButton     addTarget:self action:@selector(addRepost:) forControlEvents:UIControlEventTouchUpInside];
+        cell.repostButton.tag = indexPath.row;
+        
+        if (self.wall.canRepost == NO) {
+            cell.repostView.backgroundColor =  [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:0.5];
+        } else {
+            cell.repostView.backgroundColor = [UIColor clearColor];
+        }
+        
+        
+        [cell.commentButton addTarget:self action:@selector(showComment:) forControlEvents:UIControlEventTouchUpInside];
+        cell.commentButton.tag = indexPath.row;
+        
+
+        
+        
+        
+        __weak ASWallAttachmentCell *weakCell = cell;
+        
+        NSURL* url = [[NSURL alloc] init];
+        if (self.wall.user.photo_100URL) {
+            url = self.user.photo_100URL;
+        } else {
+            url = self.group.photo_100URL;
+        }
+        
+        NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url];
+        
+        [cell.ownerPhoto setImageWithURLRequest:request
+                               placeholderImage:nil
+                                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                            
+                                            weakCell.ownerPhoto.image = image;
+                                            
+                                        }
+                                        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                            
+                                        }];
+       
+
+        
+        if ([cell viewWithTag:11]) [[cell viewWithTag:11] removeFromSuperview];
+        
+if ([self.wall.attachments count] > 0) {
+    
+    CGPoint point = CGPointZero;
+    
+    float sizeText = [self heightLabelOfTextForString:cell.textPost.text fontSize:14.f widthLabel:CGRectGetWidth(self.view.bounds)-2*8];
+    
+    point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame),sizeText+(offsetBeforePhoto + heightPhoto + offsetBetweenPhotoAndText));
+    
+    
+    CGSize sizeAttachment = CGSizeMake(CGRectGetWidth(self.view.bounds)-2*offset, CGRectGetWidth(self.view.bounds)-2*offset);
+    
+    ASImageViewGallery *galery = [[ASImageViewGallery alloc]initWithImageArray:self.wall.attachments startPoint:point withSizeView:sizeAttachment];
+    galery.tag = 11;
+    [cell addSubview:galery];
+    galery.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+    
+}
+        return cell;
+        
+    }
+    
+    
+    if (indexPath.section == 1) {
         
         
         if (indexPath.row == 0) {
@@ -317,7 +421,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
         else {
 
                     ASWallAttachmentCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell2"];
-                    
+            
                     if (!cell) {
                         cell = [[ASWallAttachmentCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell2"];
                     }
@@ -403,7 +507,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     if (indexPath.row == 0) {
         
         [self getCommentFromServerOnSuccess:^(BOOL success) {
-            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:12 inSection:0]
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:12 inSection:1]
                                   atScrollPosition:UITableViewScrollPositionNone animated:YES];
         }];
     }
@@ -555,7 +659,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 
 -(void) addLikeOnPost:(UIButton*) sender {
     
-    //ASWall* wall = self.arrrayWall[sender.tag];
+
     ASComment* comment = self.arrayComments[sender.tag];
     
     if (comment.canLike) {
@@ -592,33 +696,6 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     }
 }
 
-    /*
-     if (indexPath.row == 0) {
-     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-     
-     if (!cell) {
-     cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"cell"];
-     }
-     
-     cell.backgroundColor = [UIColor greenColor];
-     cell.textLabel.text = @"Super TEST";
-     
-     return cell;
-     }
-     else {
-     
-     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-     
-     if (!cell) {
-     cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"cell"];
-     }
-     
-     cell.textLabel.text = @"Load More";
-     cell.backgroundColor = [UIColor yellowColor];
-     
-     return cell;
-     }
-     */
 
 
 

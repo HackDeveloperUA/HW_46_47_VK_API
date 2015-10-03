@@ -49,6 +49,8 @@
 @property (strong, nonatomic) ASGroup* group;
 
 
+@property (assign, nonatomic) float imageViewSize;
+
 -(instancetype) initWithServerResponse:(NSDictionary*) responseObject;
 
 @end

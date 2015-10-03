@@ -94,6 +94,17 @@
                  onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
 
 
+// --- JOIN TO GROUP / LEAVE FROM GROUP ---/
+
+
+-(void) joinToGroup:(NSString*) groupID
+          onSuccess:(void(^)(NSDictionary* result))success
+          onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
+
+-(void) leaveFromGroup:(NSString*) groupID
+             onSuccess:(void(^)(NSDictionary* result))success
+             onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
+
 
 @end
 

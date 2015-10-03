@@ -672,6 +672,75 @@ static NSString* kUserId = @"kUserId";
                                    }
                                }];
 
+}
+
+
+-(void) joinToGroup:(NSString*) groupID
+          onSuccess:(void(^)(NSDictionary* result))success
+          onFailure:(void(^)(NSError* error, NSInteger statusCode))failure {
+    
+    
+   // if (![groupID hasPrefix:@"-"]) {
+   //     groupID = [@"-" stringByAppendingString:groupID];
+   // }
+    
+    
+    
+    NSMutableDictionary* params =
+    [NSMutableDictionary dictionaryWithObjectsAndKeys:
+     groupID,      @"group_id",
+     @"0" ,        @"not_sure",
+     @"5.37",      @"v",
+     self.accessToken.token, @"access_token", nil];
+
+    
+    [self.requestOperationManager POST:@"groups.join" parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
+        
+        if (success) {
+            success(responseObject);
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error, operation.response.statusCode);
+        }
+    }];
+
+    
+}
+
+
+
+-(void) leaveFromGroup:(NSString*) groupID
+             onSuccess:(void(^)(NSDictionary* result))success
+             onFailure:(void(^)(NSError* error, NSInteger statusCode))failure {
+    
+   // if (![groupID hasPrefix:@"-"]) {
+   //     groupID = [@"-" stringByAppendingString:groupID];
+   // }
+    
+    
+    
+    NSMutableDictionary* params =
+    [NSMutableDictionary dictionaryWithObjectsAndKeys:
+     groupID,      @"group_id",
+     @"5.37",      @"v",
+     self.accessToken.token, @"access_token", nil];
+    
+
+    [self.requestOperationManager POST:@"groups.leave" parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
+        
+        if (success) {
+            success(responseObject);
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error, operation.response.statusCode);
+        }
+    }];
+
+    
     
 }
 

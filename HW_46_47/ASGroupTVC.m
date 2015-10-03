@@ -103,6 +103,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     self.loadingData = YES;
     self.firstTimeAppear = YES;
 
+    self.navigationItem.title = @"POST";
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:1.000];
     self.navigationController.navigationBar.tintColor    = [UIColor whiteColor];
@@ -190,18 +191,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                                     [self.tableView insertRowsAtIndexPaths:arrPath withRowAnimation:UITableViewRowAnimationFade];
                                     [self.tableView endUpdates];
 
-                                       /*
-                                       NSRange range = {0, 20};
-                                       [self.arrrayWall insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:range]];
-                                       
-                                       for (NSInteger i=0; i<=[posts count]-1; i++) {
-                                            
-                                       NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
-                                       
-                                       [self.tableView beginUpdates];
-                                       [self.tableView insertRowsAtIndexPaths:arrPath withRowAnimation:UITableViewRowAnimationBottom];
-                                       [self.tableView endUpdates];
-                                       */
+                          
                                        
                                     self.loadingData = NO;
                                        
@@ -306,25 +296,13 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     if ([cell isKindOfClass:[ASWallAttachmentCell class]]) {
 
 
-        
-        /*
-        ASWall* wall = self.arrrayWall[indexPath.row];
-        ASWallAttachmentCell* weakCell = (ASWallAttachmentCell*)cell;
-     
-        weakCell.attachmentsView.backgroundColor = [UIColor blackColor];
-        
-        return 460 + [ASWallAttachmentCell heightForTextWithPostModel:wall andWidthTextCell:self.view.frame.size.width];
-        */
-        
         ASWall* wall = self.arrrayWall[indexPath.row];
         float height = 0;
 
-       // if ([wall.attachments count] > 0) {
-            
+        
         height = height + [[self.imageViewSize objectAtIndex:indexPath.row]floatValue];
         NSLog(@"height = %f",height);
         
-        //return 46 + 10 + height + 20;
         
         return 67 + 8 + height + [ASWallAttachmentCell heightForTextWithPostModel:wall andWidthTextCell:self.view.frame.size.width-16] + 8 + 15 + 33;
         
@@ -422,14 +400,21 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             
             //648fc4
             //@"Join community" : @"You are a member"
-            [cell.followButton setTitle:self.group.titleJoinButton forState: UIControlStateNormal];
             [cell.followButton addTarget:self
                                 action:@selector(followButtonAction:)
                       forControlEvents:UIControlEventTouchUpInside];
             
             
+            if (self.group.isMember == YES) {
+                [cell.followButton setTitle:@"You are a member" forState: UIControlStateNormal];
+                cell.followButton.backgroundColor = [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:1.000];
+            } else {
+                [cell.followButton setTitle:@"Join community" forState: UIControlStateNormal];
+                [cell.followButton setBackgroundColor:[UIColor colorWithRed:1 green:0.176 blue:0.333 alpha:1]];
+            }
             
             
+            /*
             if ([cell.followButton.titleLabel.text isEqualToString:@"Join community"]) {
                 cell.followButton.backgroundColor = [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:1.000];
             }
@@ -438,7 +423,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             if ([cell.followButton.titleLabel.text isEqualToString:@"You are a member"])
             {
             [cell.followButton setBackgroundColor:[UIColor colorWithRed:1 green:0.176 blue:0.333 alpha:1]];
-            }
+            }*/
           
             cell.collectionView.collectionViewLayout = (UICollectionViewLayout*)[ASInfoMemberFlowLayout initFlowLayout];
             return cell;
@@ -734,6 +719,52 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     
     
     NSLog(@"followButtonAction");
+    
+    if (self.group.isMember == YES) {
+        [[ASServerManager sharedManager] leaveFromGroup:self.group.groupID
+                                              onSuccess:^(NSDictionary *result) {
+                                               
+                             
+                                          int success = [[result objectForKey:@"response"] integerValue];
+                                         
+                                          if (success == 1) {
+                                              self.group.isMember = NO;
+                                              NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+                                              
+                                              [self.tableView beginUpdates];
+                                              [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                                              [self.tableView endUpdates];
+                                          }
+                                          
+                                       
+   
+                                              } onFailure:^(NSError *error, NSInteger statusCode) {
+                                                  
+                                              }];
+    } else {
+        
+        [[ASServerManager sharedManager] joinToGroup:self.group.groupID
+                                           onSuccess:^(NSDictionary *result) {
+                                           
+                                   int success = [[result objectForKey:@"response"] integerValue];
+                                   
+                                   if (success == 1) {
+                                       self.group.isMember = YES;
+                            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+
+                               [self.tableView beginUpdates];
+                               [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                               [self.tableView endUpdates];
+                                   }
+                                               
+                                           }
+                                           onFailure:^(NSError *error, NSInteger statusCode) {
+                                               
+                                           }];
+        
+    }
+    
+    
 }
 
 
@@ -798,24 +829,23 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 
 -(void) showComment:(UIButton*) sender {
     
-    /*
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    
-    ASUserTVC *detailVC = (ASUserTVC *)[storyboard  instantiateViewControllerWithIdentifier:@"ASUserTVC"];
-    ASFriend *friend = [self.arrayFriends objectAtIndex:indexPath.row];
-    
-    detailVC.userID = friend.userID;
-    NSLog(@"friend.userID = %@ ",friend.userID);
-    
-    [self.navigationController pushViewController:detailVC animated:YES];
-   [self presentViewController:viewController animated:YES completion:nil];
-    */
-    
+
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
 
     ASDetailTVC* detailVC = (ASDetailTVC*)[storyboard instantiateViewControllerWithIdentifier:@"ASDetailTVC"];
+   
     detailVC.group  = self.group;
-    detailVC.wall   = self.arrrayWall[sender.tag];
+    
+    // [[self.imageViewSize objectAtIndex:indexPath.row]floatValue]
+    //[[self.arrrayWall objectAtIndex:sender.tag] imageViewSize] = [[self.imageViewSize objectAtIndex:sender.tag]floatValue];
+    
+    
+    ASWall* wall = [[ASWall alloc] init];
+    wall = self.arrrayWall[sender.tag];
+    wall.imageViewSize = [[self.imageViewSize objectAtIndex:sender.tag] floatValue];
+    
+    
+    detailVC.wall   = wall;//self.arrrayWall[sender.tag];
     detailVC.postID = [[self.arrrayWall objectAtIndex:sender.tag] postID];
     
     [self.navigationController pushViewController:detailVC animated:YES];

@@ -86,6 +86,9 @@
        // self.typeCommunity   = [responseObject objectForKey:@"activity"];
         self.isEnablePostButton = isCanPost;
         
+        self.isMember = isMember;
+        self.isClosed = isClosed;
+        self.isCanPost = isCanPost;
         
        self.status    = [responseObject objectForKey:@"status"];
     
@@ -104,7 +107,55 @@
     return self;
     
 }
+/*
+ @property (strong, nonatomic) NSString* fullName;
+ @property (strong, nonatomic) NSString* groupID;
+ 
+ @property (strong, nonatomic) NSURL* mainImageURL;
+ @property (strong, nonatomic) NSURL* photo_50URL;
+ @property (strong, nonatomic) NSURL* photo_100URL;
+ @property (strong, nonatomic) NSURL* mainCommunityImageURL;
+ 
+ 
+ @property (strong, nonatomic) NSString* members;
+ @property (strong, nonatomic) NSString* topics;
+ @property (strong, nonatomic) NSString* docs;
+ @property (strong, nonatomic) NSString* photos;
+ @property (strong, nonatomic) NSString* videos;
+ @property (strong, nonatomic) NSString* albums;
+ 
+ @property (strong, nonatomic) NSString* titleJoinButton;
+ @property (assign, nonatomic) BOOL      isEnablePostButton;
+ @property (strong, nonatomic) NSString* typeCommunity;
+ @property (strong, nonatomic) NSString* descriptionCommunity;
+ @property (strong, nonatomic) NSString* status;
 
+ 
+ */
+
+-(void) description {
+    
+    NSLog(@"fullName %@",self.fullName);
+    NSLog(@"groupID %@",self.groupID);
+    
+    NSLog(@"mainImageURL %@",self.mainImageURL);
+    
+    
+    NSLog(@"photo_50URL %@",self.photo_50URL);
+    
+    NSLog(@"photo_100URL %@",self.photo_100URL);
+    
+    NSLog(@"mainCommunityImageURL %@",self.mainCommunityImageURL);
+    
+    NSLog(@"isEnablePostButton %hhd",self.isEnablePostButton);
+    
+    NSLog(@"titleJoinButton %@",self.titleJoinButton);
+  
+    NSLog(@"isMember %hhd",self.isMember);
+    NSLog(@"isClosed %hhd",self.isClosed);
+    NSLog(@"isCanPost %hhd",self.isCanPost);
+
+}
 
 
 @end

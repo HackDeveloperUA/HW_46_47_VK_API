@@ -21,6 +21,7 @@
         
         
         self.text = [responseObject objectForKey:@"text"];
+                
         
         NSDateFormatter *dateFormater = [[NSDateFormatter alloc]init];
         [dateFormater setDateFormat:@"dd MMM yyyy "];

@@ -35,7 +35,15 @@
 @property (strong, nonatomic) NSString* status;
 
 
--(instancetype) initWithServerResponse:(NSDictionary*) responseObject;
 
+@property (assign, nonatomic) BOOL      isMember;
+@property (assign, nonatomic) BOOL      isClosed;
+@property (assign, nonatomic) BOOL      isCanPost;
+
+
+
+
+-(instancetype) initWithServerResponse:(NSDictionary*) responseObject;
+-(void) description;
 
 @end
