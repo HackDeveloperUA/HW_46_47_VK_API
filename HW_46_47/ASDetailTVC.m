@@ -41,7 +41,7 @@ static float offsetBetweenTextAndShared       = 8.f;
 static float offsetAfterShared                = 6.f;
 
 
-static NSString* identifierWall      = @"ASWallCell";
+static NSString* identifierWall      = @"ASWallAttachmentCell";
 
 static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     
@@ -83,6 +83,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     self.loadingData = YES;
     self.firstTimeAppear = YES;
 
+    self.tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     
     self.navigationController.navigationBar.barStyle     = UIBarStyleBlackOpaque;
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:1.000];
@@ -109,8 +110,8 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
         
         
         [self getCommentFromServerOnSuccess:^(BOOL success) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.arrayComments.count inSection:0]
-                                atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        //[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.arrayComments.count inSection:0]
+          //                      atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         
         }];
     }
@@ -172,54 +173,67 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                                                    }*/
                                                   
                                                   
-                                if ([comments count] > 0) {
-                                       
-                                   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-                                                          
-                                              
-                                       NSMutableArray* arrPath   = [NSMutableArray array];
-                                       NSMutableArray* tempArray = nil;
-                                       
-                                       if ([self.arrayComments count]>0) {
-                                           tempArray = [NSMutableArray arrayWithArray:self.arrayComments];
-                                       } else {
-                                           tempArray = [NSMutableArray array];
-                                       }
+        if ([comments count] > 0) {
+               
+           dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                                  
+                      
+               NSMutableArray* arrPath   = [NSMutableArray array];
+               NSMutableArray* tempArray = nil;
+               
+               if ([self.arrayComments count]>0) {
+                   tempArray = [NSMutableArray arrayWithArray:self.arrayComments];
+               } else {
+                   tempArray = [NSMutableArray array];
+               }
 
-                                       NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange: NSMakeRange(0,[comments count])];
-                                       
-                                       [tempArray insertObjects:comments atIndexes:indexes];
-                                       self.arrayComments = tempArray;
-                                       
-                                       for (int i=1; i<=[comments count]; i++) {
-                                           [arrPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
-                                       }
-                                       
-                                              
-                                       
-                                              dispatch_async(dispatch_get_main_queue(), ^{
-                                                  
-                                                   //[self.tableView beginUpdates];
-                                                   //[self.tableView insertRowsAtIndexPaths:arrPath withRowAnimation:UITableViewRowAnimationBottom];
-                                                   //[self.tableView endUpdates];
-                                                  
-                                                  [self.tableView beginUpdates];
-                                                  [self.tableView insertRowsAtIndexPaths:arrPath withRowAnimation:UITableViewRowAnimationLeft];
-                                                  [self.tableView endUpdates];
-                                                  
-                                                  
-                                                   self.loadingData = NO;
-                                                  
-                                                  
-                                                      if (success) {
-                                                          success(true);
-                                                      }
-                                                  
-                                              });
-                                             });
+          /////////////
+               NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange: NSMakeRange(0,[comments count])];
+               
+               [tempArray insertObjects:comments atIndexes:indexes];
+               self.arrayComments = tempArray;
+               
+               
+               for (int i=1; i<=[comments count]; i++) {
+                   [arrPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+               }
+           /////////
+               
+               
+               
+               
+               
+               for (NSInteger i=0; i<=[comments count]-1; i++) {
+                   
+                   CGSize newSize = [self setFramesToImageViews:nil
+                                                    imageFrames:[[self.arrayComments objectAtIndex:i] attachments]
+                                                      toFitSize:CGSizeMake(self.view.frame.size.width-16, self.view.frame.size.width-16)];
+                   
+                   [self.imageViewSize addObject:[NSNumber numberWithFloat:roundf(newSize.height)]];
+                   
+               }
+               
+               
+                      dispatch_async(dispatch_get_main_queue(), ^{
+                          
+               
+                          [self.tableView beginUpdates];
+                          [self.tableView insertRowsAtIndexPaths:arrPath withRowAnimation:UITableViewRowAnimationLeft];
+                          [self.tableView endUpdates];
+                          
+                          
+                           self.loadingData = NO;
+                          
+                          
+                              if (success) {
+                                  success(true);
+                              }
+                          
+                      });
+                     });
 
-                                                  
-                                        }
+                          
+                }
                                               } onFailure:^(NSError *error, NSInteger statusCode) {
                                                   
                                               }];
@@ -241,7 +255,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     if ([cell isKindOfClass:[ASWallAttachmentCell class]]) {
     
         
-        ASComment* commet = self.arrayComments [indexPath.row];
+        ASComment* commet = self.arrayComments [indexPath.row-1];
         
         float  height = 0;
         float  heightText   = 27.f;
@@ -250,8 +264,9 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             height = height + (int)[self heightLabelOfTextForString:commet.text fontSize:14.f widthLabel:self.view.frame.size.width-(offset*2)];
         }
         
+        
         if ([commet.attachments count] > 0) {
-            height = height + [[self.imageViewSize objectAtIndex:indexPath.row]floatValue];
+            height = height + [[self.imageViewSize objectAtIndex:indexPath.row-1]floatValue];
         }
         
         return (offsetBeforePhoto+heightPhoto)+(offsetBetweenPhotoAndText+height)+(offsetBetweenTextAndShared+heightShared)+(offsetAfterShared);
@@ -280,42 +295,10 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
  
     
-    
-     if (indexPath.row == 0) {
-     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-     
-     if (!cell) {
-     cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"cell"];
-     }
-     
-     cell.backgroundColor = [UIColor greenColor];
-     cell.textLabel.text = @"Super TEST";
-     
-     return cell;
-     }
-     else {
-     
-     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-     
-     if (!cell) {
-     cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"cell"];
-     }
-     
-    
-     ASComment *comment = [self.arrayComments objectAtIndex:indexPath.row-1];
 
-         
-     cell.textLabel.text  = comment.user.firstName;
-     cell.backgroundColor = [UIColor yellowColor];
-     
-         [comment description];
-         
-     return cell;
-     }
-     
     
     
-    /*
+    
     if (indexPath.section == 0) {
         
         
@@ -333,14 +316,16 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     
         else {
 
-                    ASWallAttachmentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifierWall];
+                    ASWallAttachmentCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell2"];
                     
                     if (!cell) {
-                        cell = [[ASWallAttachmentCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierWall];
+                        cell = [[ASWallAttachmentCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell2"];
                     }
             
            ASComment *comment = self.arrayComments[indexPath.row-1];
      
+            [cell.commentButton setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
+            
                     cell.textPost.text = comment.text;
                     
                     cell.likeLabel.text  = ([comment.likes length]>3)    ? ([NSString stringWithFormat:@"%@k",[comment.likes substringToIndex:1]]) : (comment.likes);
@@ -400,11 +385,14 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                         ASImageViewGallery *galery = [[ASImageViewGallery alloc]initWithImageArray:comment.attachments startPoint:point withSizeView:sizeAttachment];
                         galery.tag = 11;
                         [cell addSubview:galery];
+                        galery.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+
                     }
             return cell;
         }
     }
-    return nil;*/
+    
+    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -414,8 +402,8 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     if (indexPath.row == 0) {
         
         [self getCommentFromServerOnSuccess:^(BOOL success) {
-            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.arrayComments.count inSection:0]
-                                  atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+          //  [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.arrayComments.count inSection:0]
+            //                      atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
         }];
     }
     
