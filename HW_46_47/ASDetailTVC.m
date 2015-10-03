@@ -110,8 +110,8 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
         
         
         [self getCommentFromServerOnSuccess:^(BOOL success) {
-        //[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.arrayComments.count inSection:0]
-          //                      atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.arrayComments.count inSection:0]
+                                atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         
         }];
     }
@@ -326,13 +326,14 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
      
             [cell.commentButton setImage:[UIImage imageNamed:@"like"] forState:UIControlStateNormal];
             
-                    cell.textPost.text = comment.text;
-                    
-                    cell.likeLabel.text  = ([comment.likes length]>3)    ? ([NSString stringWithFormat:@"%@k",[comment.likes substringToIndex:1]]) : (comment.likes);
-                    cell.likeButton.tag  = indexPath.row;
-                   [cell.likeButton     addTarget:self action:@selector(addLikeOnPost:) forControlEvents:UIControlEventTouchUpInside];
-                    
-                
+            cell.textPost.text = comment.text;
+            
+            cell.likeLabel.text  = ([comment.likes length]>3) ? ([NSString stringWithFormat:@"%@k",[comment.likes substringToIndex:1]]) : (comment.likes);
+           
+            cell.likeButton.tag  = indexPath.row-1;
+           [cell.likeButton     addTarget:self action:@selector(addLikeOnPost:) forControlEvents:UIControlEventTouchUpInside];
+            
+            
                      if (comment.user) {
                          cell.fullName.text = [NSString stringWithFormat:@"%@ %@",comment.user.firstName, comment.user.lastName];
                      } else if (comment.group) {
@@ -402,8 +403,8 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     if (indexPath.row == 0) {
         
         [self getCommentFromServerOnSuccess:^(BOOL success) {
-          //  [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.arrayComments.count inSection:0]
-            //                      atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:12 inSection:0]
+                                  atScrollPosition:UITableViewScrollPositionNone animated:YES];
         }];
     }
     
@@ -550,6 +551,46 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     return rect.size.height;
 }
 
+
+
+-(void) addLikeOnPost:(UIButton*) sender {
+    
+    //ASWall* wall = self.arrrayWall[sender.tag];
+    ASComment* comment = self.arrayComments[sender.tag];
+    
+    if (comment.canLike) {
+        
+        [[ASServerManager sharedManager] postAddLikeOnWall:self.group.groupID  inPost:comment.postID  type:comment.type
+                                                 onSuccess:^(NSDictionary *result) {
+                                                     
+                                                     NSDictionary* response = [result objectForKey:@"response"];
+                                                     
+                                                     comment.canLike = NO;
+                                                     comment.likes   = [[response objectForKey:@"likes"] stringValue];
+                                                     [self.tableView reloadData];
+                                                     
+                                                 }
+                                                 onFailure:^(NSError *error, NSInteger statusCode) {
+                                                     
+                                                 }];
+    } else {
+        
+        
+        [[ASServerManager sharedManager] postDeleteLikeOnWall:self.group.groupID inPost:comment.postID  type:comment.type
+                                                    onSuccess:^(NSDictionary *result) {
+                                                        
+                                                        NSDictionary* response = [result objectForKey:@"response"];
+                                                        
+                                                        comment.canLike = YES;
+                                                        comment.likes   = [[response objectForKey:@"likes"] stringValue];
+                                                        [self.tableView reloadData];
+                                                        
+                                                    }
+                                                    onFailure:^(NSError *error, NSInteger statusCode) {
+                                                        
+                                                    }];
+    }
+}
 
     /*
      if (indexPath.row == 0) {
