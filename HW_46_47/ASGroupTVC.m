@@ -68,6 +68,11 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                           UICollectionViewDataSource, UICollectionViewDelegate,
                           UIScrollViewDelegate>
 
+/// ---- SUPER GROUP ID ---- ///
+@property (strong, nonatomic) NSString* superGroupID;
+
+
+
 
 @property (strong, nonatomic) NSString* groupID;
 @property (strong, nonatomic) NSString* wallFilter;
@@ -97,6 +102,9 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.superGroupID = @"58860049";
+    
     
     
     self.wallFilter = @"all";
@@ -147,7 +155,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
         }];
         
     }
-    [self.tableView reloadData];
+   // [self.tableView reloadData];
 
 }
 
@@ -159,10 +167,11 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 
 
     
-    [[ASServerManager sharedManager] getNewGroupWall:@""
-                                          withDomain:@"iosdevcourse"
+    [[ASServerManager sharedManager] getWall:self.superGroupID
+                                          withDomain:@""
                                           withFilter:self.wallFilter
                                           withOffset:[self.arrrayWall count]
+                                           typeOwner:@"group"
                                                count:20
                                            onSuccess:^(NSArray *posts) {
                                                
@@ -233,8 +242,10 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 -(void)  getInfoFromServer {
 
     //58860049 iosdevcourse clfrn
-    [[ASServerManager sharedManager] getGroupInfoID:@"iosdevcourse" onSuccess:^(ASGroup *group) {
-        
+   // [[ASServerManager sharedManager] getGroupInfoID:@"iosdevcourse" onSuccess:^(ASGroup *group) {
+   
+    [[ASServerManager sharedManager] getGroupInfoID:self.superGroupID onSuccess:^(ASGroup *group) {
+    
             self.arrayDataCountres = [NSArray array];
             self.navigationItem.title = group.fullName;
         
@@ -805,6 +816,19 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
  
     if (wall.canLike) {
     
+        [[ASServerManager sharedManager] postAddLikeOnWall:self.superGroupID inPost:wall.postID type:wall.type typeOwner:@"group" onSuccess:^(NSDictionary *result) {
+           
+            NSDictionary* response = [result objectForKey:@"response"];
+            
+            wall.canLike = NO;
+            wall.likes   = [[response objectForKey:@"likes"] stringValue];
+            [self.tableView reloadData];
+            
+        } onFailure:^(NSError *error, NSInteger statusCode) {
+            
+        }];
+        
+        /*
         [[ASServerManager sharedManager] postAddLikeOnWall:self.groupID  inPost:wall.postID  type:wall.type
                                                  onSuccess:^(NSDictionary *result) {
                                                      
@@ -817,10 +841,24 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                                                  }
                                                  onFailure:^(NSError *error, NSInteger statusCode) {
                                                      
-                                                 }];
+                                                 }];*/
     } else {
     
     
+        [[ASServerManager sharedManager] postDeleteLikeOnWall:self.superGroupID inPost:wall.postID type:wall.type typeOwner:@"group" onSuccess:^(NSDictionary *result) {
+            
+            NSDictionary* response = [result objectForKey:@"response"];
+            
+            wall.canLike = YES;
+            wall.likes   = [[response objectForKey:@"likes"] stringValue];
+            [self.tableView reloadData];
+
+            
+        } onFailure:^(NSError *error, NSInteger statusCode) {
+            
+        }];
+        
+        /*
         [[ASServerManager sharedManager] postDeleteLikeOnWall:self.groupID inPost:wall.postID  type:wall.type
                                                     onSuccess:^(NSDictionary *result) {
 
@@ -834,7 +872,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                                                     }
                                                     onFailure:^(NSError *error, NSInteger statusCode) {
                                                         
-                                                    }];
+                                                    }];*/
     }
 }
 
@@ -943,6 +981,29 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             
             ASWall* wall = self.arrrayWall[self.indexPathWallForRepost];
             
+            
+            
+            [[ASServerManager sharedManager] repostOnMyWall:wall.ownerID inPost:wall.postID withMessage:textfield.text
+                                                  typeOwner:@"group"
+                                                  onSuccess:^(NSDictionary *result) {
+                                                      
+                                                      
+                                                      NSDictionary* response = [result objectForKey:@"response"];
+                                                      
+                                                      wall.canRepost = NO;
+                                                      wall.reposts   = [[response objectForKey:@"reposts_count"] stringValue];
+                                                      [self.tableView reloadData];
+                                                      
+                                                      self.indexPathWallForRepost = NULL;
+                                                      
+                                                      
+                                                  } onFailure:^(NSError *error, NSInteger statusCode) {
+                                                      
+                                                  }];
+            
+            
+            
+            /*
             [[ASServerManager sharedManager] repostOnMyWall:wall.ownerID inPost:wall.postID withMessage:textfield.text
                                                   onSuccess:^(NSDictionary *result) {
                                                       
@@ -957,7 +1018,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                                                   }
                                                   onFailure:^(NSError *error, NSInteger statusCode) {
                                                       
-                                                  }];
+                                                  }];*/
             
             
         }

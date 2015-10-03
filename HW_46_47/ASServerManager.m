@@ -347,27 +347,32 @@ static NSString* kUserId = @"kUserId";
 
 /// NEW
 
+- (void)  getWall:(NSString*) ownerID
+       withDomain:(NSString*) domain
+       withFilter:(NSString*) filter
+       withOffset:(NSInteger) offset
+        typeOwner:(NSString*) typeOwner
+            count:(NSInteger) count
+        onSuccess:(void(^)(NSArray* posts)) success
+        onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure; {
 
 
 
-- (void)  getNewGroupWall:(NSString*) groupID
-               withDomain:(NSString*) domain
-               withFilter:(NSString*) filter
-               withOffset:(NSInteger) offset
-                    count:(NSInteger) count
-                onSuccess:(void(^)(NSArray* posts)) success
-                onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure {
-    
-    
-    if (![groupID hasPrefix:@"-"]) {
-        groupID = [@"-" stringByAppendingString:groupID];
+    if ([typeOwner isEqualToString:@"group"]) {
+        
+        if (![ownerID hasPrefix:@"-"]) {
+            ownerID = [@"-" stringByAppendingString:ownerID];
+        }
+
     }
     
+    
+   
     
     
     NSMutableDictionary* params =
     [NSMutableDictionary dictionaryWithObjectsAndKeys:
-     @"",           @"owner_id",
+     ownerID,       @"owner_id",
      @"",           @"domain",
      @(count),      @"count",
      @(offset),     @"offset",
@@ -377,12 +382,13 @@ static NSString* kUserId = @"kUserId";
      self.accessToken.token, @"access_token", nil];
     
     
+    /*
     if (groupID.length > 1) {
         [params setValue:groupID forKey:@"owner_id"];
     }
     else {
         [params setValue:domain forKey:@"domain"];
-    }
+    }*/
     
     
     [self.requestOperationManager  GET:@"wall.get"
@@ -449,23 +455,35 @@ static NSString* kUserId = @"kUserId";
 ///////
 
 
-- (void) postAddLikeOnWall:(NSString*)groupID
+- (void) postAddLikeOnWall:(NSString*)ownerID
                     inPost:(NSString*)postID
                       type:(NSString *)type
+                 typeOwner:(NSString*) typeOwner
                  onSuccess:(void(^)(NSDictionary* result))success
                  onFailure:(void(^)(NSError* error, NSInteger statusCode))failure {
     
     
     // Буть осторожен ! С добавлением минуса , потом когда будем использовать под пользователя
     
-    if (![groupID hasPrefix:@"-"]) {
-        groupID = [@"-" stringByAppendingString:groupID];
+    
+    if ([typeOwner isEqualToString:@"group"]) {
+        
+        if (![ownerID hasPrefix:@"-"]) {
+            ownerID = [@"-" stringByAppendingString:ownerID];
+        }
+        
     }
     
+    
+    /*
+    if (![ownerID hasPrefix:@"-"]) {
+        ownerID = [@"-" stringByAppendingString:ownerID];
+    }
+    */
 
     
     NSDictionary *parameters = @{@"type"            : type,
-                                 @"owner_id"        : groupID,
+                                 @"owner_id"        : ownerID,
                                  @"item_id"         : postID,
                                  @"v"               : @"5.37",
                                  @"ref"             : @"",
@@ -490,19 +508,29 @@ static NSString* kUserId = @"kUserId";
 
 
 
-- (void) postDeleteLikeOnWall:(NSString*)groupID
+- (void) postDeleteLikeOnWall:(NSString*)ownerID
                        inPost:(NSString*)postID
                          type:(NSString *)type
+                    typeOwner:(NSString*) typeOwner
                     onSuccess:(void(^)(NSDictionary* result))success
                     onFailure:(void(^)(NSError* error, NSInteger statusCode))failure {
     
 
-    if (![groupID hasPrefix:@"-"]) {
-        groupID = [@"-" stringByAppendingString:groupID];
+    if ([typeOwner isEqualToString:@"group"]) {
+        
+        if (![ownerID hasPrefix:@"-"]) {
+            ownerID = [@"-" stringByAppendingString:ownerID];
+        }
+        
     }
+
+    /*
+    if (![ownerID hasPrefix:@"-"]) {
+        ownerID = [@"-" stringByAppendingString:ownerID];
+    }*/
     
     NSDictionary *parameters = @{@"type"            : type,
-                                 @"owner_id"        : groupID,
+                                 @"owner_id"        : ownerID,
                                  @"item_id"         : postID,
                                  @"v"               : @"5.37",
                                  @"access_token"    : self.accessToken.token };
@@ -521,20 +549,35 @@ static NSString* kUserId = @"kUserId";
     
 }
 
-- (void)repostOnMyWall:(NSString*)groupID
+
+
+
+
+
+- (void)repostOnMyWall:(NSString*)ownerID
                 inPost:(NSString*)postID
            withMessage:(NSString*)message
+             typeOwner:(NSString*) typeOwner
              onSuccess:(void(^)(NSDictionary* result))success
              onFailure:(void(^)(NSError* error, NSInteger statusCode))failure {
-
     
     
     
-    if (![groupID hasPrefix:@"-"]) {
-        groupID = [@"-" stringByAppendingString:groupID];
+    /*
+    if (![ownerID hasPrefix:@"-"]) {
+        ownerID = [@"-" stringByAppendingString:ownerID];
+    }*/
+    
+    if ([typeOwner isEqualToString:@"group"]) {
+        
+        if (![ownerID hasPrefix:@"-"]) {
+            ownerID = [@"-" stringByAppendingString:ownerID];
+        }
+        
     }
     
-    NSString *object = [NSString stringWithFormat:@"wall%@_%@",groupID,postID];
+    
+    NSString *object = [NSString stringWithFormat:@"wall%@_%@",ownerID,postID];
     
     NSDictionary *parameters = @{@"object"          : object,
                                  @"message"         : message,
@@ -561,23 +604,33 @@ static NSString* kUserId = @"kUserId";
 
 
 
--(void) getCommentFromPost:(NSString*) groupID
+-(void) getCommentFromPost:(NSString*) ownerID
                     inPost:(NSString*) postID
+                 typeOwner:(NSString*) typeOwner
                 withOffset:(NSInteger) offset
                      count:(NSInteger) count
                  onSuccess:(void(^)(NSArray* comments)) success
                  onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure {
     
-  
+    
+    if ([typeOwner isEqualToString:@"group"]) {
+        
+        if (![ownerID hasPrefix:@"-"]) {
+            ownerID = [@"-" stringByAppendingString:ownerID];
+        }
+        
+    }
+
+    /*
     if (![groupID hasPrefix:@"-"]) {
         groupID = [@"-" stringByAppendingString:groupID];
-    }
+    }*/
     
     
     
     NSMutableDictionary* params =
     [NSMutableDictionary dictionaryWithObjectsAndKeys:
-     groupID,       @"owner_id",
+     ownerID,       @"owner_id",
      postID ,       @"post_id",
      
      @"1",          @"need_likes",

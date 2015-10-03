@@ -54,10 +54,11 @@
                   onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
 
 
-- (void)  getNewGroupWall:(NSString*) groupID
+- (void)  getWall:(NSString*) ownerID
                withDomain:(NSString*) domain
                withFilter:(NSString*) filter
                withOffset:(NSInteger) offset
+                typeOwner:(NSString*) typeOwner
                     count:(NSInteger) count
                 onSuccess:(void(^)(NSArray* posts)) success
                 onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
@@ -66,29 +67,33 @@
 // --- LIKE / REPOST / COMMENT --- //
 
 
-- (void) postAddLikeOnWall:(NSString*)groupID
+- (void) postAddLikeOnWall:(NSString*)ownerID
                     inPost:(NSString*)postID
                       type:(NSString *)type
+                 typeOwner:(NSString*) typeOwner
                  onSuccess:(void(^)(NSDictionary* result))success
                  onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
 
 
-- (void) postDeleteLikeOnWall:(NSString*)groupID
+- (void) postDeleteLikeOnWall:(NSString*)ownerID
                        inPost:(NSString*)postID
                          type:(NSString *)type
+                    typeOwner:(NSString*) typeOwner
                     onSuccess:(void(^)(NSDictionary* result))success
                     onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
 
 
-- (void)repostOnMyWall:(NSString*)groupID
+- (void)repostOnMyWall:(NSString*)ownerID
                 inPost:(NSString*)postID
            withMessage:(NSString*)message
+             typeOwner:(NSString*) typeOwner
              onSuccess:(void(^)(NSDictionary* result))success
              onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
 
 
--(void) getCommentFromPost:(NSString*) groupID
+-(void) getCommentFromPost:(NSString*) ownerID
                     inPost:(NSString*) postID
+                 typeOwner:(NSString*) typeOwner
                 withOffset:(NSInteger) offset
                      count:(NSInteger) count
                  onSuccess:(void(^)(NSArray* comments)) success
