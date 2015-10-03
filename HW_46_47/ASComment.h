@@ -50,5 +50,5 @@
 
 
 -(instancetype) initWithServerResponse:(NSDictionary*) responseObject;
-
+-(void) description;
 @end
