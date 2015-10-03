@@ -209,8 +209,8 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                                                     imageFrames:[[self.arrayComments objectAtIndex:i] attachments]
                                                       toFitSize:CGSizeMake(self.view.frame.size.width-16, self.view.frame.size.width-16)];
                    
-                   [self.imageViewSize addObject:[NSNumber numberWithFloat:roundf(newSize.height)]];
-                   
+                   //[self.imageViewSize addObject:[NSNumber numberWithFloat:roundf(newSize.height)]];
+                   [self.imageViewSize insertObject:[NSNumber numberWithFloat:roundf(newSize.height)] atIndex:i];
                }
                
                
