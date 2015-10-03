@@ -50,6 +50,10 @@ static NSString* identifierWall         = @"ASWallCell";
 static NSString* identifierWallTextOnly  = @"ASWallTextCell";
 
 
+static NSInteger allPostWallFilter   = 0;
+static NSInteger ownerPostWallFilter = 1;
+
+
 static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     
     size.width *= height / size.height;
@@ -66,6 +70,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 
 
 @property (strong, nonatomic) NSString* groupID;
+@property (strong, nonatomic) NSString* wallFilter;
 
 @property (strong,nonatomic)  ASGroup *group;
 @property (strong, nonatomic) NSMutableArray* arrrayWall;
@@ -74,10 +79,9 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 @property (assign,nonatomic)  BOOL loadingData;
 @property (assign, nonatomic) BOOL firstTimeAppear;
 
-//@property (strong,nonatomic)  UIRefreshControl *refresh;
-//@property (strong,nonatomic)  NSMutableArray *imageViewSize;
+@property (strong,nonatomic)  UIRefreshControl *refresh;
 
-@property (strong,nonatomic) NSMutableArray *imageViewSize;
+@property (strong,nonatomic)  NSMutableArray *imageViewSize;
 @property (assign, nonatomic) NSInteger indexPathWallForRepost;
 @end
 
@@ -94,16 +98,26 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    
+    self.wallFilter = @"all";
 
     self.group = [[ASGroup alloc] init];
-    self.arrrayWall  = [NSMutableArray array];
-
+    
+    
+    self.arrrayWall     = [NSMutableArray array];
     self.imageViewSize  = [NSMutableArray array];
 
-    self.loadingData = YES;
+    self.loadingData     = YES;
     self.firstTimeAppear = YES;
 
-    self.navigationItem.title = @"POST";
+    self.refresh = [[UIRefreshControl alloc] init];
+    [self.refresh addTarget:self action:@selector(refreshWall:) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:self.refresh];
+    
+
+    
+    
+    
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:1.000];
     self.navigationController.navigationBar.tintColor    = [UIColor whiteColor];
@@ -143,63 +157,67 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     
     //58860049 iosdevcourse clfrn
 
+
+    
     [[ASServerManager sharedManager] getNewGroupWall:@""
                                           withDomain:@"iosdevcourse"
+                                          withFilter:self.wallFilter
                                           withOffset:[self.arrrayWall count]
                                                count:20
                                            onSuccess:^(NSArray *posts) {
                                                
-                                               
-                               NSLog(@"Попал сюда = getNewWallFromServer");
-                               NSLog(@"Пришло = %d",[posts count]);
+                      
+               if ([posts count] > 0) {
+                 
+                   
 
-                               if ([posts count] > 0) {
-                                 
-                                   
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
 
-                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-    
-                            
-                                   
+            
+                   
 
-                                   NSMutableArray* arrPath = [NSMutableArray array];
+                   NSMutableArray* arrPath = [NSMutableArray array];
 
-                                   for (NSInteger i= [self.arrrayWall count]; i<=[posts count]+[self.arrrayWall count]-1; i++) {
-                                
-                                        NSLog(@"Добавляем %ld",(long)i);
-                                       [arrPath addObject:[NSIndexPath indexPathForRow:i inSection:1]];
-                                   }
-                                   
-                                   
-                                    [self.arrrayWall addObjectsFromArray:posts];
-                               
-                                   
-                                    for (int i = (int)[self.arrrayWall count] - (int)[posts count]; i < [self.arrrayWall count]; i++) {
+                   for (NSInteger i= [self.arrrayWall count]; i<=[posts count]+[self.arrrayWall count]-1; i++) {
+                
+                        NSLog(@"Добавляем %ld",(long)i);
+                       [arrPath addObject:[NSIndexPath indexPathForRow:i inSection:1]];
+                   }
+                   
+                   
+                    [self.arrrayWall addObjectsFromArray:posts];
+               
+                   
+                    for (int i = (int)[self.arrrayWall count] - (int)[posts count]; i < [self.arrrayWall count]; i++) {
+        
+               
+                   CGSize newSize = [self setFramesToImageViews:nil imageFrames:[[self.arrrayWall objectAtIndex:i] attachments]
+                               toFitSize:CGSizeMake(self.view.frame.size.width-16, self.view.frame.size.width-16)];
+                     
+                        NSLog(@"newSize = %@",NSStringFromCGSize(newSize));
                         
-                               
-                                   CGSize newSize = [self setFramesToImageViews:nil imageFrames:[[self.arrrayWall objectAtIndex:i] attachments]
-                                               toFitSize:CGSizeMake(self.view.frame.size.width-16, self.view.frame.size.width-16)];
-                                     
-                                       [self.imageViewSize addObject:[NSNumber numberWithFloat:roundf(newSize.height)]];
-                                   }
-                                       
-                                       
-   
-                                   dispatch_sync(dispatch_get_main_queue(), ^{
+                        
+                        [self.imageViewSize addObject:[NSNumber numberWithFloat:newSize.height]];
 
-                                    [self.tableView beginUpdates];
-                                    [self.tableView insertRowsAtIndexPaths:arrPath withRowAnimation:UITableViewRowAnimationFade];
-                                    [self.tableView endUpdates];
+                   }
+                    
+                       
 
-                          
-                                       
-                                    self.loadingData = NO;
-                                       
-                                   });
-                                       
-                                   });
-  
-                               }
+                   dispatch_sync(dispatch_get_main_queue(), ^{
+
+                    [self.tableView beginUpdates];
+                    [self.tableView insertRowsAtIndexPaths:arrPath withRowAnimation:UITableViewRowAnimationFade];
+                    [self.tableView endUpdates];
+
+          
+                       
+                    self.loadingData = NO;
+                       
+                   });
+                       
+                   });
+
+               }
     
                                                
                                            } onFailure:^(NSError *error, NSInteger statusCode) {
@@ -301,8 +319,10 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 
         
         height = height + [[self.imageViewSize objectAtIndex:indexPath.row]floatValue];
+        
         NSLog(@"height = %f",height);
         
+        NSLog(@"self.view.frame.size.width = %f",self.view.frame.size.width);
         
         return 67 + 8 + height + [ASWallAttachmentCell heightForTextWithPostModel:wall andWidthTextCell:self.view.frame.size.width-16] + 8 + 15 + 33;
         
@@ -413,18 +433,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                 [cell.followButton setBackgroundColor:[UIColor colorWithRed:1 green:0.176 blue:0.333 alpha:1]];
             }
             
-            
-            /*
-            if ([cell.followButton.titleLabel.text isEqualToString:@"Join community"]) {
-                cell.followButton.backgroundColor = [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:1.000];
-            }
-            else
-           
-            if ([cell.followButton.titleLabel.text isEqualToString:@"You are a member"])
-            {
-            [cell.followButton setBackgroundColor:[UIColor colorWithRed:1 green:0.176 blue:0.333 alpha:1]];
-            }*/
-          
+ 
             cell.collectionView.collectionViewLayout = (UICollectionViewLayout*)[ASInfoMemberFlowLayout initFlowLayout];
             return cell;
         }
@@ -452,8 +461,17 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                cell = [[ASSegmentPost alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierSegmentPost];
             }
         
+     
+            if ([self.wallFilter isEqualToString:@"all"]) {
+                cell.postSegmentControl.selectedSegmentIndex = allPostWallFilter;
+            
+            } else if ([self.wallFilter isEqualToString:@"owner"]) {
+                cell.postSegmentControl.selectedSegmentIndex = ownerPostWallFilter;
+            }
+            
+            
             [cell.postSegmentControl addTarget:self
-                                        action:@selector(segmentControlPostAction:)
+                                        action:@selector(changeWallFilter:)
                                forControlEvents: UIControlEventValueChanged];
             
             [cell.createPost addTarget:self
@@ -699,11 +717,22 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 
 #pragma mark - Action
 
-- (IBAction)segmentControlPostAction:(UISegmentedControl *)sender {
+- (void)changeWallFilter:(UISegmentedControl *)sender {
     
     NSInteger selectedSegment = sender.selectedSegmentIndex;
     NSLog(@"selectedSegment = %d",selectedSegment);
     
+    if (selectedSegment == allPostWallFilter) {
+        self.wallFilter = @"all";
+        sender.selectedSegmentIndex = 0;
+    
+    } else if (selectedSegment == ownerPostWallFilter) {
+        self.wallFilter = @"owner";
+        sender.selectedSegmentIndex = 1;
+    }
+    
+    //[self refreshWall:sender];
+    [self updateOnlyWall:sender];
 }
 
 
@@ -750,7 +779,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                                    
                                    if (success == 1) {
                                        self.group.isMember = YES;
-                            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+                               NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 
                                [self.tableView beginUpdates];
                                [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -854,6 +883,53 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 }
 
 
+- (void)refreshWall:(id)sender {
+    
+    if (self.loadingData != YES) {
+        self.loadingData = YES;
+        
+
+            if ([self.arrrayWall count] > 0) {
+                
+                [self.arrrayWall removeAllObjects];
+                [self.imageViewSize removeAllObjects];
+                
+                self.group = nil;
+                
+                [self getInfoFromServer];
+                [self getWallFromServer];
+                
+                [self.refresh endRefreshing];
+                [self.tableView reloadData];
+              
+                self.loadingData = NO;
+            }
+        
+    }
+    
+}
+
+- (void) updateOnlyWall:(id)sender {
+
+    if (self.loadingData != YES) {
+        self.loadingData = YES;
+        
+        
+        if ([self.arrrayWall count] > 0) {
+            
+            [self.arrrayWall removeAllObjects];
+            [self.imageViewSize removeAllObjects];
+            
+            [self getWallFromServer];
+            [self.refresh endRefreshing];
+            [self.tableView reloadData];
+
+            self.loadingData = NO;
+        }
+        
+    }
+}
+
 
 #pragma mark - UIAlertViewDelegate
 
@@ -877,7 +953,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                                                       wall.reposts   = [[response objectForKey:@"reposts_count"] stringValue];
                                                       [self.tableView reloadData];
 
-                                                      self.indexPathWallForRepost = nil;
+                                                      self.indexPathWallForRepost = NULL;
                                                   }
                                                   onFailure:^(NSError *error, NSInteger statusCode) {
                                                       

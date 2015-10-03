@@ -225,8 +225,9 @@ static NSString* kUserId = @"kUserId";
 
                                   for (NSDictionary* dict in items) {
                                       
-                                       ASPhoto* photo =  [[ASPhoto alloc] initFromResponsePhotosGet:dict];
-                                       [objectsArray addObject:photo];
+                                      // ASPhoto* photo =  [[ASPhoto alloc] initFromResponsePhotosGet:dict];
+                                      ASPhoto* photo = [[ASPhoto alloc] initWithServerResponse:dict];
+                                      [objectsArray addObject:photo];
                                   }
                                   
                                   
@@ -351,6 +352,7 @@ static NSString* kUserId = @"kUserId";
 
 - (void)  getNewGroupWall:(NSString*) groupID
                withDomain:(NSString*) domain
+               withFilter:(NSString*) filter
                withOffset:(NSInteger) offset
                     count:(NSInteger) count
                 onSuccess:(void(^)(NSArray* posts)) success
@@ -369,7 +371,7 @@ static NSString* kUserId = @"kUserId";
      @"",           @"domain",
      @(count),      @"count",
      @(offset),     @"offset",
-     @"all",        @"filter",
+     filter,        @"filter",
      @"1",          @"extended",
      @"5.37",       @"v",
      self.accessToken.token, @"access_token", nil];

@@ -41,19 +41,25 @@ static NSString* identifierPhotos       = @"ASPhotoUserCell";
 static NSString* identifierSegmentPost  = @"ASSegmentPost";
 static NSString* identifierGray         = @"ASGrayCell";
 
+static NSString* identifierWall         = @"ASWallCell";
+
 
 static CGSize CGResizeFixHeight(CGSize size) {
-    
-    
-    //size.width *= height / size.height;
-    //size.height = height;
-    //return size;
-    
+
     CGFloat targetHeight = 65.0f;
     CGFloat scaleFactor = targetHeight / size.height;
     CGFloat targetWidth = size.width * scaleFactor;
     
     return CGSizeMake(targetWidth, targetHeight);
+}
+
+
+static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
+    
+    size.width *= height / size.height;
+    size.height = height;
+    
+    return size;
 }
 
 
@@ -113,9 +119,7 @@ static CGSize CGResizeFixHeight(CGSize size) {
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:1.000];
     self.navigationController.navigationBar.tintColor    = [UIColor whiteColor];
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
-    
-
-    
+   
 }
 
 
@@ -574,6 +578,8 @@ static CGSize CGResizeFixHeight(CGSize size) {
     
     NSInteger selectedSegment = sender.selectedSegmentIndex;
     NSLog(@"selectedSegment = %d",selectedSegment);
+    
+    
     
 }
 

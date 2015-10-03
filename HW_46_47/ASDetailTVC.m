@@ -29,9 +29,6 @@
 
 
 float        offset = 8.f;
-//float        heightText   = 27.f;
-
-
 
 static NSString* identifierWall      = @"ASWallCell";
 
@@ -88,6 +85,8 @@ static float offsetAfterShared                = 10.f;
 
     self.tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     
+    self.navigationItem.title = @"POST";
+
     self.navigationController.navigationBar.barStyle     = UIBarStyleBlackOpaque;
     self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:1.000];
     self.navigationController.navigationBar.tintColor    = [UIColor whiteColor];

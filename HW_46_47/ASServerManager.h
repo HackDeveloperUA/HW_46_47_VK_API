@@ -56,6 +56,7 @@
 
 - (void)  getNewGroupWall:(NSString*) groupID
                withDomain:(NSString*) domain
+               withFilter:(NSString*) filter
                withOffset:(NSInteger) offset
                     count:(NSInteger) count
                 onSuccess:(void(^)(NSArray* posts)) success
