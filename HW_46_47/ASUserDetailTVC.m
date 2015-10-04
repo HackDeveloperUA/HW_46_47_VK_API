@@ -215,8 +215,8 @@ static float offsetAfterShared                = 10.f;
                                               count:20
                                           onSuccess:^(NSArray *photos) {
           
-        NSLog(@"А БРАТЬЕВ = %d",[self.miniaturePhotoArray count]);
-        NSLog(@"НАС %d",[photos count]);
+        //NSLog(@"А БРАТЬЕВ = %d",[self.miniaturePhotoArray count]);
+        //NSLog(@"НАС %d",[photos count]);
        
  
       if ([photos count] > 0) {
@@ -228,7 +228,7 @@ static float offsetAfterShared                = 10.f;
         
           for (NSInteger i= [self.miniaturePhotoArray count]; i<=[photos count]+[self.miniaturePhotoArray count]-1; i++) {
               
-              NSLog(@"Добавляем %ld",(long)i);
+              //NSLog(@"Добавляем %ld",(long)i);
               [arrPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
           }
   
@@ -275,12 +275,16 @@ static float offsetAfterShared                = 10.f;
            
            for (NSInteger i= [self.arrrayWall count]; i<=[posts count]+[self.arrrayWall count]-1; i++) {
                
-               NSLog(@"Добавляем %ld",(long)i);
+               //NSLog(@"Добавляем %ld",(long)i);
                [arrPath addObject:[NSIndexPath indexPathForRow:i inSection:2]];
            }
            
            
            [self.arrrayWall addObjectsFromArray:posts];
+           
+           
+           // Здесь зло
+           
            
            
            for (int i = (int)[self.arrrayWall count] - (int)[posts count]; i < [self.arrrayWall count]; i++) {
@@ -289,10 +293,8 @@ static float offsetAfterShared                = 10.f;
                CGSize newSize = [self setFramesToImageViews:nil imageFrames:[[self.arrrayWall objectAtIndex:i] attachments]
                                                   toFitSize:CGSizeMake(self.view.frame.size.width-16, self.view.frame.size.width-16)];
                
-               NSLog(@"newSize = %@",NSStringFromCGSize(newSize));
-               ///!!!!
-               [self.imageViewSize addObject:[NSNumber numberWithFloat: newSize.height]];
-               
+               //NSLog(@"newSize = %@",NSStringFromCGSize(newSize));
+               [self.imageViewSize addObject:[NSNumber numberWithFloat:roundf(newSize.height)]];
            }
            
            
@@ -404,7 +406,8 @@ static float offsetAfterShared                = 10.f;
     
     if ([cell isKindOfClass:[ASWallAttachmentCell class]]) {
         
-        
+       
+    
         ASWall* wall = self.arrrayWall[indexPath.row];
 
         
@@ -418,9 +421,13 @@ static float offsetAfterShared                = 10.f;
             height = height + [[self.imageViewSize objectAtIndex:indexPath.row]floatValue];
         }
         
+        NSLog(@"IndexPath.row = %ld  size height = %f",(long)indexPath.row,(offsetBeforePhoto + heightPhoto) + (offsetBetweenPhotoAndText + height) + (offsetBetweenTextAndShared + heightShared + offsetAfterShared));
+        
+        
         return (offsetBeforePhoto + heightPhoto) + (offsetBetweenPhotoAndText + height) + (offsetBetweenTextAndShared + heightShared + offsetAfterShared);
         
-            
+        
+       
             
         }
     
@@ -623,7 +630,8 @@ static float offsetAfterShared                = 10.f;
         
         [cell.commentButton addTarget:self action:@selector(showComment:) forControlEvents:UIControlEventTouchUpInside];
         cell.commentButton.tag = indexPath.row;
-        
+        [cell.commentButton setImage:[UIImage imageNamed:@"comment"] forState:UIControlStateNormal];
+
         
 
         if (wall.canLike == NO) {
@@ -677,18 +685,15 @@ static float offsetAfterShared                = 10.f;
             float sizeText = [self heightLabelOfTextForString:cell.textPost.text fontSize:14.f widthLabel:CGRectGetWidth(self.view.bounds)-2*8];
             
             point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame),sizeText+(offsetBeforePhoto + heightPhoto + offsetBetweenPhotoAndText));
-            
-            
-            
-            
-            
+ 
             CGSize sizeAttachment = CGSizeMake(CGRectGetWidth(self.view.bounds)-2*offset, CGRectGetWidth(self.view.bounds)-2*offset);
             
             ASImageViewGallery *galery = [[ASImageViewGallery alloc]initWithImageArray:wall.attachments startPoint:point withSizeView:sizeAttachment];
             galery.tag = 11;
             [cell addSubview:galery];
-           // galery.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
             
+          
+
         }
         return cell;
         

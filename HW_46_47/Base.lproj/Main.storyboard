@@ -564,6 +564,9 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="33" id="B2H-0P-0wf"/>
+                                            </constraints>
                                         </view>
                                     </subviews>
                                     <constraints>
