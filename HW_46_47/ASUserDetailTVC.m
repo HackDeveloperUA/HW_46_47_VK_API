@@ -276,7 +276,7 @@ static float offsetAfterShared                = 10.f;
            for (NSInteger i= [self.arrrayWall count]; i<=[posts count]+[self.arrrayWall count]-1; i++) {
                
                NSLog(@"Добавляем %ld",(long)i);
-               [arrPath addObject:[NSIndexPath indexPathForRow:i inSection:1]];
+               [arrPath addObject:[NSIndexPath indexPathForRow:i inSection:2]];
            }
            
            
@@ -290,9 +290,8 @@ static float offsetAfterShared                = 10.f;
                                                   toFitSize:CGSizeMake(self.view.frame.size.width-16, self.view.frame.size.width-16)];
                
                NSLog(@"newSize = %@",NSStringFromCGSize(newSize));
-               
-               
-               [self.imageViewSize addObject:[NSNumber numberWithFloat:newSize.height]];
+               ///!!!!
+               [self.imageViewSize addObject:[NSNumber numberWithFloat: newSize.height]];
                
            }
            
@@ -379,6 +378,12 @@ static float offsetAfterShared                = 10.f;
 
 
 #pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+}
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -539,9 +544,10 @@ static float offsetAfterShared                = 10.f;
             [cell.collectionViewMember reloadData];
             return cell;
         }
-        
-   
     }
+    
+    
+    
     
     if (indexPath.section == 1) {
         
@@ -585,7 +591,9 @@ static float offsetAfterShared                = 10.f;
         }
         
         ASWall* wall = self.arrrayWall[indexPath.row];
+        if ([cell viewWithTag:11]) [[cell viewWithTag:11] removeFromSuperview];
 
+        
         if (wall.user) {
             cell.fullName.text = [NSString stringWithFormat:@"%@ %@",wall.user.firstName, wall.user.lastName];
             [cell.ownerPhoto setImageWithURL:wall.user.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
@@ -606,7 +614,7 @@ static float offsetAfterShared                = 10.f;
         
         
         
-        [cell.likeButton      addTarget:self action:@selector(addLikeOnPost:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.likeButton      addTarget:self action:@selector(addLikeOnPost2:) forControlEvents:UIControlEventTouchUpInside];
         cell.likeButton.tag = indexPath.row;
         
         [cell.repostButton      addTarget:self action:@selector(addRepost:) forControlEvents:UIControlEventTouchUpInside];
@@ -621,10 +629,10 @@ static float offsetAfterShared                = 10.f;
         if (wall.canLike == NO) {
             cell.likeView.backgroundColor =  [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:0.5];
         } else {
-            cell.likeView.backgroundColor = [UIColor clearColor];
+            cell.likeView.backgroundColor = [UIColor yellowColor];
         }
         
-    
+
         
         if (wall.canRepost == NO) {
             cell.repostView.backgroundColor =  [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:0.5];
@@ -659,15 +667,19 @@ static float offsetAfterShared                = 10.f;
         
         
         
-        if ([cell viewWithTag:11]) [[cell viewWithTag:11] removeFromSuperview];
+        //if ([cell viewWithTag:11]) [[cell viewWithTag:11] removeFromSuperview];
         
         if ([wall.attachments count] > 0) {
             
             CGPoint point = CGPointZero;
+     
             
             float sizeText = [self heightLabelOfTextForString:cell.textPost.text fontSize:14.f widthLabel:CGRectGetWidth(self.view.bounds)-2*8];
             
             point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame),sizeText+(offsetBeforePhoto + heightPhoto + offsetBetweenPhotoAndText));
+            
+            
+            
             
             
             CGSize sizeAttachment = CGSizeMake(CGRectGetWidth(self.view.bounds)-2*offset, CGRectGetWidth(self.view.bounds)-2*offset);
@@ -675,7 +687,7 @@ static float offsetAfterShared                = 10.f;
             ASImageViewGallery *galery = [[ASImageViewGallery alloc]initWithImageArray:wall.attachments startPoint:point withSizeView:sizeAttachment];
             galery.tag = 11;
             [cell addSubview:galery];
-            galery.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+           // galery.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
             
         }
         return cell;
@@ -837,7 +849,7 @@ static float offsetAfterShared                = 10.f;
 
 
 
--(void) addLikeOnPost:(UIButton*) sender {
+-(void) addLikeOnPost2:(UIButton*) sender {
     
     ASWall* wall = self.arrrayWall[sender.tag];
     
@@ -938,10 +950,9 @@ static float offsetAfterShared                = 10.f;
     
     ASDetailTVC* detailVC = (ASDetailTVC*)[storyboard instantiateViewControllerWithIdentifier:@"ASDetailTVC"];
     
-    detailVC.group  = self.group;
-    
+    // detailVC.group  = self.group;
     // [[self.imageViewSize objectAtIndex:indexPath.row]floatValue]
-    //[[self.arrrayWall objectAtIndex:sender.tag] imageViewSize] = [[self.imageViewSize objectAtIndex:sender.tag]floatValue];
+    // [[self.arrrayWall objectAtIndex:sender.tag] imageViewSize] = [[self.imageViewSize objectAtIndex:sender.tag]floatValue];
     
     
     ASWall* wall = [[ASWall alloc] init];
@@ -971,9 +982,11 @@ static float offsetAfterShared                = 10.f;
             
             ASWall* wall = self.arrrayWall[self.indexPathWallForRepost];
             
-            [[ASServerManager sharedManager] repostOnMyWall:wall.ownerID inPost:wall.postID withMessage:textfield.text
+            [[ASServerManager sharedManager] repostOnMyWall:wall.ownerID
+                                                     inPost:wall.postID
+                                                withMessage:textfield.text
+                                                  typeOwner:@"user"
                                                   onSuccess:^(NSDictionary *result) {
-                                                      
                                                       
                                                       NSDictionary* response = [result objectForKey:@"response"];
                                                       
@@ -982,8 +995,9 @@ static float offsetAfterShared                = 10.f;
                                                       [self.tableView reloadData];
                                                       
                                                       self.indexPathWallForRepost = NULL;
-                                                  }
-                                                  onFailure:^(NSError *error, NSInteger statusCode) {
+
+                                                      
+                                                  } onFailure:^(NSError *error, NSInteger statusCode) {
                                                       
                                                   }];
             

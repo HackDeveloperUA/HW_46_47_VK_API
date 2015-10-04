@@ -457,17 +457,17 @@
                                     <outlet property="postSegmentControl" destination="qdj-5d-pOV" id="QBK-eu-ILK"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ASWallCell" rowHeight="163" id="Ome-f8-0p9" customClass="ASWallAttachmentCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ASWallCell" rowHeight="163" id="eXS-am-60S" customClass="ASWallAttachmentCell">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ome-f8-0p9" id="9aR-oP-pGK">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eXS-am-60S" id="zAb-Bs-nei">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pl_man" translatesAutoresizingMaskIntoConstraints="NO" id="zQs-4l-XHb">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pl_man" translatesAutoresizingMaskIntoConstraints="NO" id="Wng-vz-PXC">
                                             <rect key="frame" x="8" y="8" width="60" height="60"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="60" id="q2c-FA-59U"/>
-                                                <constraint firstAttribute="height" constant="60" id="uBS-40-DlV"/>
+                                                <constraint firstAttribute="height" constant="60" id="EGs-8I-asn"/>
+                                                <constraint firstAttribute="width" constant="60" id="UTB-bh-d6B"/>
                                             </constraints>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -476,37 +476,37 @@
                                                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                             </userDefinedRuntimeAttributes>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Full Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="azT-T1-nB1">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Full Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HaB-P4-fhk">
                                             <rect key="frame" x="76" y="8" width="516" height="30"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="97Z-wW-eph">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U6N-Ib-uQk">
                                             <rect key="frame" x="76" y="38" width="516" height="30"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" red="0.30557528410000001" green="0.30557528410000001" blue="0.30557528410000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Use the properties and methods defined" lineBreakMode="wordWrap" numberOfLines="999" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CdN-CE-Hqw">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Use the properties and methods defined" lineBreakMode="wordWrap" numberOfLines="999" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r9m-YI-rhK">
                                             <rect key="frame" x="8" y="76" width="584" height="27"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DuO-1Q-fRZ" userLabel="SharedView">
+                                        <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Osy-ED-1eE" userLabel="SharedView">
                                             <rect key="frame" x="8" y="119" width="233" height="33"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HoU-RM-Icr" userLabel="commentView">
+                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="guw-Y0-BHY" userLabel="commentView">
                                                     <rect key="frame" x="7" y="2" width="60" height="30"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="12" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iEk-e4-30f">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="12" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wp8-Om-RnE">
                                                             <rect key="frame" x="30" y="0.0" width="30" height="30"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" tag="100" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KgB-q4-FnJ">
+                                                        <button opaque="NO" tag="100" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nGJ-7v-IOo">
                                                             <rect key="frame" x="0.0" y="0.0" width="60" height="30"/>
                                                             <inset key="imageEdgeInsets" minX="2" minY="2" maxX="33" maxY="0.0"/>
                                                             <state key="normal" title="Button" image="comment">
@@ -515,16 +515,16 @@
                                                         </button>
                                                     </subviews>
                                                 </view>
-                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="COd-S3-8Gj" userLabel="likeView">
+                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OXm-H6-gCw" userLabel="likeView">
                                                     <rect key="frame" x="84" y="2" width="60" height="30"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gcQ-wG-WpM">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sXT-Ql-NzE">
                                                             <rect key="frame" x="30" y="0.0" width="30" height="30"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" tag="200" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lfP-cO-oj2">
+                                                        <button opaque="NO" tag="200" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c9H-7y-EAM">
                                                             <rect key="frame" x="0.0" y="0.0" width="60" height="30"/>
                                                             <inset key="imageEdgeInsets" minX="2" minY="5" maxX="33" maxY="2"/>
                                                             <state key="normal" title="Button" image="like">
@@ -539,16 +539,16 @@
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
-                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="peK-Dh-N68" userLabel="repostView">
+                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gph-qu-rfb" userLabel="repostView">
                                                     <rect key="frame" x="159" y="2" width="60" height="30"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S9P-jV-mHI">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MpP-c6-bC0">
                                                             <rect key="frame" x="30" y="0.0" width="30" height="30"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" tag="300" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ov4-82-6vc">
+                                                        <button opaque="NO" tag="300" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JXD-Ae-8ib">
                                                             <rect key="frame" x="0.0" y="0.0" width="60" height="30"/>
                                                             <inset key="imageEdgeInsets" minX="2" minY="4" maxX="33" maxY="0.0"/>
                                                             <state key="normal" title="Button" image="repost">
@@ -567,36 +567,36 @@
                                         </view>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="CdN-CE-Hqw" firstAttribute="leading" secondItem="9aR-oP-pGK" secondAttribute="leading" constant="8" id="8dt-yD-jF0"/>
-                                        <constraint firstItem="azT-T1-nB1" firstAttribute="leading" secondItem="zQs-4l-XHb" secondAttribute="trailing" constant="8" id="E9q-tL-FNV"/>
-                                        <constraint firstAttribute="bottom" secondItem="DuO-1Q-fRZ" secondAttribute="bottom" constant="10" id="MDt-ho-fML"/>
-                                        <constraint firstItem="azT-T1-nB1" firstAttribute="top" secondItem="9aR-oP-pGK" secondAttribute="top" constant="8" id="NY8-S2-0FW"/>
-                                        <constraint firstAttribute="trailing" secondItem="azT-T1-nB1" secondAttribute="trailing" constant="8" id="OjD-ES-05s"/>
-                                        <constraint firstItem="CdN-CE-Hqw" firstAttribute="top" secondItem="9aR-oP-pGK" secondAttribute="topMargin" constant="68" id="PQN-vj-IyH"/>
-                                        <constraint firstItem="zQs-4l-XHb" firstAttribute="leading" secondItem="9aR-oP-pGK" secondAttribute="leading" constant="8" id="mWw-m5-hn5"/>
-                                        <constraint firstItem="97Z-wW-eph" firstAttribute="top" secondItem="azT-T1-nB1" secondAttribute="bottom" id="nAD-Kh-vab"/>
-                                        <constraint firstItem="DuO-1Q-fRZ" firstAttribute="leading" secondItem="9aR-oP-pGK" secondAttribute="leading" constant="8" id="reR-Yw-40e"/>
-                                        <constraint firstAttribute="trailing" secondItem="97Z-wW-eph" secondAttribute="trailing" constant="8" id="sdy-8Y-vr3"/>
-                                        <constraint firstItem="zQs-4l-XHb" firstAttribute="top" secondItem="9aR-oP-pGK" secondAttribute="top" constant="8" id="tn6-RS-gzw"/>
-                                        <constraint firstAttribute="trailing" secondItem="CdN-CE-Hqw" secondAttribute="trailing" constant="8" id="wQ6-1D-hVr"/>
-                                        <constraint firstItem="97Z-wW-eph" firstAttribute="leading" secondItem="zQs-4l-XHb" secondAttribute="trailing" constant="8" id="xZg-NZ-cnI"/>
+                                        <constraint firstAttribute="trailing" secondItem="HaB-P4-fhk" secondAttribute="trailing" constant="8" id="3j6-Bv-sNU"/>
+                                        <constraint firstItem="U6N-Ib-uQk" firstAttribute="leading" secondItem="Wng-vz-PXC" secondAttribute="trailing" constant="8" id="54G-SR-ggG"/>
+                                        <constraint firstItem="HaB-P4-fhk" firstAttribute="leading" secondItem="Wng-vz-PXC" secondAttribute="trailing" constant="8" id="5Su-ax-lfv"/>
+                                        <constraint firstItem="Wng-vz-PXC" firstAttribute="leading" secondItem="zAb-Bs-nei" secondAttribute="leading" constant="8" id="HMd-Dx-pTV"/>
+                                        <constraint firstItem="HaB-P4-fhk" firstAttribute="top" secondItem="zAb-Bs-nei" secondAttribute="top" constant="8" id="IxY-Os-rgT"/>
+                                        <constraint firstItem="U6N-Ib-uQk" firstAttribute="top" secondItem="HaB-P4-fhk" secondAttribute="bottom" id="K9a-aR-hBE"/>
+                                        <constraint firstItem="Wng-vz-PXC" firstAttribute="top" secondItem="zAb-Bs-nei" secondAttribute="top" constant="8" id="OIb-8f-ggY"/>
+                                        <constraint firstItem="r9m-YI-rhK" firstAttribute="top" secondItem="zAb-Bs-nei" secondAttribute="topMargin" constant="68" id="i7G-EB-l6C"/>
+                                        <constraint firstAttribute="bottom" secondItem="Osy-ED-1eE" secondAttribute="bottom" constant="10" id="iNL-LL-b0N"/>
+                                        <constraint firstAttribute="trailing" secondItem="U6N-Ib-uQk" secondAttribute="trailing" constant="8" id="iNx-k4-iuw"/>
+                                        <constraint firstItem="Osy-ED-1eE" firstAttribute="leading" secondItem="zAb-Bs-nei" secondAttribute="leading" constant="8" id="mk4-gL-H7A"/>
+                                        <constraint firstAttribute="trailing" secondItem="r9m-YI-rhK" secondAttribute="trailing" constant="8" id="qWo-xm-qzQ"/>
+                                        <constraint firstItem="r9m-YI-rhK" firstAttribute="leading" secondItem="zAb-Bs-nei" secondAttribute="leading" constant="8" id="yii-PT-6ds"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="commentButton" destination="KgB-q4-FnJ" id="u3f-sV-fOx"/>
-                                    <outlet property="commentLabel" destination="iEk-e4-30f" id="8xd-Sc-efL"/>
-                                    <outlet property="commentView" destination="HoU-RM-Icr" id="Syc-qh-qwW"/>
-                                    <outlet property="date" destination="97Z-wW-eph" id="B3K-DX-bLG"/>
-                                    <outlet property="fullName" destination="azT-T1-nB1" id="EPK-fj-Wf5"/>
-                                    <outlet property="likeButton" destination="lfP-cO-oj2" id="X3e-pS-yEO"/>
-                                    <outlet property="likeLabel" destination="gcQ-wG-WpM" id="AxR-Zj-CmD"/>
-                                    <outlet property="likeView" destination="COd-S3-8Gj" id="Tbp-zQ-g3F"/>
-                                    <outlet property="ownerPhoto" destination="zQs-4l-XHb" id="zoK-CS-Vr7"/>
-                                    <outlet property="repostButton" destination="Ov4-82-6vc" id="f3g-wi-1iI"/>
-                                    <outlet property="repostLabel" destination="S9P-jV-mHI" id="AQ5-w8-76A"/>
-                                    <outlet property="repostView" destination="peK-Dh-N68" id="dqL-9A-4Fi"/>
-                                    <outlet property="sharedView" destination="DuO-1Q-fRZ" id="YHH-Vx-TM0"/>
-                                    <outlet property="textPost" destination="CdN-CE-Hqw" id="ijm-h2-80U"/>
+                                    <outlet property="commentButton" destination="nGJ-7v-IOo" id="xAv-9B-Ezm"/>
+                                    <outlet property="commentLabel" destination="wp8-Om-RnE" id="ALq-r6-m8G"/>
+                                    <outlet property="commentView" destination="guw-Y0-BHY" id="0s6-xC-MWY"/>
+                                    <outlet property="date" destination="U6N-Ib-uQk" id="BoD-8o-PSQ"/>
+                                    <outlet property="fullName" destination="HaB-P4-fhk" id="eca-48-QQk"/>
+                                    <outlet property="likeButton" destination="c9H-7y-EAM" id="ivX-oI-sDM"/>
+                                    <outlet property="likeLabel" destination="sXT-Ql-NzE" id="1VC-rc-F6a"/>
+                                    <outlet property="likeView" destination="OXm-H6-gCw" id="HIW-Rw-r4t"/>
+                                    <outlet property="ownerPhoto" destination="Wng-vz-PXC" id="gVj-ht-E53"/>
+                                    <outlet property="repostButton" destination="JXD-Ae-8ib" id="EQF-Yr-G9d"/>
+                                    <outlet property="repostLabel" destination="MpP-c6-bC0" id="fZK-vH-jOB"/>
+                                    <outlet property="repostView" destination="gph-qu-rfb" id="bWP-qz-3KL"/>
+                                    <outlet property="sharedView" destination="Osy-ED-1eE" id="fA0-li-8bN"/>
+                                    <outlet property="textPost" destination="r9m-YI-rhK" id="r9w-BG-Nck"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -618,7 +618,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AC5-0s-WYh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1307" y="1041"/>
+            <point key="canvasLocation" x="1325" y="984"/>
         </scene>
         <!--GroupTVC-->
         <scene sceneID="vZb-wG-ze0">

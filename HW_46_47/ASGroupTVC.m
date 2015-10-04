@@ -206,7 +206,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                         NSLog(@"newSize = %@",NSStringFromCGSize(newSize));
                         
                         
-                        [self.imageViewSize addObject:[NSNumber numberWithFloat:newSize.height]];
+                        [self.imageViewSize addObject:[NSNumber numberWithFloat:roundf(newSize.height)]];
 
                    }
                     

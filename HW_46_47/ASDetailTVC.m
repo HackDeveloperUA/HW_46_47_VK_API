@@ -127,81 +127,96 @@ static float offsetAfterShared                = 10.f;
 -(void) getCommentFromServerOnSuccess:(void(^)(BOOL success)) success{
    
     NSString* ownerID;
+    NSString* typeOwner;
     
-    if (self.group) {
+    if (self.wall.group) {
+        ownerID = self.group.groupID;
+        typeOwner = @"group";
+   
+    } else if (self.wall.user) {
+        ownerID = self.user.userID;
+        typeOwner = @"user";
+    }
+    
+    
+    
+    /* if (self.group) {
         ownerID = self.group.groupID;
     } else if (self.user) {
         ownerID = self.user.userID;
-    }
+    }*/
     
-    [[ASServerManager sharedManager] getCommentFromPost:ownerID inPost:self.postID withOffset:[self.arrayComments count] count:20
+    
+    [[ASServerManager sharedManager] getCommentFromPost:ownerID
+                                                 inPost:self.postID
+                                              typeOwner:typeOwner
+                                             withOffset:[self.arrayComments count]
+                                                  count:20
                                               onSuccess:^(NSArray *comments) {
                                                   
-        
-                                                  
-                                                  
-        if ([comments count] > 0) {
-               
-           dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-                                  
+          if ([comments count] > 0) {
+              
+              dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                  
+                  
+                  NSMutableArray* arrPath   = [NSMutableArray array];
+                  NSMutableArray* tempArray = nil;
+                  
+                  if ([self.arrayComments count]>0) {
+                      tempArray = [NSMutableArray arrayWithArray:self.arrayComments];
+                  } else {
+                      tempArray = [NSMutableArray array];
+                  }
+                  
+                  /////////////
+                  NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange: NSMakeRange(0,[comments count])];
+                  
+                  [tempArray insertObjects:comments atIndexes:indexes];
+                  self.arrayComments = tempArray;
+                  
+                  
+                  for (int i=1; i<=[comments count]; i++) {
+                      [arrPath addObject:[NSIndexPath indexPathForRow:i inSection:1]];
+                  }
+                  /////////
+                  
+                  for (NSInteger i=0; i<=[comments count]-1; i++) {
                       
-               NSMutableArray* arrPath   = [NSMutableArray array];
-               NSMutableArray* tempArray = nil;
-               
-               if ([self.arrayComments count]>0) {
-                   tempArray = [NSMutableArray arrayWithArray:self.arrayComments];
-               } else {
-                   tempArray = [NSMutableArray array];
-               }
-
-          /////////////
-               NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange: NSMakeRange(0,[comments count])];
-               
-               [tempArray insertObjects:comments atIndexes:indexes];
-               self.arrayComments = tempArray;
-               
-               
-               for (int i=1; i<=[comments count]; i++) {
-                   [arrPath addObject:[NSIndexPath indexPathForRow:i inSection:1]];
-               }
-           /////////
-               
-               
-               
-               
-               
-               for (NSInteger i=0; i<=[comments count]-1; i++) {
-                   
-                   CGSize newSize = [self setFramesToImageViews:nil
-                                                    imageFrames:[[self.arrayComments objectAtIndex:i] attachments]
-                                                      toFitSize:CGSizeMake(self.view.frame.size.width-16, self.view.frame.size.width-16)];
-                   
-                   [self.imageViewSize insertObject:[NSNumber numberWithFloat:roundf(newSize.height)] atIndex:i];
-               }
-               
-               
-                      dispatch_async(dispatch_get_main_queue(), ^{
-                          
-               
-                          [self.tableView beginUpdates];
-                          [self.tableView insertRowsAtIndexPaths:arrPath withRowAnimation:UITableViewRowAnimationLeft];
-                          [self.tableView endUpdates];
-                          
-                          
-                           self.loadingData = NO;
-                          
-                          
-                              if (success) {
-                                  success(true);
-                              }
-                          
-                      });
-                     });
-                   }
-                                              } onFailure:^(NSError *error, NSInteger statusCode) {
+                      CGSize newSize = [self setFramesToImageViews:nil
+                                                       imageFrames:[[self.arrayComments objectAtIndex:i] attachments]
+                                                         toFitSize:CGSizeMake(self.view.frame.size.width-16, self.view.frame.size.width-16)];
+                      
+                      [self.imageViewSize insertObject:[NSNumber numberWithFloat:roundf(newSize.height)] atIndex:i];
+                  }
+                  
+                  
+                  dispatch_async(dispatch_get_main_queue(), ^{
+                      
+                      
+                      [self.tableView beginUpdates];
+                      [self.tableView insertRowsAtIndexPaths:arrPath withRowAnimation:UITableViewRowAnimationLeft];
+                      [self.tableView endUpdates];
+                      
+                      
+                      self.loadingData = NO;
+                      
+                      
+                      if (success) {
+                          success(true);
+                      }
+                      
+                  });
+              });
+          }
+                                                  
+                                              }
+                                              onFailure:^(NSError *error, NSInteger statusCode) {
                                                   
                                               }];
     
+    
+    
+      
 }
 
 
@@ -660,26 +675,52 @@ if ([self.wall.attachments count] > 0) {
     
 
     ASComment* comment = self.arrayComments[sender.tag];
+    NSString* ownerID;
+    NSString* ownerType;
+
+    if (comment.group) {
+        
+        ownerID   = comment.group.groupID;
+        ownerType = @"group";
+       
+        /*if (![ownerID hasPrefix:@"-"]) {
+            ownerID = [@"-" stringByAppendingString:ownerID];
+        }*/
+        
+    } else if (comment.user) {
+        
+        ownerID   = comment.user.userID;
+        ownerType = @"user";
+    }
     
     if (comment.canLike) {
         
-        [[ASServerManager sharedManager] postAddLikeOnWall:self.group.groupID  inPost:comment.postID  type:comment.type
+        
+        [[ASServerManager sharedManager] postAddLikeOnWall:comment.ownerID
+                                                    inPost:ownerID
+                                                      type:@"comment"
+                                                 typeOwner:@""
                                                  onSuccess:^(NSDictionary *result) {
-                                                     
+                                                    
                                                      NSDictionary* response = [result objectForKey:@"response"];
                                                      
                                                      comment.canLike = NO;
                                                      comment.likes   = [[response objectForKey:@"likes"] stringValue];
                                                      [self.tableView reloadData];
+
                                                      
                                                  }
                                                  onFailure:^(NSError *error, NSInteger statusCode) {
                                                      
                                                  }];
+
     } else {
         
         
-        [[ASServerManager sharedManager] postDeleteLikeOnWall:self.group.groupID inPost:comment.postID  type:comment.type
+        [[ASServerManager sharedManager] postDeleteLikeOnWall:comment.ownerID
+                                                       inPost:ownerID
+                                                         type:@"comment"
+                                                    typeOwner:ownerType
                                                     onSuccess:^(NSDictionary *result) {
                                                         
                                                         NSDictionary* response = [result objectForKey:@"response"];
@@ -688,10 +729,10 @@ if ([self.wall.attachments count] > 0) {
                                                         comment.likes   = [[response objectForKey:@"likes"] stringValue];
                                                         [self.tableView reloadData];
                                                         
-                                                    }
-                                                    onFailure:^(NSError *error, NSInteger statusCode) {
+                                                    } onFailure:^(NSError *error, NSInteger statusCode) {
                                                         
                                                     }];
+
     }
 }
 
