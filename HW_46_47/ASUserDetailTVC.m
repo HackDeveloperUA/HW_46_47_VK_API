@@ -629,7 +629,6 @@ static NSInteger ownerPostWallFilter = 1;
         
         ASWall* wall = self.arrrayWall[indexPath.row];
      
-        if ([cell viewWithTag:11]) [[cell viewWithTag:11] removeFromSuperview];
 
         
         if (wall.user) {
@@ -705,7 +704,7 @@ static NSInteger ownerPostWallFilter = 1;
                                         }];
         
         
-        
+        if ([cell viewWithTag:11]) [[cell viewWithTag:11] removeFromSuperview];
         if ([cell viewWithTag:222]) [[cell viewWithTag:222] removeFromSuperview];
         
         if ([wall.attachments count] > 0) {
@@ -732,7 +731,13 @@ static NSInteger ownerPostWallFilter = 1;
                 
                 if ([obj isKindOfClass:[ASLink class]]) {
                 
-                    point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame), CGRectGetMaxY(galery.frame));
+                    if (CGRectGetMaxY(galery.frame)>70) {
+                        point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame), CGRectGetMaxY(galery.frame));
+                    } else {
+                        point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame), CGRectGetMaxY(cell.textPost.frame));
+
+                    }
+                    
     
                     
                     ASLink* link = (ASLink*)obj;
@@ -1173,11 +1178,20 @@ static NSInteger ownerPostWallFilter = 1;
 - (CGSize)setFramesToImageViews:(NSArray *)imageViews imageFrames:(NSArray *)imageFrames toFitSize:(CGSize)frameSize {
     
     int N = (int)imageFrames.count;
+    
+    for (int i = 0; i < [imageFrames count]; i++) {
+        
+        if ([[imageFrames objectAtIndex:i] isKindOfClass:[ASLink class]]) {
+            N--;
+        }
+    }
+    
+    
     CGRect newFrames[N];
     
-    float ideal_height = MAX(frameSize.height, frameSize.width) / N;
-    float seq[N];
-    float total_width = 0;
+    long double ideal_height = MAX(frameSize.height, frameSize.width) / N;
+    long double seq[N];
+    long double total_width = 0;
     
     ////
     ////
@@ -1197,8 +1211,8 @@ static NSInteger ownerPostWallFilter = 1;
     
     int K = (int)roundf(total_width / frameSize.width);
     
-    float M[N][K];
-    float D[N][K];
+    long double M[N][K];
+    long double D[N][K];
     
     for (int i = 0 ; i < N; i++)
         for (int j = 0; j < K; j++)
@@ -1210,7 +1224,7 @@ static NSInteger ownerPostWallFilter = 1;
     for (int i = 0; i < N; i++)
         M[i][0] = seq[i] + (i ? M[i-1][0] : 0);
     
-    float cost;
+    long double cost;
     for (int i = 1; i < N; i++) {
         for (int j = 1; j < K; j++) {
             M[i][j] = INT_MAX;
@@ -1242,7 +1256,7 @@ static NSInteger ownerPostWallFilter = 1;
     //float heightOffset = cellDistance, widthOffset;
     long double heightOffset = cellDistance, widthOffset;
 
-    float frameWidth;
+    long double frameWidth;
     for (int i = 0; i < K; i++) {
         float rowWidth = 0;
         frameWidth = frameSize.width - ((ranges[i][1] - ranges[i][0]) + 2) * cellDistance;
@@ -1251,7 +1265,7 @@ static NSInteger ownerPostWallFilter = 1;
             rowWidth += newFrames[j].size.width;
         }
         
-        float ratio = frameWidth / rowWidth;
+        long double ratio = frameWidth / rowWidth;
         widthOffset = 0;
         
         for (int j = ranges[i][0]; j <= ranges[i][1]; j++) {
