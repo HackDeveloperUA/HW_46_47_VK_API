@@ -47,6 +47,8 @@ static NSString* identifierGray         = @"ASGrayCell";
 static NSString* identifierWall         = @"ASWallCell";
 
 
+
+
 static CGSize CGResizeFixHeight(CGSize size) {
 
     CGFloat targetHeight = 65.0f;
@@ -76,6 +78,10 @@ static float offsetBetweenTextAndShared       = 16.f;
 static float offsetAfterShared                = 10.f;
 
 
+static NSInteger allPostWallFilter   = 0;
+static NSInteger ownerPostWallFilter = 1;
+
+
 
 
 @interface ASUserDetailTVC () <UITableViewDataSource,      UITableViewDelegate,UICollectionViewDelegateFlowLayout,
@@ -92,7 +98,7 @@ static float offsetAfterShared                = 10.f;
 @property (strong,nonatomic)  ASUser *currentUser;
 
 @property (strong, nonatomic) NSMutableArray* arrrayWall;
-@property (strong,nonatomic) NSMutableArray *imageViewSize;
+@property (strong,nonatomic)  NSMutableArray *imageViewSize;
 
 
 
@@ -113,8 +119,12 @@ static float offsetAfterShared                = 10.f;
 @property (strong, nonatomic) UICollectionView* collectionViewPhoto;
 @property (strong, nonatomic) UIButton* numberPhotoButton;
 
-
+// для репоста записии
 @property (assign, nonatomic) NSInteger indexPathWallForRepost;
+
+// для работы с стеной
+@property (strong, nonatomic) NSString* wallFilter;
+@property (strong,nonatomic)  UIRefreshControl *refresh;
 
 
 @end
@@ -127,6 +137,14 @@ static float offsetAfterShared                = 10.f;
 
     
     self.superUserID = @"201621080";
+    
+    self.wallFilter = @"all";
+    
+    self.refresh = [[UIRefreshControl alloc] init];
+    [self.refresh addTarget:self action:@selector(refreshWall:) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:self.refresh];
+    
+
     
     self.currentUser  = [ASUser new];
     self.currentGroup = [ASGroup new];
@@ -257,7 +275,7 @@ static float offsetAfterShared                = 10.f;
 
     [[ASServerManager sharedManager] getWall:self.superUserID
                                   withDomain:@""
-                                  withFilter:@"all"
+                                  withFilter:self.wallFilter
                                   withOffset:[self.arrrayWall count]
                                    typeOwner:@"user"
                                        count:20
@@ -281,10 +299,7 @@ static float offsetAfterShared                = 10.f;
            
            
            [self.arrrayWall addObjectsFromArray:posts];
-           
-           
-           // Здесь зло
-           
+
            
            
            for (int i = (int)[self.arrrayWall count] - (int)[posts count]; i < [self.arrrayWall count]; i++) {
@@ -577,8 +592,17 @@ static float offsetAfterShared                = 10.f;
             if (!cell) {
                 cell = [[ASSegmentPost alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierSegmentPost];
             }
+            
+            if ([self.wallFilter isEqualToString:@"all"]) {
+                cell.postSegmentControl.selectedSegmentIndex = allPostWallFilter;
+                
+            } else if ([self.wallFilter isEqualToString:@"owner"]) {
+                cell.postSegmentControl.selectedSegmentIndex = ownerPostWallFilter;
+            }
+            
+            
             [cell.postSegmentControl addTarget:self
-                                        action:@selector(segmentControlPostAction:)
+                                        action:@selector(changeWallFilter:)
                               forControlEvents: UIControlEventValueChanged];
             [cell.createPost addTarget:self
                                 action:@selector(createPostAction:)
@@ -1015,8 +1039,72 @@ static float offsetAfterShared                = 10.f;
 
 
 
+- (void)refreshWall:(id)sender {
+    
+    if (self.loadingDataWall != YES) {
+        self.loadingDataWall = YES;
+        
+        
+        if ([self.arrrayWall count] > 0) {
+            
+            [self.arrrayWall removeAllObjects];
+            [self.imageViewSize removeAllObjects];
+            [self.miniaturePhotoArray removeAllObjects];
+            
+            
+            [self getUserFromServer];
+            [self getUserPhotoFromServer];
+            [self getWallFromServer];
+            
+            [self.refresh endRefreshing];
+            [self.tableView reloadData];
+            
+            self.loadingDataWall = NO;
+        }
+        
+    }
+    
+}
+
+- (void) updateOnlyWall:(id)sender {
+    
+    if (self.loadingDataWall != YES) {
+        self.loadingDataWall = YES;
+        
+        
+        if ([self.arrrayWall count] > 0) {
+            
+            [self.arrrayWall removeAllObjects];
+            [self.imageViewSize removeAllObjects];
+            
+            [self getWallFromServer];
+            [self.refresh endRefreshing];
+            [self.tableView reloadData];
+            
+            self.loadingDataWall = NO;
+        }
+        
+    }
+}
 
 
+- (void)changeWallFilter:(UISegmentedControl *)sender {
+    
+    NSInteger selectedSegment = sender.selectedSegmentIndex;
+    NSLog(@"selectedSegment = %d",selectedSegment);
+    
+    if (selectedSegment == allPostWallFilter) {
+        self.wallFilter = @"all";
+        sender.selectedSegmentIndex = 0;
+        
+    } else if (selectedSegment == ownerPostWallFilter) {
+        self.wallFilter = @"owner";
+        sender.selectedSegmentIndex = 1;
+    }
+    
+    //[self refreshWall:sender];
+    [self updateOnlyWall:sender];
+}
 
 
 

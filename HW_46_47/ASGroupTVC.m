@@ -104,7 +104,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     [super viewDidLoad];
     
     //58860049 10639516,
-    self.superGroupID = @"58860049";
+    self.superGroupID = @"10639516";
     
     
     
@@ -331,9 +331,10 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
         
         height = height + [[self.imageViewSize objectAtIndex:indexPath.row]floatValue];
         
+        NSLog(@"height = %f",height);
         
         return 67 + 8 + height + [ASWallAttachmentCell heightForTextWithPostModel:wall andWidthTextCell:self.view.frame.size.width-16] + 8 + 15 + 33;
-        
+       
     }
     
     
