@@ -293,7 +293,6 @@ static NSInteger ownerPostWallFilter = 1;
            
            for (NSInteger i= [self.arrrayWall count]; i<=[posts count]+[self.arrrayWall count]-1; i++) {
                
-               //NSLog(@"Добавляем %ld",(long)i);
                [arrPath addObject:[NSIndexPath indexPathForRow:i inSection:2]];
            }
            

@@ -37,7 +37,7 @@ static NSString* kUserId = @"kUserId";
 + (ASServerManager*) sharedManager {
     
     static ASServerManager* manager = nil;
-    
+
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         manager = [[ASServerManager alloc] init];
@@ -399,47 +399,61 @@ static NSString* kUserId = @"kUserId";
                     dispatch_async(self.requestQueue, ^{
  
                                    
-                                   NSArray*   wallArray     = [[responseObject objectForKey:@"response"] objectForKey:@"items"];
-                                   NSArray*   profilesArray = [[responseObject objectForKey:@"response"] objectForKey:@"profiles"];
-                                   NSArray*   groupArray    = [[responseObject objectForKey:@"response"] objectForKey:@"groups"];
+                   NSArray*   wallArray     = [[responseObject objectForKey:@"response"] objectForKey:@"items"];
+                   NSArray*   profilesArray = [[responseObject objectForKey:@"response"] objectForKey:@"profiles"];
+                   NSArray*   groupArray    = [[responseObject objectForKey:@"response"] objectForKey:@"groups"];
 
-                                   NSMutableArray *arrayWithProfiles = [[NSMutableArray alloc]init];
-                                  
-                                   NSMutableDictionary* profilesBase = [NSMutableDictionary dictionary];
+                   NSMutableArray *arrayWithProfiles = [[NSMutableArray alloc]init];
+                  
+                   NSMutableDictionary* profilesBase = [NSMutableDictionary dictionary];
+                   NSMutableDictionary* groupsBase   = [NSMutableDictionary dictionary];
 
-                                   
-                                   if (wallArray) {
-                                   
-                                       
-                                       for (NSDictionary* dict in profilesArray) {
-                                           [profilesBase setValue:dict forKey:[[dict objectForKey:@"id"] stringValue]];
-                                       }
-                                       
-                                     
-                                       for (int i=0; i<[wallArray count]; i++) {
-                                           
-                                           NSDictionary* dictItem    = wallArray[i];
-                                           ASWall* wall = [[ASWall alloc] initWithServerResponse:dictItem];
-                                           
-                                           if (![wall.fromID hasPrefix:@"-"]) {
-                                               wall.user = [[ASUser alloc] initWithServerResponse:[profilesBase objectForKey:wall.fromID]];
-                                           } else {
-                                               wall.group = [[ASGroup alloc] initWithServerResponse:[groupArray firstObject]];
-  
-                                           }
-                                           
-                                           [arrayWithProfiles addObject:wall];
-                                       }
-                                       
-                               
-                                   }
-                    
-                                   dispatch_async(dispatch_get_main_queue(), ^{
-     
-                                       if (success) {
-                                           success(arrayWithProfiles);
-                                       }
-                                   });
+                   if (wallArray) {
+                   
+                       
+                       for (NSDictionary* dict in profilesArray) {
+                           [profilesBase setValue:dict forKey:[[dict objectForKey:@"id"] stringValue]];
+                       }
+                       
+                       for (NSDictionary* dict in groupArray) {
+                      
+                           NSString* key = [[dict objectForKey:@"id"] stringValue];
+                           if (![key hasPrefix:@"-"]) {
+                               key = [@"-" stringByAppendingString:key];
+                           }
+                           [groupsBase setValue:dict forKey:key];
+                       }
+                     
+                       
+                       
+           for (int i=0; i<[wallArray count]; i++) {
+               
+               NSDictionary* dictItem    = wallArray[i];
+               ASWall* wall = [[ASWall alloc] initWithServerResponse:dictItem];
+               
+               
+               if (![wall.fromID hasPrefix:@"-"]) {
+                   wall.user = [[ASUser alloc] initWithServerResponse:[profilesBase objectForKey:wall.fromID]];
+               
+               
+               } else {
+                //wall.group = [[ASGroup alloc] initWithServerResponse:[groupArray firstObject]];
+                 wall.group = [[ASGroup alloc] initWithServerResponse:[groupsBase objectForKey:wall.ownerID]];
+
+               }
+               
+               [arrayWithProfiles addObject:wall];
+           }
+                       
+               
+                   }
+    
+                   dispatch_async(dispatch_get_main_queue(), ^{
+
+                       if (success) {
+                           success(arrayWithProfiles);
+                       }
+                   });
             });
                                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                    NSLog(@"Error: %@", error);
