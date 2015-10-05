@@ -104,7 +104,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     [super viewDidLoad];
     
     //58860049 10639516,
-    self.superGroupID = @"102981503";
+    self.superGroupID = @"58860049";
     
     
     
@@ -825,20 +825,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             
         }];
         
-        /*
-        [[ASServerManager sharedManager] postAddLikeOnWall:self.groupID  inPost:wall.postID  type:wall.type
-                                                 onSuccess:^(NSDictionary *result) {
-                                                     
-                                                     NSDictionary* response = [result objectForKey:@"response"];
-                                                     
-                                                     wall.canLike = NO;
-                                                     wall.likes   = [[response objectForKey:@"likes"] stringValue];
-                                                     [self.tableView reloadData];
-                                                     
-                                                 }
-                                                 onFailure:^(NSError *error, NSInteger statusCode) {
-                                                     
-                                                 }];*/
+  
     } else {
     
     

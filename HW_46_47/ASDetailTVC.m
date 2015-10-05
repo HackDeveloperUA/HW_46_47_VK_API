@@ -40,13 +40,13 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     return size;
 }
 
-static float heightPhoto  = 60.f;
+static float heightPhoto  = 40.f;
 static float heightShared = 33.f;
 
 static float offsetBeforePhoto                = 8.f;
 static float offsetBetweenPhotoAndText        = 8.f;
 static float offsetBetweenTextAndShared       = 16.f;
-static float offsetAfterShared                = 10.f;
+static float offsetAfterShared                = 6.f;
 
 
 
@@ -242,20 +242,20 @@ static float offsetAfterShared                = 10.f;
                 height = height + self.wall.imageViewSize;
             }
             
-            return (offsetBeforePhoto + heightPhoto) + (offsetBetweenPhotoAndText + height) + (offsetBetweenTextAndShared + heightShared + offsetAfterShared);
+            return (offsetBeforePhoto + heightPhoto) + (offsetBetweenPhotoAndText + height) + (offsetBetweenTextAndShared + heightShared + offsetAfterShared)+10;
             
           // Пидор вверху не трогай !!!!!!! ^
             
         } else {
             
-            static float heightPhoto  = 40.f;
+           /* static float heightPhoto  = 40.f;
             static float heightShared = 33.f;
             
             static float offsetBeforePhoto                = 8.f;
             static float offsetBetweenPhotoAndText        = 3.f;
             static float offsetBetweenTextAndShared       = 8.f;
             static float offsetAfterShared                = 6.f;
-            
+            */
             
             
             ASComment* commet = self.arrayComments [indexPath.row-1];
@@ -272,7 +272,7 @@ static float offsetAfterShared                = 10.f;
                // height = height + self.wall.imageViewSize;
             }
             
-            return (offsetBeforePhoto+heightPhoto)+(offsetBetweenPhotoAndText+height)+(offsetBetweenTextAndShared+heightShared)+(offsetAfterShared);
+            return (offsetBeforePhoto+heightPhoto)+(offsetBetweenPhotoAndText+height)+(offsetBetweenTextAndShared+heightShared+offsetAfterShared);
         }
     }
     
@@ -391,27 +391,28 @@ static float offsetAfterShared                = 10.f;
         
         if ([cell viewWithTag:11]) [[cell viewWithTag:11] removeFromSuperview];
         
-if ([self.wall.attachments count] > 0) {
-    
-    CGPoint point = CGPointZero;
-    
-    float sizeText = [self heightLabelOfTextForString:cell.textPost.text fontSize:14.f widthLabel:CGRectGetWidth(self.view.bounds)-2*8];
-    
-    point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame),sizeText+(offsetBeforePhoto + heightPhoto + offsetBetweenPhotoAndText));
-    
-    
-    CGSize sizeAttachment = CGSizeMake(CGRectGetWidth(self.view.bounds)-2*offset, CGRectGetWidth(self.view.bounds)-2*offset);
-    
-    ASImageViewGallery *galery = [[ASImageViewGallery alloc]initWithImageArray:self.wall.attachments startPoint:point withSizeView:sizeAttachment];
-    galery.tag = 11;
-    [cell addSubview:galery];
-    //galery.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-    
+    if ([self.wall.attachments count] > 0) {
+        
+        CGPoint point = CGPointZero;
+        
+        float sizeText = [self heightLabelOfTextForString:cell.textPost.text fontSize:14.f widthLabel:CGRectGetWidth(self.view.bounds)-2*8];
+        
+        point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame),sizeText+(offsetBeforePhoto + heightPhoto + offsetBetweenPhotoAndText));
+        
+        
+        CGSize sizeAttachment = CGSizeMake(CGRectGetWidth(self.view.bounds)-2*offset, CGRectGetWidth(self.view.bounds)-2*offset);
+        
+        ASImageViewGallery *galery = [[ASImageViewGallery alloc]initWithImageArray:self.wall.attachments startPoint:point withSizeView:sizeAttachment];
+        galery.tag = 11;
+        [cell addSubview:galery];
+        //galery.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+        
 }
         return cell;
         
     }
     
+    // Комменты
     
     if (indexPath.section == 1) {
         
@@ -678,45 +679,40 @@ if ([self.wall.attachments count] > 0) {
         
         ownerID   = comment.group.groupID;
         ownerType = @"group";
-       
-        /*if (![ownerID hasPrefix:@"-"]) {
-            ownerID = [@"-" stringByAppendingString:ownerID];
-        }*/
-        
     } else if (comment.user) {
         
         ownerID   = comment.user.userID;
         ownerType = @"user";
     }
     
+    
     if (comment.canLike) {
         
-        
-        [[ASServerManager sharedManager] postAddLikeOnWall:comment.ownerID
-                                                    inPost:ownerID
-                                                      type:@"comment"
-                                                 typeOwner:@""
+        [[ASServerManager sharedManager] postAddLikeOnWall:self.group.groupID
+                                                    inPost:comment.postID
+                                                      type:comment.type
+                                                 typeOwner:@"group"
                                                  onSuccess:^(NSDictionary *result) {
-                                                    
-                                                     NSDictionary* response = [result objectForKey:@"response"];
-                                                     
-                                                     comment.canLike = NO;
-                                                     comment.likes   = [[response objectForKey:@"likes"] stringValue];
-                                                     [self.tableView reloadData];
+            
+            NSDictionary* response = [result objectForKey:@"response"];
+            
+            comment.canLike = NO;
+            comment.likes   = [[response objectForKey:@"likes"] stringValue];
+            [self.tableView reloadData];
+            
+        } onFailure:^(NSError *error, NSInteger statusCode) {
+            
+        }];
+        
 
-                                                     
-                                                 }
-                                                 onFailure:^(NSError *error, NSInteger statusCode) {
-                                                     
-                                                 }];
 
     } else {
         
         
-        [[ASServerManager sharedManager] postDeleteLikeOnWall:comment.ownerID
-                                                       inPost:ownerID
-                                                         type:@"comment"
-                                                    typeOwner:ownerType
+        [[ASServerManager sharedManager] postDeleteLikeOnWall:self.group.groupID
+                                                       inPost:comment.postID
+                                                         type:comment.type
+                                                    typeOwner:@"group"
                                                     onSuccess:^(NSDictionary *result) {
                                                         
                                                         NSDictionary* response = [result objectForKey:@"response"];
