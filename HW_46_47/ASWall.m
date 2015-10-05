@@ -8,6 +8,7 @@
 
 #import "ASWall.h"
 #import "ASPhoto.h"
+#import "ASLink.h"
 
 
 @implementation ASWall
@@ -37,7 +38,6 @@
          self.canLike   = [[[responseObject objectForKey:@"likes"]    objectForKey:@"can_like"]boolValue];
          self.canRepost = [[[responseObject objectForKey:@"reposts"]  objectForKey:@"user_reposted"]boolValue];
         
-       // cell.commentLabel.text = ([wall.comments length]>3) ? ([NSString stringWithFormat:@"%@k",[wall.comments substringToIndex:1]]) : (wall.comments);
         
         self.canRepost = ([[[responseObject objectForKey:@"reposts"]  objectForKey:@"user_reposted"]boolValue] == NO)  ? (self.canRepost=YES) : (self.canRepost=NO);
         
@@ -65,6 +65,13 @@
                         if ([[dict objectForKey:@"type"]  isEqual: @"video"]) {
                             
                         }
+                        
+                        if ([[dict objectForKey:@"type"]  isEqual: @"link"]) {
+                            ASLink* link = [[ASLink alloc] initWithServerResponse:dict];
+                            [self.attachments addObject:link];
+                        }
+                        
+                        
                       }
                  }
        //////
@@ -84,6 +91,11 @@
                     if ([[dict objectForKey:@"type"]  isEqual: @"photo"]) {
                         ASPhoto* photo = [[ASPhoto alloc] initFromResponseWallGet:dict];
                         [self.attachments addObject:photo];
+                    }
+                    
+                    if ([[dict objectForKey:@"type"]  isEqual: @"link"]) {
+                        ASLink* link = [[ASLink alloc] initWithServerResponse:dict];
+                        [self.attachments addObject:link];
                     }
                 }
                 

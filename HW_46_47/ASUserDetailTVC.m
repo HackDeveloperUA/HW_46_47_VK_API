@@ -14,6 +14,7 @@
 #import "ASFriend.h"
 #import "ASGroup.h"
 #import "ASPhoto.h"
+#import "ASLink.h"
 
 // Collection View
 #import "ASInfoMemberCollectionCell.h"
@@ -28,6 +29,9 @@
 #import "ASGrayCell.h"
 #import "ASWallAttachmentCell.h"
 
+#import "ASLinkView.h"
+#import "testView.h"
+
 // Networking
 #import "ASServerManager.h"
 #import "AFNetWorking.h"
@@ -37,6 +41,8 @@
 #import "ASImageViewGallery.h"
 #import "ASDetailTVC.h"
 
+
+#import "ASLinkModel.h"
 
 
 static NSString* identifierMainUser     = @"ASMainUserCell";
@@ -699,7 +705,7 @@ static NSInteger ownerPostWallFilter = 1;
         
         
         
-        //if ([cell viewWithTag:11]) [[cell viewWithTag:11] removeFromSuperview];
+        if ([cell viewWithTag:222]) [[cell viewWithTag:222] removeFromSuperview];
         
         if ([wall.attachments count] > 0) {
             
@@ -715,9 +721,41 @@ static NSInteger ownerPostWallFilter = 1;
             ASImageViewGallery *galery = [[ASImageViewGallery alloc]initWithImageArray:wall.attachments startPoint:point withSizeView:sizeAttachment];
             galery.tag = 11;
             [cell addSubview:galery];
+   
+            ///
             
-          
-
+            for (id obj in wall.attachments) {
+                
+                if ([obj isKindOfClass:[ASLink class]]) {
+                
+                    point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame), CGRectGetMaxY(galery.frame));
+    
+                    
+                    ASLink* link = (ASLink*)obj;
+                    
+                    ASLinkModel* urlView = [[ASLinkModel alloc]initWithFrame:CGRectMake(point.x, point.y,
+                                                                                      self.view.bounds.size.width-16,50)];
+                    
+                    urlView.bounds = CGRectMake(point.x, point.y,  self.view.bounds.size.width-16,50);
+                    urlView.tag = 222;
+                    urlView.titleLabel.text = link.title;
+                    urlView.urlLabel.text = link.urlString;
+                    
+                    [urlView.openSiteButton     addTarget:self
+                                                   action:@selector(openSiteAction:)
+                                         forControlEvents:UIControlEventTouchUpInside];
+                    
+                    [cell addSubview:urlView];
+                    
+                    
+                    
+                    point.y += 50;
+                }
+            }
+            
+            
+            
+            
         }
         return cell;
         
@@ -997,7 +1035,10 @@ static NSInteger ownerPostWallFilter = 1;
     
 }
 
-
+-(void) openSiteAction:(UIButton*) sender {
+    
+    
+}
 
 #pragma mark - UIAlertViewDelegate
 
@@ -1177,8 +1218,6 @@ static NSInteger ownerPostWallFilter = 1;
             seq[i] = newSize.width;
             total_width += seq[i];
         }
-        
-        
     }
     
     int K = (int)roundf(total_width / frameSize.width);
@@ -1247,6 +1286,17 @@ static NSInteger ownerPostWallFilter = 1;
         }
         heightOffset += newFrames[ranges[i][0]].size.height + cellDistance;
     }
+    
+    //// jgjhf
+    
+    for (int i = 0; i < [imageFrames count]; i++) {
+        
+        if ([[imageFrames objectAtIndex:i] isKindOfClass:[ASLink class]]) {
+            
+            heightOffset += 50;
+        }
+    }
+    
     
     return CGSizeMake(frameSize.width, heightOffset);
 }

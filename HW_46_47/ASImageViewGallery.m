@@ -96,8 +96,9 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             
         }
 
-        //CGSize newSize = [self setFramesToImageViews:self.imageViews imageFrames:self.framesArray toFitSize:CGSizeMake(302, 400)];
-        CGSize newSize = [self setFramesToImageViews:self.imageViews imageFrames:self.framesArray toFitSize:CGSizeMake(sizeView.width, sizeView.height)];
+      
+        CGSize newSize = [self setFramesToImageViews:self.imageViews imageFrames:self.framesArray
+                                           toFitSize:CGSizeMake(sizeView.width, sizeView.height)];
 
         self.frame = CGRectMake(self.point.x, self.point.y, newSize.width, newSize.height);
     }

@@ -12,6 +12,7 @@
 @class ASUser;
 @class ASGroup;
 
+
 @interface ASWall : NSObject
 
 

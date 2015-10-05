@@ -888,17 +888,14 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
    
     detailVC.group  = self.group;
     
-    // [[self.imageViewSize objectAtIndex:indexPath.row]floatValue]
-    //[[self.arrrayWall objectAtIndex:sender.tag] imageViewSize] = [[self.imageViewSize objectAtIndex:sender.tag]floatValue];
-    
-    
+
     ASWall* wall = [[ASWall alloc] init];
     wall = self.arrrayWall[sender.tag];
     wall.group = self.group;
     wall.imageViewSize = [[self.imageViewSize objectAtIndex:sender.tag] floatValue];
     
     
-    detailVC.wall   = wall; //self.arrrayWall[sender.tag];
+    detailVC.wall   = wall;
     detailVC.postID = [[self.arrrayWall objectAtIndex:sender.tag] postID];
     
     [self.navigationController pushViewController:detailVC animated:YES];

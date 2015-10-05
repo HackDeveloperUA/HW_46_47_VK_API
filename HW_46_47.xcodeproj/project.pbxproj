@@ -28,6 +28,9 @@
 		6C6A8F311BBD425F0064AA3E /* Done@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6C6A8F2C1BBD425E0064AA3E /* Done@2x.png */; };
 		6C6A8F321BBD425F0064AA3E /* UIImageView+MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A8F2E1BBD425E0064AA3E /* UIImageView+MHFacebookImageViewer.m */; };
 		6C7C9F4E1BACBCFE00D2228F /* ASPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C7C9F4D1BACBCFE00D2228F /* ASPhoto.m */; };
+		6C88FDE51BC29C29007CC44C /* ASLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C88FDE41BC29C29007CC44C /* ASLink.m */; };
+		6C88FDF11BC2CB85007CC44C /* LinkXib.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C88FDF01BC2CB85007CC44C /* LinkXib.xib */; };
+		6C88FDF41BC2CBDA007CC44C /* ASLinkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C88FDF31BC2CBDA007CC44C /* ASLinkModel.m */; };
 		6C9671A91BA723D9006B2D59 /* ASInfoMemberFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9671A81BA723D9006B2D59 /* ASInfoMemberFlowLayout.m */; };
 		6C9671AC1BA72407006B2D59 /* ASPhotosFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9671AB1BA72407006B2D59 /* ASPhotosFlowLayout.m */; };
 		6C9671AF1BA74F64006B2D59 /* UIColor+HEX.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9671AE1BA74F64006B2D59 /* UIColor+HEX.m */; };
@@ -101,6 +104,11 @@
 		6C6A8F2E1BBD425E0064AA3E /* UIImageView+MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+MHFacebookImageViewer.m"; sourceTree = "<group>"; };
 		6C7C9F4C1BACBCFE00D2228F /* ASPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASPhoto.h; sourceTree = "<group>"; };
 		6C7C9F4D1BACBCFE00D2228F /* ASPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASPhoto.m; sourceTree = "<group>"; };
+		6C88FDE31BC29C29007CC44C /* ASLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASLink.h; sourceTree = "<group>"; };
+		6C88FDE41BC29C29007CC44C /* ASLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASLink.m; sourceTree = "<group>"; };
+		6C88FDF01BC2CB85007CC44C /* LinkXib.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LinkXib.xib; sourceTree = "<group>"; };
+		6C88FDF21BC2CBDA007CC44C /* ASLinkModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASLinkModel.h; sourceTree = "<group>"; };
+		6C88FDF31BC2CBDA007CC44C /* ASLinkModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASLinkModel.m; sourceTree = "<group>"; };
 		6C9671A71BA723D9006B2D59 /* ASInfoMemberFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASInfoMemberFlowLayout.h; sourceTree = "<group>"; };
 		6C9671A81BA723D9006B2D59 /* ASInfoMemberFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASInfoMemberFlowLayout.m; sourceTree = "<group>"; };
 		6C9671AA1BA72407006B2D59 /* ASPhotosFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASPhotosFlowLayout.h; sourceTree = "<group>"; };
@@ -253,6 +261,8 @@
 			children = (
 				6C7C9F4C1BACBCFE00D2228F /* ASPhoto.h */,
 				6C7C9F4D1BACBCFE00D2228F /* ASPhoto.m */,
+				6C88FDE31BC29C29007CC44C /* ASLink.h */,
+				6C88FDE41BC29C29007CC44C /* ASLink.m */,
 			);
 			name = "Primitive Model";
 			sourceTree = "<group>";
@@ -290,6 +300,9 @@
 				6C2559881BA213400005622E /* Cell */,
 				6C9B12071BA1572D00242620 /* Main.storyboard */,
 				6CB8A2BC1BB2C93400FB8D50 /* CVPhotoCell.xib */,
+				6C88FDF01BC2CB85007CC44C /* LinkXib.xib */,
+				6C88FDF21BC2CBDA007CC44C /* ASLinkModel.h */,
+				6C88FDF31BC2CBDA007CC44C /* ASLinkModel.m */,
 				6C9B120A1BA1572D00242620 /* Images.xcassets */,
 				6C9671AD1BA74F64006B2D59 /* UIColor+HEX.h */,
 				6C9671AE1BA74F64006B2D59 /* UIColor+HEX.m */,
@@ -435,6 +448,7 @@
 			files = (
 				6C6A8F311BBD425F0064AA3E /* Done@2x.png in Resources */,
 				6C9B12091BA1572D00242620 /* Main.storyboard in Resources */,
+				6C88FDF11BC2CB85007CC44C /* LinkXib.xib in Resources */,
 				6C9B120E1BA1572D00242620 /* LaunchScreen.xib in Resources */,
 				6C6A8F301BBD425F0064AA3E /* Done.png in Resources */,
 				6C9B120B1BA1572D00242620 /* Images.xcassets in Resources */,
@@ -505,8 +519,10 @@
 				6C9671A91BA723D9006B2D59 /* ASInfoMemberFlowLayout.m in Sources */,
 				6CF725941BA22804003F935B /* ASInfoMemberCollectionCell.m in Sources */,
 				6C2AC5C21BA42B4D006C0DE6 /* ASSubscription.m in Sources */,
+				6C88FDE51BC29C29007CC44C /* ASLink.m in Sources */,
 				6C9671AC1BA72407006B2D59 /* ASPhotosFlowLayout.m in Sources */,
 				6C4568541BA33ECE000B380A /* ASUser.m in Sources */,
+				6C88FDF41BC2CBDA007CC44C /* ASLinkModel.m in Sources */,
 				6C2559971BA21DF30005622E /* ASMainUserCell.m in Sources */,
 				6C6A8F2F1BBD425E0064AA3E /* MHFacebookImageViewer.m in Sources */,
 				6C4568491BA2FF23000B380A /* ASLoginVC.m in Sources */,

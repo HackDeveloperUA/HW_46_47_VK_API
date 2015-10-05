@@ -434,10 +434,7 @@ static NSString* kUserId = @"kUserId";
                
                if (![wall.fromID hasPrefix:@"-"]) {
                    wall.user = [[ASUser alloc] initWithServerResponse:[profilesBase objectForKey:wall.fromID]];
-               
-               
                } else {
-                //wall.group = [[ASGroup alloc] initWithServerResponse:[groupArray firstObject]];
                  wall.group = [[ASGroup alloc] initWithServerResponse:[groupsBase objectForKey:wall.ownerID]];
 
                }

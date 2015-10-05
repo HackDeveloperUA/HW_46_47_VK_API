@@ -242,7 +242,7 @@ static float offsetAfterShared                = 6.f;
                 height = height + self.wall.imageViewSize;
             }
             
-            return (offsetBeforePhoto + heightPhoto) + (offsetBetweenPhotoAndText + height) + (offsetBetweenTextAndShared + heightShared + offsetAfterShared)+10;
+            return (offsetBeforePhoto + heightPhoto) + (offsetBetweenPhotoAndText + height) + (offsetBetweenTextAndShared + heightShared + offsetAfterShared)+16;
             
           // Пидор вверху не трогай !!!!!!! ^
             
@@ -397,7 +397,8 @@ static float offsetAfterShared                = 6.f;
         
         float sizeText = [self heightLabelOfTextForString:cell.textPost.text fontSize:14.f widthLabel:CGRectGetWidth(self.view.bounds)-2*8];
         
-        point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame),sizeText+(offsetBeforePhoto + heightPhoto + offsetBetweenPhotoAndText));
+        point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame),
+                            sizeText+(offsetBeforePhoto + heightPhoto + offsetBetweenPhotoAndText)+30);
         
         
         CGSize sizeAttachment = CGSizeMake(CGRectGetWidth(self.view.bounds)-2*offset, CGRectGetWidth(self.view.bounds)-2*offset);
