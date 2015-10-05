@@ -134,7 +134,7 @@ static float offsetAfterShared                = 6.f;
         typeOwner = @"group";
    
     } else if (self.wall.user) {
-        ownerID = self.user.userID;
+        ownerID = self.wall.user.userID;
         typeOwner = @"user";
     }
     
@@ -242,21 +242,10 @@ static float offsetAfterShared                = 6.f;
                 height = height + self.wall.imageViewSize;
             }
             
-            return (offsetBeforePhoto + heightPhoto) + (offsetBetweenPhotoAndText + height) + (offsetBetweenTextAndShared + heightShared + offsetAfterShared)+16;
+            return (offsetBeforePhoto + 60) + (offsetBetweenPhotoAndText + height) + (offsetBetweenTextAndShared + heightShared + offsetAfterShared)+16;
             
-          // Пидор вверху не трогай !!!!!!! ^
             
         } else {
-            
-           /* static float heightPhoto  = 40.f;
-            static float heightShared = 33.f;
-            
-            static float offsetBeforePhoto                = 8.f;
-            static float offsetBetweenPhotoAndText        = 3.f;
-            static float offsetBetweenTextAndShared       = 8.f;
-            static float offsetAfterShared                = 6.f;
-            */
-            
             
             ASComment* commet = self.arrayComments [indexPath.row-1];
             
@@ -269,7 +258,6 @@ static float offsetAfterShared                = 6.f;
             
             if ([commet.attachments count] > 0) {
               height = height + [[self.imageViewSize objectAtIndex:indexPath.row-1]floatValue];
-               // height = height + self.wall.imageViewSize;
             }
             
             return (offsetBeforePhoto+heightPhoto)+(offsetBetweenPhotoAndText+height)+(offsetBetweenTextAndShared+heightShared+offsetAfterShared);
@@ -337,7 +325,7 @@ static float offsetAfterShared                = 6.f;
         
         
         
-        [cell.likeButton     addTarget:self action:@selector(addLikeOnPost:) forControlEvents:UIControlEventTouchUpInside];
+        //[cell.likeButton     addTarget:self action:@selector(addLikeOnPost:) forControlEvents:UIControlEventTouchUpInside];
         cell.likeButton.tag = indexPath.row;
         
         
@@ -348,7 +336,7 @@ static float offsetAfterShared                = 6.f;
         }
         
         
-        [cell.repostButton     addTarget:self action:@selector(addRepost:) forControlEvents:UIControlEventTouchUpInside];
+        //[cell.repostButton     addTarget:self action:@selector(addRepost:) forControlEvents:UIControlEventTouchUpInside];
         cell.repostButton.tag = indexPath.row;
         
         if (self.wall.canRepost == NO) {
@@ -358,12 +346,9 @@ static float offsetAfterShared                = 6.f;
         }
         
         
-        [cell.commentButton addTarget:self action:@selector(showComment:) forControlEvents:UIControlEventTouchUpInside];
+        //[cell.commentButton addTarget:self action:@selector(showComment:) forControlEvents:UIControlEventTouchUpInside];
         cell.commentButton.tag = indexPath.row;
-        
-
-        
-        
+    
         
         __weak ASWallAttachmentCell *weakCell = cell;
         
@@ -408,7 +393,7 @@ static float offsetAfterShared                = 6.f;
         [cell addSubview:galery];
         //galery.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
         
-}
+     }
         return cell;
         
     }
@@ -432,11 +417,16 @@ static float offsetAfterShared                = 6.f;
     
         else {
 
-                    ASWallAttachmentCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell2"];
             
-                    if (!cell) {
-                        cell = [[ASWallAttachmentCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell2"];
-                    }
+            
+            
+            
+            
+            ASWallAttachmentCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell2"];
+    
+            if (!cell) {
+                cell = [[ASWallAttachmentCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell2"];
+            }
             
            ASComment *comment = self.arrayComments[indexPath.row-1];
      
@@ -676,10 +666,13 @@ static float offsetAfterShared                = 6.f;
     NSString* ownerID;
     NSString* ownerType;
 
+    
+ 
     if (comment.group) {
         
         ownerID   = comment.group.groupID;
         ownerType = @"group";
+   
     } else if (comment.user) {
         
         ownerID   = comment.user.userID;
@@ -689,10 +682,10 @@ static float offsetAfterShared                = 6.f;
     
     if (comment.canLike) {
         
-        [[ASServerManager sharedManager] postAddLikeOnWall:self.group.groupID
+        [[ASServerManager sharedManager] postAddLikeOnWall:@"-58860049"//self.group.groupID
                                                     inPost:comment.postID
                                                       type:comment.type
-                                                 typeOwner:@"group"
+                                                 typeOwner:ownerType//@"group"
                                                  onSuccess:^(NSDictionary *result) {
             
             NSDictionary* response = [result objectForKey:@"response"];
@@ -710,10 +703,10 @@ static float offsetAfterShared                = 6.f;
     } else {
         
         
-        [[ASServerManager sharedManager] postDeleteLikeOnWall:self.group.groupID
+        [[ASServerManager sharedManager] postDeleteLikeOnWall:ownerID
                                                        inPost:comment.postID
                                                          type:comment.type
-                                                    typeOwner:@"group"
+                                                    typeOwner:ownerID//@"group"
                                                     onSuccess:^(NSDictionary *result) {
                                                         
                                                         NSDictionary* response = [result objectForKey:@"response"];

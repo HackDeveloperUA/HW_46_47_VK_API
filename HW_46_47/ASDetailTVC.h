@@ -14,6 +14,8 @@
 
 @interface ASDetailTVC : UITableViewController
 
+@property (strong, nonatomic) NSString* whence;
+
 @property (strong, nonatomic) NSString* groupID;
 @property (strong, nonatomic) NSString* userID;
 @property (strong, nonatomic) NSString* postID;

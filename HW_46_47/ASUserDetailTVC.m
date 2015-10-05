@@ -284,7 +284,7 @@ static NSInteger ownerPostWallFilter = 1;
                                   withFilter:self.wallFilter
                                   withOffset:[self.arrrayWall count]
                                    typeOwner:@"user"
-                                       count:20
+                                       count:50
                                    onSuccess:^(NSArray *posts) {
                                        
                                        
@@ -724,6 +724,7 @@ static NSInteger ownerPostWallFilter = 1;
    
             ///
             
+            /*
             for (id obj in wall.attachments) {
                 
                 if ([obj isKindOfClass:[ASLink class]]) {
@@ -739,7 +740,7 @@ static NSInteger ownerPostWallFilter = 1;
                     urlView.bounds = CGRectMake(point.x, point.y,  self.view.bounds.size.width-16,50);
                     urlView.tag = 222;
                     urlView.titleLabel.text = link.title;
-                    urlView.urlLabel.text = link.urlString;
+                    urlView.urlLabel.text   = link.urlString;
                     
                     [urlView.openSiteButton     addTarget:self
                                                    action:@selector(openSiteAction:)
@@ -747,11 +748,10 @@ static NSInteger ownerPostWallFilter = 1;
                     
                     [cell addSubview:urlView];
                     
-                    
-                    
                     point.y += 50;
                 }
-            }
+             
+            }*/
             
             
             
@@ -941,22 +941,7 @@ static NSInteger ownerPostWallFilter = 1;
         }];
         
         
-        
-        
-        /*
-        [[ASServerManager sharedManager] postAddLikeOnWall:self.superUserID  inPost:wall.postID  type:wall.type
-                                                 onSuccess:^(NSDictionary *result) {
-                                                     
-                                                     NSDictionary* response = [result objectForKey:@"response"];
-                                                     
-                                                     wall.canLike = NO;
-                                                     wall.likes   = [[response objectForKey:@"likes"] stringValue];
-                                                     [self.tableView reloadData];
-                                                     
-                                                 }
-                                                 onFailure:^(NSError *error, NSInteger statusCode) {
-                                                     
-                                                 }];*/
+     
     } else {
         
         
@@ -974,21 +959,7 @@ static NSInteger ownerPostWallFilter = 1;
         }];
         
         
-        /*
-        [[ASServerManager sharedManager] postDeleteLikeOnWall:self.groupID inPost:wall.postID  type:wall.type
-                                                    onSuccess:^(NSDictionary *result) {
-                                                        
-                                                        NSDictionary* response = [result objectForKey:@"response"];
-                                                        
-                                                        wall.canLike = YES;
-                                                        wall.likes   = [[response objectForKey:@"likes"] stringValue];
-                                                        [self.tableView reloadData];
-                                                        
-                                                        
-                                                    }
-                                                    onFailure:^(NSError *error, NSInteger statusCode) {
-                                                        
-                                                    }];*/
+    
     }
 }
 
@@ -1026,7 +997,7 @@ static NSInteger ownerPostWallFilter = 1;
     wall = self.arrrayWall[sender.tag];
     wall.imageViewSize = [[self.imageViewSize objectAtIndex:sender.tag] floatValue];
     
-    
+    detailVC.whence = @"user";
     detailVC.wall   = wall;//self.arrrayWall[sender.tag];
     detailVC.postID = [[self.arrrayWall objectAtIndex:sender.tag] postID];
     
