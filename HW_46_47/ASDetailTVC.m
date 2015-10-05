@@ -113,9 +113,9 @@ static float offsetAfterShared                = 6.f;
         
         [self getCommentFromServerOnSuccess:^(BOOL success) {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.arrayComments.count inSection:1]
-                                atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+                               atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         
-        }];
+    }];
     }
     
 }
@@ -130,7 +130,8 @@ static float offsetAfterShared                = 6.f;
     NSString* typeOwner;
     
     if (self.wall.group) {
-        ownerID = self.group.groupID;
+       // ownerID = self.group.groupID;
+        ownerID = self.wall.group.groupID;
         typeOwner = @"group";
    
     } else if (self.wall.user) {
@@ -589,7 +590,7 @@ static float offsetAfterShared                = 6.f;
     ranges[0][0] = 0;
     
     float cellDistance = 5;
-    float heightOffset = cellDistance, widthOffset;
+    long  double heightOffset = cellDistance, widthOffset;
     float frameWidth;
     for (int i = 0; i < K; i++) {
         float rowWidth = 0;
@@ -667,7 +668,25 @@ static float offsetAfterShared                = 6.f;
     NSString* ownerType;
 
     
+   /*
+    if ([self.whence isEqualToString:@"group"]) {
+        
+        ownerID   = comment.group.groupID;
+        ownerType = @"group";
+   
+        
+    } else if ([self.whence isEqualToString:@"user"]) {
+     
+        if (comment.user) {
+            
+            ownerID   = comment.user.userID;
+            ownerType = @"user";
+        }
+        
+    }*/
+    
  
+    
     if (comment.group) {
         
         ownerID   = comment.group.groupID;
@@ -677,12 +696,17 @@ static float offsetAfterShared                = 6.f;
         
         ownerID   = comment.user.userID;
         ownerType = @"user";
+        
+        if ([self.whence isEqualToString:@"group"]) {
+            ownerType = @"group";
+            ownerID   = self.group.groupID;//comment.group.groupID;
+        }
     }
     
     
     if (comment.canLike) {
         
-        [[ASServerManager sharedManager] postAddLikeOnWall:@"-58860049"//self.group.groupID
+        [[ASServerManager sharedManager] postAddLikeOnWall:ownerID//self.group.groupID
                                                     inPost:comment.postID
                                                       type:comment.type
                                                  typeOwner:ownerType//@"group"
@@ -706,7 +730,7 @@ static float offsetAfterShared                = 6.f;
         [[ASServerManager sharedManager] postDeleteLikeOnWall:ownerID
                                                        inPost:comment.postID
                                                          type:comment.type
-                                                    typeOwner:ownerID//@"group"
+                                                    typeOwner:ownerType//@"group"
                                                     onSuccess:^(NSDictionary *result) {
                                                         
                                                         NSDictionary* response = [result objectForKey:@"response"];

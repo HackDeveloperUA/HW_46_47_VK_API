@@ -100,7 +100,9 @@
 }
 
 
--(void) superDescripton {
+
+-(void) description {
+    
     
     NSLog(@"\n\n\n\n\n\n");
     NSLog(@"First Name = %@",self.firstName);
@@ -114,9 +116,6 @@
     NSLog(@"online = %hhd",self.online);
     NSLog(@"userID = %@",self.userID);
     NSLog(@"mainImage URL = %@",self.mainImageURL);
-    
-    
-    
 }
 
 @end

@@ -33,6 +33,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *repostLabel;
 @property (weak, nonatomic) IBOutlet UIButton *repostButton;
 
+@property (weak, nonatomic) IBOutlet UIButton *openOwnerPage;
 
 
 //+(CGFloat) heightForTextInWall:(NSString*) text;

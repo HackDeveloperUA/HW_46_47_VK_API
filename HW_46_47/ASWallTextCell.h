@@ -36,6 +36,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *repostLabel;
 @property (weak, nonatomic) IBOutlet UIButton *repostButton;
 
+
+@property (weak, nonatomic) IBOutlet UIButton *openOwnerPage;
+
 +(CGFloat) heightForAttachmentsWithPostModel:(ASWall*) wall andWidthTextCell:(CGFloat) widthCellText;
 
 @end

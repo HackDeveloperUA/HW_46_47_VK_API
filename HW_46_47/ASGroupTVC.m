@@ -41,6 +41,7 @@
 // Controllers
 #import "ASImageViewGallery.h"
 #import "ASDetailTVC.h"
+#import "ASUserDetailTVC.h"
 
 
 static NSString* identifierMainGroup    = @"ASMainGroupCell";
@@ -545,6 +546,17 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             [cell.likeButton     addTarget:self action:@selector(addLikeOnPost:) forControlEvents:UIControlEventTouchUpInside];
              cell.likeButton.tag = indexPath.row;
            
+            [cell.repostButton     addTarget:self action:@selector(addRepost:) forControlEvents:UIControlEventTouchUpInside];
+            cell.repostButton.tag = indexPath.row;
+            
+            [cell.commentButton addTarget:self action:@selector(showComment:) forControlEvents:UIControlEventTouchUpInside];
+            cell.commentButton.tag = indexPath.row;
+
+            
+            [cell.openOwnerPage addTarget:self action:@selector(openOwnerPageAction:) forControlEvents:UIControlEventTouchUpInside];
+            cell.openOwnerPage.tag = indexPath.row;
+
+            
             
             if (wall.canLike == NO) {
                cell.likeView.backgroundColor =  [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:0.5];
@@ -553,9 +565,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                   }
             
             
-            [cell.repostButton     addTarget:self action:@selector(addRepost:) forControlEvents:UIControlEventTouchUpInside];
-            cell.repostButton.tag = indexPath.row;
-            
+           
             if (wall.canRepost == NO) {
                 cell.repostView.backgroundColor =  [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:0.5];
             } else {
@@ -563,8 +573,6 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             }
             
         
-            [cell.commentButton addTarget:self action:@selector(showComment:) forControlEvents:UIControlEventTouchUpInside];
-            cell.commentButton.tag = indexPath.row;
             
             return cell;
       
@@ -595,7 +603,9 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             cell.likeLabel.text    = ([wall.likes length]>3)    ? ([NSString stringWithFormat:@"%@k",[wall.likes substringToIndex:1]])    : (wall.likes);
             cell.repostLabel.text  = ([wall.reposts length]>3)  ? ([NSString stringWithFormat:@"%@k",[wall.reposts substringToIndex:1]])  : (wall.reposts);
             
-        
+            [cell.openOwnerPage addTarget:self action:@selector(openOwnerPageAction:) forControlEvents:UIControlEventTouchUpInside];
+            cell.openOwnerPage.tag = indexPath.row;
+
             [cell.likeButton     addTarget:self action:@selector(addLikeOnPost:) forControlEvents:UIControlEventTouchUpInside];
             cell.likeButton.tag = indexPath.row;
             
@@ -936,6 +946,57 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
         
     }
 }
+
+
+-(void) openOwnerPageAction:(UIButton*) sender {
+    
+    /*
+     @property (strong, nonatomic) NSString* fromID;
+     @property (strong, nonatomic) NSString* ownerID;
+     
+     
+     @property (strong, nonatomic) NSString* fullName;
+     @property (strong, nonatomic) NSURL*    urlPhoto;
+     
+     @property (strong, nonatomic) NSMutableArray* attachments;
+     
+     
+     @property (strong, nonatomic) ASUser* user;
+     @property (strong, nonatomic) ASGroup* group;
+    */
+    
+    
+    ASWall* wall = [[ASWall alloc] init];
+    wall = self.arrrayWall[sender.tag];
+
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    ASUserDetailTVC* userVC = (ASUserDetailTVC*)[storyboard instantiateViewControllerWithIdentifier:@"ASUserDetailTVC"];
+    
+    userVC.superUserID = wall.user.userID;
+    
+    /*
+    detailVC.group  = self.group;
+    
+    ASWall* wall = [[ASWall alloc] init];
+    wall = self.arrrayWall[sender.tag];
+    wall.group = self.group;
+    wall.imageViewSize = [[self.imageViewSize objectAtIndex:sender.tag] floatValue];
+    
+    detailVC.whence = @"group";
+    detailVC.wall   = wall;
+    detailVC.postID = [[self.arrrayWall objectAtIndex:sender.tag] postID];
+    */
+    
+    [self.navigationController pushViewController:userVC animated:YES];
+
+    
+    
+    
+}
+
+
 
 
 #pragma mark - UIAlertViewDelegate

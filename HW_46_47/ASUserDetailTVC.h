@@ -10,5 +10,7 @@
 
 @interface ASUserDetailTVC : UITableViewController
 
+@property (strong, nonatomic) NSString* superUserID;
+
 - (IBAction)itemBar:(id)sender;
 @end

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="IHD-Pv-kMY">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Km9-Ua-wCF">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -259,7 +259,7 @@
         <!--User DetailTVC-->
         <scene sceneID="Zaq-z1-1LO">
             <objects>
-                <tableViewController id="816-OW-CbA" customClass="ASUserDetailTVC" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ASUserDetailTVC" id="816-OW-CbA" customClass="ASUserDetailTVC" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" tag="400" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="223" sectionHeaderHeight="22" sectionFooterHeight="22" id="was-rS-uTM">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -626,7 +626,7 @@
         <!--GroupTVC-->
         <scene sceneID="vZb-wG-ze0">
             <objects>
-                <tableViewController id="rX8-lf-pQS" customClass="ASGroupTVC" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ASGroupTVC" id="rX8-lf-pQS" customClass="ASGroupTVC" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" tag="300" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="hDH-U3-10H">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="750"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -902,9 +902,17 @@
                                                 </view>
                                             </subviews>
                                         </view>
+                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ST6-u8-JJl">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="68"/>
+                                            <state key="normal">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="duz-kr-ybg" firstAttribute="top" secondItem="lS2-9b-4o5" secondAttribute="top" constant="8" id="03p-jr-xuR"/>
+                                        <constraint firstItem="ST6-u8-JJl" firstAttribute="leading" secondItem="lS2-9b-4o5" secondAttribute="leading" id="0BL-Hn-Igq"/>
+                                        <constraint firstItem="ST6-u8-JJl" firstAttribute="top" secondItem="lS2-9b-4o5" secondAttribute="top" id="4xH-3G-8nP"/>
                                         <constraint firstItem="ICz-xf-3ex" firstAttribute="leading" secondItem="lS2-9b-4o5" secondAttribute="leading" constant="8" id="7GB-EI-feE"/>
                                         <constraint firstItem="gTU-Aa-9on" firstAttribute="top" secondItem="lS2-9b-4o5" secondAttribute="top" constant="8" id="7gU-tw-Lv7"/>
                                         <constraint firstItem="gTU-Aa-9on" firstAttribute="leading" secondItem="duz-kr-ybg" secondAttribute="trailing" constant="8" id="Bg6-Xv-JvM"/>
@@ -915,6 +923,7 @@
                                         <constraint firstAttribute="trailing" secondItem="ICz-xf-3ex" secondAttribute="trailing" constant="8" id="SmY-PG-3Hj"/>
                                         <constraint firstItem="JLT-zL-ctK" firstAttribute="leading" secondItem="duz-kr-ybg" secondAttribute="trailing" constant="8" id="Vys-2A-ewc"/>
                                         <constraint firstItem="fr5-VQ-K1H" firstAttribute="leading" secondItem="lS2-9b-4o5" secondAttribute="leading" constant="8" id="Wan-55-90Y"/>
+                                        <constraint firstAttribute="trailing" secondItem="ST6-u8-JJl" secondAttribute="trailing" id="YZF-sj-V4q"/>
                                         <constraint firstItem="ICz-xf-3ex" firstAttribute="top" secondItem="lS2-9b-4o5" secondAttribute="topMargin" constant="68" id="rM8-GI-kxw"/>
                                         <constraint firstAttribute="bottom" secondItem="fr5-VQ-K1H" secondAttribute="bottom" constant="10" id="scY-hy-hSg"/>
                                     </constraints>
@@ -928,6 +937,7 @@
                                     <outlet property="likeButton" destination="Aio-fu-Fbt" id="UeI-yv-zqc"/>
                                     <outlet property="likeLabel" destination="KXf-Hz-lCn" id="1Ka-4R-b6o"/>
                                     <outlet property="likeView" destination="s45-A9-jZv" id="dQt-hF-bp3"/>
+                                    <outlet property="openOwnerPage" destination="ST6-u8-JJl" id="FMg-bR-pln"/>
                                     <outlet property="ownerPhoto" destination="duz-kr-ybg" id="oUh-l1-ReA"/>
                                     <outlet property="repostButton" destination="ffF-PY-NWc" id="qc4-V8-Qgs"/>
                                     <outlet property="repostLabel" destination="U1y-Ke-0br" id="V3V-yC-z3V"/>
@@ -1047,9 +1057,16 @@
                                                 <constraint firstAttribute="height" constant="33" id="QOS-AT-q6H"/>
                                             </constraints>
                                         </view>
+                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fb3-Ao-c7t">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="68"/>
+                                            <state key="normal">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="9ZI-8M-NQl" firstAttribute="leading" secondItem="uON-aJ-9J5" secondAttribute="leading" constant="8" id="2yj-hB-trw"/>
+                                        <constraint firstAttribute="trailing" secondItem="Fb3-Ao-c7t" secondAttribute="trailing" id="7eX-jO-PnU"/>
                                         <constraint firstItem="6Z6-PV-gAQ" firstAttribute="leading" secondItem="uON-aJ-9J5" secondAttribute="leading" constant="8" id="ALZ-O7-f6N"/>
                                         <constraint firstItem="nYL-qi-qEd" firstAttribute="leading" secondItem="uON-aJ-9J5" secondAttribute="leading" constant="8" id="Arj-uz-k9b"/>
                                         <constraint firstItem="6Z6-PV-gAQ" firstAttribute="top" secondItem="9ZI-8M-NQl" secondAttribute="bottom" constant="8" id="DBq-Mm-Nz7"/>
@@ -1059,8 +1076,10 @@
                                         <constraint firstItem="fby-dv-fXp" firstAttribute="leading" secondItem="9ZI-8M-NQl" secondAttribute="trailing" constant="8" id="Xsu-Y4-4bR"/>
                                         <constraint firstItem="f9j-6N-vBk" firstAttribute="top" secondItem="uON-aJ-9J5" secondAttribute="top" constant="8" id="daJ-Ff-JIT"/>
                                         <constraint firstAttribute="trailing" secondItem="6Z6-PV-gAQ" secondAttribute="trailing" constant="8" id="k8G-gD-NpJ"/>
+                                        <constraint firstItem="Fb3-Ao-c7t" firstAttribute="top" secondItem="uON-aJ-9J5" secondAttribute="top" id="n1s-bE-scg"/>
                                         <constraint firstAttribute="trailing" secondItem="f9j-6N-vBk" secondAttribute="trailing" constant="8" id="wG0-aw-eHf"/>
                                         <constraint firstAttribute="bottom" secondItem="nYL-qi-qEd" secondAttribute="bottom" constant="8" id="wrH-6g-tnc"/>
+                                        <constraint firstItem="Fb3-Ao-c7t" firstAttribute="leading" secondItem="uON-aJ-9J5" secondAttribute="leading" id="wrv-d0-Mj4"/>
                                         <constraint firstItem="9ZI-8M-NQl" firstAttribute="top" secondItem="uON-aJ-9J5" secondAttribute="top" constant="8" id="xoj-jG-RKe"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -1073,6 +1092,7 @@
                                     <outlet property="likeButton" destination="Au5-2w-FBg" id="t71-1B-QGT"/>
                                     <outlet property="likeLabel" destination="lkK-a9-dT9" id="jNo-3W-8vz"/>
                                     <outlet property="likeView" destination="fFx-m1-tsg" id="aGy-zg-933"/>
+                                    <outlet property="openOwnerPage" destination="Fb3-Ao-c7t" id="EJg-Fg-0qc"/>
                                     <outlet property="ownerPhoto" destination="9ZI-8M-NQl" id="vUF-7p-rd5"/>
                                     <outlet property="repostButton" destination="CIt-DT-f6M" id="hFA-AA-33l"/>
                                     <outlet property="repostLabel" destination="lkS-QO-ydt" id="f8H-vS-l83"/>

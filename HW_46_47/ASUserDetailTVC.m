@@ -95,8 +95,6 @@ static NSInteger ownerPostWallFilter = 1;
                                 UIScrollViewDelegate>
 
 
-@property (strong, nonatomic) NSString* superUserID;
-
 
 @property (strong, nonatomic) NSString* groupID;
 
@@ -141,7 +139,7 @@ static NSInteger ownerPostWallFilter = 1;
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    
+    //181192839 201621080
     self.superUserID = @"201621080";
     
     self.wallFilter = @"all";
@@ -191,7 +189,7 @@ static NSInteger ownerPostWallFilter = 1;
         [[ASServerManager sharedManager] authorizeUser:^(ASUser *user) {
             
             NSLog(@"AUTHORIZED!");
-            self.navigationItem.title = user.firstName;
+            //self.navigationItem.title = user.firstName;
             
             NSLog(@"%@ %@", user.firstName, user.lastName);
             [self getUserFromServer];
@@ -216,10 +214,11 @@ static NSInteger ownerPostWallFilter = 1;
 -(void)  getUserFromServer {
     
 
-    [[ASServerManager sharedManager] getUsersInfoUserID:@"201621080"
+    [[ASServerManager sharedManager] getUsersInfoUserID:self.superUserID
                                               onSuccess:^(ASUser *user) {
                                                   
                                                   self.currentUser = user;
+                                                //  self.navigationItem.title = user.firstName;
                                                   [self setCounteresForCollectionView];
                                                   [self.tableView reloadData];
                                              
@@ -234,7 +233,7 @@ static NSInteger ownerPostWallFilter = 1;
 
 -(void)  getUserPhotoFromServer {
    
-    [[ASServerManager sharedManager] getPhotoUserID:@"201621080"
+    [[ASServerManager sharedManager] getPhotoUserID:self.superUserID
                                          withOffset:[self.miniaturePhotoArray count]
                                               count:20
                                           onSuccess:^(NSArray *photos) {
@@ -284,7 +283,7 @@ static NSInteger ownerPostWallFilter = 1;
                                   withFilter:self.wallFilter
                                   withOffset:[self.arrrayWall count]
                                    typeOwner:@"user"
-                                       count:50
+                                       count:20
                                    onSuccess:^(NSArray *posts) {
                                        
                                        
@@ -309,13 +308,14 @@ static NSInteger ownerPostWallFilter = 1;
            
            for (int i = (int)[self.arrrayWall count] - (int)[posts count]; i < [self.arrrayWall count]; i++) {
                
+               NSArray* arr = [[self.arrrayWall objectAtIndex:i] attachments];
                
                CGSize newSize = [self setFramesToImageViews:nil imageFrames:[[self.arrrayWall objectAtIndex:i] attachments]
                                                   toFitSize:CGSizeMake(self.view.frame.size.width-16, self.view.frame.size.width-16)];
                
                //NSLog(@"newSize = %@",NSStringFromCGSize(newSize));
                [self.imageViewSize addObject:[NSNumber numberWithFloat:roundf(newSize.height)]];
-           }
+                     }
            
            
            
@@ -442,7 +442,7 @@ static NSInteger ownerPostWallFilter = 1;
             height = height + [[self.imageViewSize objectAtIndex:indexPath.row]floatValue];
         }
         
-        NSLog(@"IndexPath.row = %ld  size height = %f",(long)indexPath.row,(offsetBeforePhoto + heightPhoto) + (offsetBetweenPhotoAndText + height) + (offsetBetweenTextAndShared + heightShared + offsetAfterShared));
+        NSLog(@"IndexPath.row = %ld section =%d  size height = %f",(long)indexPath.row,indexPath.section,(offsetBeforePhoto + heightPhoto) + (offsetBetweenPhotoAndText + height) + (offsetBetweenTextAndShared + heightShared + offsetAfterShared));
         
         
         return (offsetBeforePhoto + heightPhoto) + (offsetBetweenPhotoAndText + height) + (offsetBetweenTextAndShared + heightShared + offsetAfterShared);
@@ -628,6 +628,7 @@ static NSInteger ownerPostWallFilter = 1;
         }
         
         ASWall* wall = self.arrrayWall[indexPath.row];
+     
         if ([cell viewWithTag:11]) [[cell viewWithTag:11] removeFromSuperview];
 
         
@@ -709,6 +710,8 @@ static NSInteger ownerPostWallFilter = 1;
         
         if ([wall.attachments count] > 0) {
             
+            if ([cell viewWithTag:222]) [[cell viewWithTag:222] removeFromSuperview];
+
             CGPoint point = CGPointZero;
      
             
@@ -719,12 +722,12 @@ static NSInteger ownerPostWallFilter = 1;
             CGSize sizeAttachment = CGSizeMake(CGRectGetWidth(self.view.bounds)-2*offset, CGRectGetWidth(self.view.bounds)-2*offset);
             
             ASImageViewGallery *galery = [[ASImageViewGallery alloc]initWithImageArray:wall.attachments startPoint:point withSizeView:sizeAttachment];
-            galery.tag = 11;
+            galery.tag = 222;
             [cell addSubview:galery];
    
             ///
             
-            /*
+            
             for (id obj in wall.attachments) {
                 
                 if ([obj isKindOfClass:[ASLink class]]) {
@@ -748,10 +751,10 @@ static NSInteger ownerPostWallFilter = 1;
                     
                     [cell addSubview:urlView];
                     
-                    point.y += 50;
+                    //point.y += 50;
                 }
              
-            }*/
+            }
             
             
             
@@ -1124,14 +1127,15 @@ static NSInteger ownerPostWallFilter = 1;
 
 -(void) setCounteresForCollectionView {
     
-    
+    /*
     NSArray* arrayCounterText = @[@"albums",   @"audios",  @"followers", @"friends",
                                   @"groups",   @"pages",   @"photos",    @"videos", @"subscriptions"];
     
     
     NSArray* arrayCounterNumber = @[_currentUser.albums,    _currentUser.audios,
                                     _currentUser.followers, _currentUser.friends,
-                                    _currentUser.groups,    _currentUser.pages,
+                                    //_currentUser.groups,
+                                    _currentUser.pages,
                                     _currentUser.photos, _currentUser.videos,
                                     _currentUser.subscriptions ];
     
@@ -1151,7 +1155,7 @@ static NSInteger ownerPostWallFilter = 1;
     }
     
     self.arrayNumberDataCountres = newNumberArray;
-    self.arrayTextDataCountres   = newTextArray;
+    self.arrayTextDataCountres   = newTextArray;*/
     
 }
 
@@ -1234,7 +1238,10 @@ static NSInteger ownerPostWallFilter = 1;
     ranges[0][0] = 0;
     
     float cellDistance = 5;
-    float heightOffset = cellDistance, widthOffset;
+    
+    //float heightOffset = cellDistance, widthOffset;
+    long double heightOffset = cellDistance, widthOffset;
+
     float frameWidth;
     for (int i = 0; i < K; i++) {
         float rowWidth = 0;
@@ -1264,7 +1271,7 @@ static NSInteger ownerPostWallFilter = 1;
         
         if ([[imageFrames objectAtIndex:i] isKindOfClass:[ASLink class]]) {
             
-            heightOffset += 50;
+            heightOffset += 60;
         }
     }
     
