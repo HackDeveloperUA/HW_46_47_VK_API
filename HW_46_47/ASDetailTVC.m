@@ -139,13 +139,7 @@ static float offsetAfterShared                = 10.f;
     }
     
     
-    
-    /* if (self.group) {
-        ownerID = self.group.groupID;
-    } else if (self.user) {
-        ownerID = self.user.userID;
-    }*/
-    
+   
     
     [[ASServerManager sharedManager] getCommentFromPost:ownerID
                                                  inPost:self.postID
@@ -180,12 +174,14 @@ static float offsetAfterShared                = 10.f;
                   }
                   /////////
                   
+                  NSLog(@"готовност");
+
                   for (NSInteger i=0; i<=[comments count]-1; i++) {
                       
                       CGSize newSize = [self setFramesToImageViews:nil
                                                        imageFrames:[[self.arrayComments objectAtIndex:i] attachments]
                                                          toFitSize:CGSizeMake(self.view.frame.size.width-16, self.view.frame.size.width-16)];
-                      
+                
                       [self.imageViewSize insertObject:[NSNumber numberWithFloat:roundf(newSize.height)] atIndex:i];
                   }
                   
@@ -230,12 +226,12 @@ static float offsetAfterShared                = 10.f;
     id cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
     
     
-    
     if ([cell isKindOfClass:[ASWallAttachmentCell class]]) {
-    
-        if (indexPath.row == 0) {
-          
         
+        if (indexPath.row == 0) {
+            
+            // Пидор вверху не трогай !!!!!!! ^
+
             float height = 0;
             
             if (![self.wall.text isEqualToString:@""]) {
@@ -243,12 +239,12 @@ static float offsetAfterShared                = 10.f;
             }
             
             if ([self.wall.attachments count] > 0) {
-                height = height + self.wall.imageViewSize;//[[self.imageViewSize objectAtIndex:indexPath.row]floatValue];
+                height = height + self.wall.imageViewSize;
             }
             
             return (offsetBeforePhoto + heightPhoto) + (offsetBetweenPhotoAndText + height) + (offsetBetweenTextAndShared + heightShared + offsetAfterShared);
             
-            
+          // Пидор вверху не трогай !!!!!!! ^
             
         } else {
             
@@ -260,25 +256,25 @@ static float offsetAfterShared                = 10.f;
             static float offsetBetweenTextAndShared       = 8.f;
             static float offsetAfterShared                = 6.f;
             
-
-   
-                ASComment* commet = self.arrayComments [indexPath.row-1];
-
-                float  height = 0;
-
-                if (![commet.text isEqualToString:@""]) {
-                    height = height + (int)[self heightLabelOfTextForString:commet.text fontSize:14.f widthLabel:self.view.frame.size.width-(offset*2)];
-                }
-
-
-                if ([commet.attachments count] > 0) {
-                    height = height + [[self.imageViewSize objectAtIndex:indexPath.row-1]floatValue];
-                }
-
-                return (offsetBeforePhoto+heightPhoto)+(offsetBetweenPhotoAndText+height)+(offsetBetweenTextAndShared+heightShared)+(offsetAfterShared);
-              }
+            
+            
+            ASComment* commet = self.arrayComments [indexPath.row-1];
+            
+            float  height = 0;
+            
+            if (![commet.text isEqualToString:@""]) {
+                height = height + (int)[self heightLabelOfTextForString:commet.text fontSize:14.f widthLabel:self.view.frame.size.width-(offset*2)];
+            }
+            
+            
+            if ([commet.attachments count] > 0) {
+              height = height + [[self.imageViewSize objectAtIndex:indexPath.row-1]floatValue];
+               // height = height + self.wall.imageViewSize;
+            }
+            
+            return (offsetBeforePhoto+heightPhoto)+(offsetBetweenPhotoAndText+height)+(offsetBetweenTextAndShared+heightShared)+(offsetAfterShared);
+        }
     }
-    
     
     return 44.f;
 }
@@ -409,7 +405,7 @@ if ([self.wall.attachments count] > 0) {
     ASImageViewGallery *galery = [[ASImageViewGallery alloc]initWithImageArray:self.wall.attachments startPoint:point withSizeView:sizeAttachment];
     galery.tag = 11;
     [cell addSubview:galery];
-    galery.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+    //galery.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     
 }
         return cell;
@@ -504,7 +500,7 @@ if ([self.wall.attachments count] > 0) {
                         ASImageViewGallery *galery = [[ASImageViewGallery alloc]initWithImageArray:comment.attachments startPoint:point withSizeView:sizeAttachment];
                         galery.tag = 11;
                         [cell addSubview:galery];
-                        galery.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+                        //galery.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
                     }
             return cell;

@@ -23,4 +23,6 @@
 @property (strong,nonatomic)  ASWall  *wall;
 
 
+- (CGFloat)heightLabelOfTextForString:(NSString *)aString fontSize:(CGFloat)fontSize widthLabel:(CGFloat)width;
+
 @end

@@ -417,6 +417,7 @@ static float offsetAfterShared                = 10.f;
             height = height + (int)[self heightLabelOfTextForString:wall.text fontSize:14.f widthLabel:self.view.frame.size.width-(offset*2)];
         }
         
+        
         if ([wall.attachments count] > 0) {
             height = height + [[self.imageViewSize objectAtIndex:indexPath.row]floatValue];
         }

@@ -103,7 +103,8 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.superGroupID = @"58860049";
+    //58860049 10639516,
+    self.superGroupID = @"102981503";
     
     
     
@@ -203,9 +204,8 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                    CGSize newSize = [self setFramesToImageViews:nil imageFrames:[[self.arrrayWall objectAtIndex:i] attachments]
                                toFitSize:CGSizeMake(self.view.frame.size.width-16, self.view.frame.size.width-16)];
                      
-                        NSLog(@"newSize = %@",NSStringFromCGSize(newSize));
                         
-                        
+                        NSLog(@"111 newSize = %@",NSStringFromCGSize(newSize));
                         [self.imageViewSize addObject:[NSNumber numberWithFloat:roundf(newSize.height)]];
 
                    }
@@ -331,9 +331,6 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
         
         height = height + [[self.imageViewSize objectAtIndex:indexPath.row]floatValue];
         
-        NSLog(@"height = %f",height);
-        
-        NSLog(@"self.view.frame.size.width = %f",self.view.frame.size.width);
         
         return 67 + 8 + height + [ASWallAttachmentCell heightForTextWithPostModel:wall andWidthTextCell:self.view.frame.size.width-16] + 8 + 15 + 33;
         
@@ -353,7 +350,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
         static float offsetBetweenTextAndShared       = 20.f;
         static float offsetAfterShared                = 9.f;
     
-        heightText = [ASWallTextCell heightForAttachmentsWithPostModel:wall andWidthTextCell:self.view.frame.size.width];
+        heightText = [ASWallTextCell heightForAttachmentsWithPostModel:wall andWidthTextCell:self.view.frame.size.width-16];
         return (offsetBeforePhoto + heightPhoto) + (offsetBetweenPhotoAndText + heightText) + (offsetBetweenTextAndShared + heightShared + offsetAfterShared);
     
     }
@@ -909,10 +906,11 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     
     ASWall* wall = [[ASWall alloc] init];
     wall = self.arrrayWall[sender.tag];
+    wall.group = self.group;
     wall.imageViewSize = [[self.imageViewSize objectAtIndex:sender.tag] floatValue];
     
     
-    detailVC.wall   = wall;//self.arrrayWall[sender.tag];
+    detailVC.wall   = wall; //self.arrrayWall[sender.tag];
     detailVC.postID = [[self.arrrayWall objectAtIndex:sender.tag] postID];
     
     [self.navigationController pushViewController:detailVC animated:YES];
