@@ -139,8 +139,18 @@ static NSInteger ownerPostWallFilter = 1;
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    
+     float floatVal = 1.2345634534775;
+     
+  
+     float roundedUpVal = ceil(floatVal);
+     NSLog(@"%f",roundedUpVal);
+     
+   
+    
+    
     //181192839 201621080
-    self.superUserID = @"201621080";
+    self.superUserID = @"181192839";
     
     self.wallFilter = @"all";
     
@@ -191,6 +201,7 @@ static NSInteger ownerPostWallFilter = 1;
             NSLog(@"AUTHORIZED!");
             //self.navigationItem.title = user.firstName;
             
+            
             NSLog(@"%@ %@", user.firstName, user.lastName);
             [self getUserFromServer];
             [self getUserPhotoFromServer];
@@ -218,7 +229,7 @@ static NSInteger ownerPostWallFilter = 1;
                                               onSuccess:^(ASUser *user) {
                                                   
                                                   self.currentUser = user;
-                                                //  self.navigationItem.title = user.firstName;
+                                                  self.navigationItem.title = user.firstName;
                                                   [self setCounteresForCollectionView];
                                                   [self.tableView reloadData];
                                              
@@ -407,8 +418,8 @@ static NSInteger ownerPostWallFilter = 1;
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+ {
     
     id cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
     
@@ -1132,6 +1143,77 @@ static NSInteger ownerPostWallFilter = 1;
 
 -(void) setCounteresForCollectionView {
     
+    
+    NSMutableArray* newNumberArray = [NSMutableArray array];
+    NSMutableArray* newTextArray   = [NSMutableArray array];
+    
+
+    
+    if (self.currentUser.albums) {
+    
+        [newNumberArray addObject:_currentUser.albums];
+        [newTextArray   addObject:@"albums"];
+        
+    }
+    
+    
+    if (self.currentUser.audios) {
+        
+        [newNumberArray addObject:_currentUser.audios];
+        [newTextArray   addObject:@"audios"];
+        
+    }
+    
+    if (self.currentUser.followers) {
+        
+        [newNumberArray addObject:_currentUser.followers];
+        [newTextArray   addObject:@"followers"];
+        
+    }
+    
+    if (self.currentUser.friends) {
+        
+        [newNumberArray addObject:_currentUser.friends];
+        [newTextArray   addObject:@"friends"];
+        
+    }
+
+    if (self.currentUser.groups) {
+        
+        [newNumberArray addObject:_currentUser.groups];
+        [newTextArray   addObject:@"groups"];
+        
+    }
+    
+    if (self.currentUser.pages) {
+        
+        [newNumberArray addObject:_currentUser.pages];
+        [newTextArray   addObject:@"pages"];
+        
+    }
+    if (self.currentUser.photos) {
+        
+        [newNumberArray addObject:_currentUser.photos];
+        [newTextArray   addObject:@"photos"];
+        
+    }
+    if (self.currentUser.videos) {
+        
+        [newNumberArray addObject:_currentUser.videos];
+        [newTextArray   addObject:@"videos"];
+        
+    }
+    
+    
+    if (self.currentUser.subscriptions) {
+        
+        [newNumberArray addObject:_currentUser.subscriptions];
+        [newTextArray   addObject:@"subscriptions"];
+        
+    }
+    
+    self.arrayNumberDataCountres = newNumberArray;
+    self.arrayTextDataCountres   = newTextArray;
     /*
     NSArray* arrayCounterText = @[@"albums",   @"audios",  @"followers", @"friends",
                                   @"groups",   @"pages",   @"photos",    @"videos", @"subscriptions"];
@@ -1174,7 +1256,6 @@ static NSInteger ownerPostWallFilter = 1;
 
 
 #pragma mark - TextImageConfigure
-
 - (CGSize)setFramesToImageViews:(NSArray *)imageViews imageFrames:(NSArray *)imageFrames toFitSize:(CGSize)frameSize {
     
     int N = (int)imageFrames.count;
@@ -1189,9 +1270,9 @@ static NSInteger ownerPostWallFilter = 1;
     
     CGRect newFrames[N];
     
-    long double ideal_height = MAX(frameSize.height, frameSize.width) / N;
-    long double seq[N];
-    long double total_width = 0;
+    float ideal_height = MAX(frameSize.height, frameSize.width) / N;
+    float seq[N];
+    float total_width = 0;
     
     ////
     ////
@@ -1211,8 +1292,8 @@ static NSInteger ownerPostWallFilter = 1;
     
     int K = (int)roundf(total_width / frameSize.width);
     
-    long double M[N][K];
-    long double D[N][K];
+    float M[N][K];
+    float D[N][K];
     
     for (int i = 0 ; i < N; i++)
         for (int j = 0; j < K; j++)
@@ -1254,18 +1335,18 @@ static NSInteger ownerPostWallFilter = 1;
     float cellDistance = 5;
     
     //float heightOffset = cellDistance, widthOffset;
-    long double heightOffset = cellDistance, widthOffset;
-
+  float heightOffset = cellDistance, widthOffset;
+    
     long double frameWidth;
     for (int i = 0; i < K; i++) {
         float rowWidth = 0;
         frameWidth = frameSize.width - ((ranges[i][1] - ranges[i][0]) + 2) * cellDistance;
         
         for (int j = ranges[i][0]; j <= ranges[i][1]; j++) {
-            rowWidth += newFrames[j].size.width;
+            rowWidth += (float)ceilf(newFrames[j].size.width);
         }
         
-        long double ratio = frameWidth / rowWidth;
+        float ratio = frameWidth / rowWidth;
         widthOffset = 0;
         
         for (int j = ranges[i][0]; j <= ranges[i][1]; j++) {
