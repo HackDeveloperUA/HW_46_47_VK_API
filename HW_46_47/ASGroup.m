@@ -54,11 +54,18 @@
         self.members              = [[responseObject objectForKey:@"members_count"]stringValue];
         self.descriptionCommunity = [responseObject objectForKey:@"description"];
 
-        self.topics  = [[[responseObject objectForKey:@"counters"] objectForKey:@"topics"] stringValue];
-        self.docs    = [[[responseObject objectForKey:@"counters"] objectForKey:@"docs"]   stringValue];
-        self.photos  = [[[responseObject objectForKey:@"counters"] objectForKey:@"photos"] stringValue];
-        self.videos  = [[[responseObject objectForKey:@"counters"] objectForKey:@"videos"] stringValue];
-        self.albums  = [[[responseObject objectForKey:@"counters"] objectForKey:@"albums"] stringValue];
+        NSArray* counteres = [responseObject objectForKey:@"counters"];
+        
+        if ([counteres count]>0) {
+          
+            self.topics  = [[[responseObject objectForKey:@"counters"] objectForKey:@"topics"] stringValue];
+            self.docs    = [[[responseObject objectForKey:@"counters"] objectForKey:@"docs"]   stringValue];
+            self.photos  = [[[responseObject objectForKey:@"counters"] objectForKey:@"photos"] stringValue];
+            self.videos  = [[[responseObject objectForKey:@"counters"] objectForKey:@"videos"] stringValue];
+            self.albums  = [[[responseObject objectForKey:@"counters"] objectForKey:@"albums"] stringValue];
+        }
+        
+       
 
         if (!self.topics) {
             _topics = @"0";

@@ -103,9 +103,9 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     
     //58860049 10639516,
     // california 32422548
-    
+    // cp 33393308
     if ([self.superGroupID length]<1) {
-        self.superGroupID = @"58860049";
+        self.superGroupID = @"33393308";
     }
     
     self.wallFilter = @"all";
@@ -173,7 +173,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                                           withFilter:self.wallFilter
                                           withOffset:[self.arrrayWall count]
                                            typeOwner:@"group"
-                                               count:50
+                                               count:20
                                            onSuccess:^(NSArray *posts) {
                                                
                       

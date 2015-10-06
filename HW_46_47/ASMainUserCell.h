@@ -15,7 +15,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lastSeenORonline;
 @property (weak, nonatomic) IBOutlet UILabel *cityORcountry;
 
-@property (weak, nonatomic) IBOutlet UIButton *sendMessageButton;
+@property (weak, nonatomic) IBOutlet UIButton *subscriptionButton;
 @property (weak, nonatomic) IBOutlet UIButton *addFriendButton;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionViewMember;

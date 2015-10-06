@@ -28,6 +28,7 @@
 		6C6A8F311BBD425F0064AA3E /* Done@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6C6A8F2C1BBD425E0064AA3E /* Done@2x.png */; };
 		6C6A8F321BBD425F0064AA3E /* UIImageView+MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A8F2E1BBD425E0064AA3E /* UIImageView+MHFacebookImageViewer.m */; };
 		6C6B2D741BC435DD0055571E /* ASFriendTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6B2D731BC435DD0055571E /* ASFriendTVC.m */; };
+		6C6B2D771BC4589C0055571E /* ASSubscriptionTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6B2D761BC4589C0055571E /* ASSubscriptionTVC.m */; };
 		6C7C9F4E1BACBCFE00D2228F /* ASPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C7C9F4D1BACBCFE00D2228F /* ASPhoto.m */; };
 		6C88FDE51BC29C29007CC44C /* ASLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C88FDE41BC29C29007CC44C /* ASLink.m */; };
 		6C88FDF11BC2CB85007CC44C /* LinkXib.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C88FDF01BC2CB85007CC44C /* LinkXib.xib */; };
@@ -105,6 +106,8 @@
 		6C6A8F2E1BBD425E0064AA3E /* UIImageView+MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+MHFacebookImageViewer.m"; sourceTree = "<group>"; };
 		6C6B2D721BC435DD0055571E /* ASFriendTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASFriendTVC.h; sourceTree = "<group>"; };
 		6C6B2D731BC435DD0055571E /* ASFriendTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASFriendTVC.m; sourceTree = "<group>"; };
+		6C6B2D751BC4589C0055571E /* ASSubscriptionTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASSubscriptionTVC.h; sourceTree = "<group>"; };
+		6C6B2D761BC4589C0055571E /* ASSubscriptionTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASSubscriptionTVC.m; sourceTree = "<group>"; };
 		6C7C9F4C1BACBCFE00D2228F /* ASPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASPhoto.h; sourceTree = "<group>"; };
 		6C7C9F4D1BACBCFE00D2228F /* ASPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASPhoto.m; sourceTree = "<group>"; };
 		6C88FDE31BC29C29007CC44C /* ASLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASLink.h; sourceTree = "<group>"; };
@@ -206,6 +209,8 @@
 				6C6A8F251BBD38680064AA3E /* ASImageViewGallery.m */,
 				6C6B2D721BC435DD0055571E /* ASFriendTVC.h */,
 				6C6B2D731BC435DD0055571E /* ASFriendTVC.m */,
+				6C6B2D751BC4589C0055571E /* ASSubscriptionTVC.h */,
+				6C6B2D761BC4589C0055571E /* ASSubscriptionTVC.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -225,8 +230,6 @@
 				6C451E8B1BA61B8800A879C9 /* ASGroup.m */,
 				6C2AC5BD1BA42B27006C0DE6 /* ASFollower.h */,
 				6C2AC5BE1BA42B27006C0DE6 /* ASFollower.m */,
-				6C2AC5C01BA42B4D006C0DE6 /* ASSubscription.h */,
-				6C2AC5C11BA42B4D006C0DE6 /* ASSubscription.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -268,6 +271,8 @@
 				6C7C9F4D1BACBCFE00D2228F /* ASPhoto.m */,
 				6C88FDE31BC29C29007CC44C /* ASLink.h */,
 				6C88FDE41BC29C29007CC44C /* ASLink.m */,
+				6C2AC5C01BA42B4D006C0DE6 /* ASSubscription.h */,
+				6C2AC5C11BA42B4D006C0DE6 /* ASSubscription.m */,
 			);
 			name = "Primitive Model";
 			sourceTree = "<group>";
@@ -512,6 +517,7 @@
 				6C45684D1BA33CC6000B380A /* ASAccessToken.m in Sources */,
 				6C6B2D741BC435DD0055571E /* ASFriendTVC.m in Sources */,
 				6C4568511BA33E09000B380A /* ASServerManager.m in Sources */,
+				6C6B2D771BC4589C0055571E /* ASSubscriptionTVC.m in Sources */,
 				6C9671AF1BA74F64006B2D59 /* UIColor+HEX.m in Sources */,
 				6CF725901BA224B6003F935B /* ASGroupTVC.m in Sources */,
 				6CCBDA791BBEF4F300B3A478 /* ASComment.m in Sources */,

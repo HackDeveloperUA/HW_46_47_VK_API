@@ -42,6 +42,7 @@
 #import "ASDetailTVC.h"
 #import "ASGroupTVC.h"
 #import "ASFriendTVC.h"
+#import "ASSubscriptionTVC.h"
 
 
 #import "ASLinkModel.h"
@@ -156,11 +157,12 @@ static NSInteger ownerPostWallFilter = 1;
         self.superUserID = @"201621080";
     }
     
+    // 41742813
     // Levan 181192839
     // Hack 201621080
     // Олейгич 7213748
     // Алексей 26955116
-  //  self.superUserID = @"201621080";
+   //  self.superUserID = @"201621080";
     
     self.wallFilter = @"all";
     
@@ -584,11 +586,10 @@ static NSInteger ownerPostWallFilter = 1;
             cell.fullName.text = [NSString stringWithFormat:@"%@ %@",self.currentUser.firstName , self.currentUser.lastName];
             cell.cityORcountry.text = self.currentUser.city;
             
-           // BOOL result = value ? YES : NO;
             self.currentUser.online == 0 ? (cell.lastSeenORonline.text = self.currentUser.lastSeen) :
                                           (cell.lastSeenORonline.text = @"Online");
             
-             cell.sendMessageButton.enabled = self.currentUser.enableSendMessageButton;
+             cell.subscriptionButton.enabled = self.currentUser.enableSendMessageButton;
        
             NSString* titleForButtonAddFriends;
             
@@ -622,8 +623,7 @@ static NSInteger ownerPostWallFilter = 1;
             }
       
             
-            [cell.sendMessageButton addTarget:self action:@selector(sendMessageAction:) forControlEvents:UIControlEventTouchUpInside];
-            
+            [cell.subscriptionButton addTarget:self action:@selector(subscriptionAction:) forControlEvents:UIControlEventTouchUpInside];
             
             [cell.collectionViewMember reloadData];
             return cell;
@@ -964,8 +964,13 @@ static NSInteger ownerPostWallFilter = 1;
 
 #pragma mark - Action
 
--(void)  sendMessageAction:(UIButton*) sender {
+-(void)  subscriptionAction:(UIButton*) sender {
     
+    ASSubscriptionTVC* subscriptionVC = [[ASSubscriptionTVC alloc] initWithStyle:UITableViewStylePlain];
+    subscriptionVC.currentUser = self.currentUser;
+    
+    [self.navigationController pushViewController:subscriptionVC animated:YES];
+
     
 }
 

@@ -10,9 +10,10 @@
 
 @interface ASSubscription : NSObject
 
-@property (strong, nonatomic) NSURL*    mainPhotoURL;
-@property (strong, nonatomic) NSString* name;
+@property (strong, nonatomic) NSString* fullName;
+@property (strong, nonatomic) NSString* groupID;
 @property (strong, nonatomic) NSString* memberCount;
+@property (strong, nonatomic) NSURL*     mainImageURL;
 
 -(instancetype) initWithServerResponse:(NSDictionary*) responseObject;
 

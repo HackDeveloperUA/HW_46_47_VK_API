@@ -17,6 +17,7 @@
 #import "ASPhoto.h"
 #import "ASComment.h"
 #import "ASFriend.h"
+#import "ASSubscription.h"
 
 
 static NSString* kToken = @"kToken";
@@ -302,6 +303,10 @@ static NSString* kUserId = @"kUserId";
     
 
     // accessToket тут не нужен . Он вредит
+   /*
+    if (![groupId hasPrefix:@"-"]) {
+        groupId = [@"-" stringByAppendingString:groupId];
+    }*/
     
     NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
                             groupId,                @"group_id",
@@ -1013,7 +1018,7 @@ static NSString* kUserId = @"kUserId";
 
 ////////////////////////////////////////
 //
-//  GET FRIENDS
+//  GET SUBSCRIPTION
 //
 ////////////////////////////////////////
 
@@ -1032,7 +1037,7 @@ static NSString* kUserId = @"kUserId";
                             userId,        @"user_id",
                             @"1",          @"extended",
                             @(offset),     @"offset",
-                            @"20",         @"count",
+                            @(count),      @"count",
                             @"members_count,photo_100,status",  @"fields",
                             @"5.37",      @"v",
                             self.accessToken.token, @"access_token", nil];
@@ -1046,17 +1051,16 @@ static NSString* kUserId = @"kUserId";
                                   NSLog(@"users.getSubscriptions JSON: %@",responseObject);
                                   
                                   
-                                  NSArray* subcriptArray = [responseObject objectForKey:@"response"];
-                                  NSMutableArray* objectsArray = [NSMutableArray array];
+                              NSArray* subcriptArray = [[responseObject objectForKey:@"response"] objectForKey:@"items"];
+                              NSMutableArray* objectsArray = [NSMutableArray array];
+                              
+                              
+                              for (NSDictionary* dict in subcriptArray) {
                                   
-                                  
-                                  
-                                  for (NSDictionary* dict in subcriptArray) {
-                                      
-                                     // ASSubscription* subscript = [[ASSubscription alloc] initWithServerResponse:dict];
-                                     // [objectsArray addObject:subscript];
-                                  }
-                                  
+                                  ASSubscription* subscript = [[ASSubscription alloc] initWithServerResponse:dict];
+                                  [objectsArray addObject:subscript];
+                              }
+                              
                                   
                                   if (success) {
                                       success(objectsArray);
