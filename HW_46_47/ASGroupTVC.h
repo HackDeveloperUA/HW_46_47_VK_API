@@ -10,5 +10,8 @@
 
 @interface ASGroupTVC : UITableViewController 
 
+@property (strong, nonatomic) NSString* superGroupID;
+
+
 
 @end

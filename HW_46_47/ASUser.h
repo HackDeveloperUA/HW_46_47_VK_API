@@ -35,6 +35,7 @@
 @property (strong, nonatomic) NSURL* photo_100URL;
 
 // buttons
+@property (assign, nonatomic) int  friendStatus;
 
 @property (assign, nonatomic) BOOL enableSendMessageButton;
 @property (assign, nonatomic) BOOL enableWritePostButton;

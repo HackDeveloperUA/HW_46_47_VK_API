@@ -69,10 +69,6 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                           UICollectionViewDataSource, UICollectionViewDelegate,
                           UIScrollViewDelegate>
 
-/// ---- SUPER GROUP ID ---- ///
-@property (strong, nonatomic) NSString* superGroupID;
-
-
 
 
 @property (strong, nonatomic) NSString* groupID;
@@ -105,9 +101,12 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     [super viewDidLoad];
     
     //58860049 10639516,
-    self.superGroupID = @"58860049";
+    //self.superGroupID = @"58860049";
+    // california 32422548
     
-    
+    if ([self.superGroupID length]<1) {
+        self.superGroupID = @"32422548";
+    }
     
     self.wallFilter = @"all";
 
@@ -174,7 +173,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                                           withFilter:self.wallFilter
                                           withOffset:[self.arrrayWall count]
                                            typeOwner:@"group"
-                                               count:20
+                                               count:50
                                            onSuccess:^(NSArray *posts) {
                                                
                       

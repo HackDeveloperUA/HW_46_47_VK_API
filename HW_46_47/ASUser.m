@@ -62,6 +62,39 @@
         self.enableWritePostButton   = [[responseObject objectForKey:@"can_post"] boolValue];
         
         int friendStatus   = [[responseObject objectForKey:@"friend_status"] integerValue];
+        self.friendStatus  =  friendStatus;
+
+        
+        
+        
+        
+        /*
+        if (self.currentUser.friendStatus == 0) {
+            
+            if ([self.currentUser.userID isEqualToString:self.authorizedUser.userID]) {
+                [cell.addFriendButton setTitle:@"Open friends"  forState: UIControlStateNormal];
+            } else {
+                [cell.addFriendButton setTitle:@"Add to Friends"  forState:UIControlStateNormal];
+                [cell.addFriendButton addTarget:self action:@selector(addFriendAction:) forControlEvents:UIControlEventTouchUpInside];
+            }
+            
+        } else if (self.currentUser.friendStatus == 1) {
+            
+            [cell.addFriendButton setTitle:@"You send request"  forState: UIControlStateNormal];
+            
+        } else if (self.currentUser.friendStatus == 2) {
+            
+            [cell.addFriendButton setTitle:@"Add to Friends"  forState:UIControlStateNormal];
+            [cell.addFriendButton addTarget:self action:@selector(addFriendAction:) forControlEvents:UIControlEventTouchUpInside];
+        } else if (self.currentUser.friendStatus) {
+            [cell.addFriendButton setTitle:@"Remove friend"  forState:UIControlStateNormal];
+            
+        }*/
+        
+        
+        
+        
+        
         
         if (friendStatus == 0) {
             self.enableAddFriendButton = YES;
@@ -70,17 +103,17 @@
         else
             if (friendStatus == 1) {
                 self.enableAddFriendButton = NO;
-                self.titleAddFriendButton  = @"You Follow";
+                self.titleAddFriendButton  = @"You send request";
             }
             else
                 if (friendStatus == 2) {
                     self.enableAddFriendButton = YES;
-                    self.titleAddFriendButton  = @"Approve request";
+                    self.titleAddFriendButton  = @"Add to Friends";
                 }
                 else
                     if (friendStatus == 3) {
                         self.enableAddFriendButton = NO;
-                        self.titleAddFriendButton  = @"In Friends";
+                        self.titleAddFriendButton  = @"Remove friend";
                     }        
     }
     

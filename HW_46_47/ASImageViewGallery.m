@@ -235,11 +235,11 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     //float heightOffset = cellDistance, widthOffset;
     float heightOffset = cellDistance, widthOffset;
     
-    long double frameWidth;
+    float frameWidth;
     for (int i = 0; i < K; i++) {
         
         float rowWidth = 0;
-       // long double rowWidth = 0;
+        //long double rowWidth = 0;
 
         frameWidth = frameSize.width - ((ranges[i][1] - ranges[i][0]) + 2) * cellDistance;
         
@@ -247,8 +247,6 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             // тута
             //int ssw = (int)ceilf(newFrames[j].size.width);
             rowWidth += (float)ceilf(newFrames[j].size.width);
-           // rowWidth += 304;
-             //rowWidth += ceill((newFrames[j].size.width));
         }
         
         float ratio = frameWidth / rowWidth;
@@ -262,7 +260,11 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             
             widthOffset += newFrames[j].size.width;
         }
-        heightOffset += newFrames[ranges[i][0]].size.height + cellDistance;
+       // heightOffset += ceilf(newFrames[ranges[i][0]].size.height) + cellDistance;
+        
+        // Потом смотри здесь !!!
+        heightOffset += roundf(newFrames[ranges[0][0]].size.height) + cellDistance;
+
     }
     
     /////

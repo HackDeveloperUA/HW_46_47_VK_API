@@ -805,11 +805,69 @@ static NSString* kUserId = @"kUserId";
             failure(error, operation.response.statusCode);
         }
     }];
+ 
+}
 
+-(void) addToFriends:(NSString*) userId
+           onSuccess:(void(^)(NSDictionary* result))success
+           onFailure:(void(^)(NSError* error, NSInteger statusCode))failure {
     
+   
+    NSMutableDictionary* params =
+  
+    [NSMutableDictionary dictionaryWithObjectsAndKeys:
+     userId,                @"user_id",
+     @"Add me in friends",  @"text",
+     @"1",                  @"follow",
+     @"5.37",               @"v",
+     self.accessToken.token, @"access_token", nil];
+    
+    
+ [self.requestOperationManager POST:@"friends.add" parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
+        
+        if (success) {
+            success(responseObject);
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error, operation.response.statusCode);
+        }
+    }];
+
     
 }
 
+
+
+
+-(void) deleteFromFriends:(NSString*) userId
+                onSuccess:(void(^)(NSDictionary* result))success
+                onFailure:(void(^)(NSError* error, NSInteger statusCode))failure {
+    
+    
+    NSMutableDictionary* params =
+    
+    [NSMutableDictionary dictionaryWithObjectsAndKeys:
+     userId,                 @"user_id",
+     @"5.37",                @"v",
+     self.accessToken.token, @"access_token", nil];
+    
+    
+    [self.requestOperationManager POST:@"friends.delete" parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
+        
+        if (success) {
+            success(responseObject);
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error, operation.response.statusCode);
+        }
+    }];
+    
+    
+}
 
 
 @end

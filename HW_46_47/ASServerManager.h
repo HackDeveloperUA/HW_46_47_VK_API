@@ -112,6 +112,16 @@
              onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
 
 
+// --- ADD IN FRIENDS
+
+-(void) addToFriends:(NSString*) userId
+          onSuccess:(void(^)(NSDictionary* result))success
+          onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
+
+-(void) deleteFromFriends:(NSString*) userId
+           onSuccess:(void(^)(NSDictionary* result))success
+           onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
+
 @end
 
 

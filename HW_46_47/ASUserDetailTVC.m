@@ -40,7 +40,7 @@
 // Controller
 #import "ASImageViewGallery.h"
 #import "ASDetailTVC.h"
-
+#import "ASGroupTVC.h"
 
 #import "ASLinkModel.h"
 
@@ -100,6 +100,8 @@ static NSInteger ownerPostWallFilter = 1;
 
 @property (strong,nonatomic)  ASGroup *currentGroup;
 @property (strong,nonatomic)  ASUser *currentUser;
+@property (strong,nonatomic)  ASUser *authorizedUser;
+
 
 @property (strong, nonatomic) NSMutableArray* arrrayWall;
 @property (strong,nonatomic)  NSMutableArray *imageViewSize;
@@ -147,7 +149,9 @@ static NSInteger ownerPostWallFilter = 1;
      NSLog(@"%f",roundedUpVal);
      
    
-    
+    if ([self.superUserID length]<1) {
+        self.superUserID = @"4201288";
+    }
     
     // Levan 181192839
     // Hack 201621080
@@ -161,7 +165,6 @@ static NSInteger ownerPostWallFilter = 1;
     [self.tableView addSubview:self.refresh];
     
 
-    
     self.currentUser  = [ASUser new];
     self.currentGroup = [ASGroup new];
     
@@ -202,13 +205,14 @@ static NSInteger ownerPostWallFilter = 1;
             
             NSLog(@"AUTHORIZED!");
             //self.navigationItem.title = user.firstName;
-            
+            self.authorizedUser  = [ASUser new];
+            self.authorizedUser = user;
             
             NSLog(@"%@ %@", user.firstName, user.lastName);
             [self getUserFromServer];
             [self getUserPhotoFromServer];
             [self getWallFromServer];
-
+            
         }];
         
     }
@@ -232,6 +236,7 @@ static NSInteger ownerPostWallFilter = 1;
                                                   
                                                   self.currentUser = user;
                                                   self.navigationItem.title = user.firstName;
+                                                  
                                                   [self setCounteresForCollectionView];
                                                   [self.tableView reloadData];
                                              
@@ -417,7 +422,9 @@ static NSInteger ownerPostWallFilter = 1;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    if (indexPath.section > 1) {
+        [tableView deselectRowAtIndexPath:indexPath animated:NO]; 
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -559,14 +566,14 @@ static NSInteger ownerPostWallFilter = 1;
             ASMainUserCell* cell = (ASMainUserCell*)[tableView dequeueReusableCellWithIdentifier:identifierMainUser];
        
             [cell.ownerMainPhoto setImageWithURL:self.currentUser.mainImageURL placeholderImage:[UIImage imageNamed:@"pl_man"]];
-            /*
+            
             CALayer *imageLayer = cell.ownerMainPhoto.layer;
             [imageLayer setCornerRadius:40];
             [imageLayer setBorderWidth:3];
             [imageLayer setBorderColor:[UIColor whiteColor].CGColor];
             [imageLayer setMasksToBounds:YES];
             
-            
+        
             cell.fullName.text = [NSString stringWithFormat:@"%@ %@",self.currentUser.firstName , self.currentUser.lastName];
             cell.cityORcountry.text = self.currentUser.city;
             
@@ -575,14 +582,61 @@ static NSInteger ownerPostWallFilter = 1;
                                           (cell.lastSeenORonline.text = @"Online");
             
              cell.sendMessageButton.enabled = self.currentUser.enableSendMessageButton;
-             cell.addFriendButton.enabled   = self.currentUser.enableAddFriendButton;
-            [cell.addFriendButton setTitle:   self.currentUser.titleAddFriendButton  forState: UIControlStateNormal];
+           //  cell.addFriendButton.enabled   = self.currentUser.enableAddFriendButton;
+          
+           /*
+            if ([self.currentUser.userID isEqualToString:self.authorizedUser.userID]) {
+
+                NSLog(@"self.currentUser.userID %@",self.currentUser.userID);
+                NSLog(@"self.authorizedUser.userID %@",self.authorizedUser.userID);
+
+                [cell.addFriendButton setTitle:@"Open friends"  forState: UIControlStateNormal];
+           
+         } else {
+             
+             
+                [cell.addFriendButton setTitle:   self.currentUser.titleAddFriendButton  forState:UIControlStateNormal];
+                [cell.addFriendButton addTarget:self action:@selector(addFriendAction:) forControlEvents:UIControlEventTouchUpInside];
+            }*/
+            NSString* titleForButtonAddFriends;
             
+            if ([self.currentUser.userID isEqualToString:self.authorizedUser.userID]) {
+                cell.addFriendButton.tag = 1000;
+                [cell.addFriendButton setTitle:@"Open friends" forState:UIControlStateNormal];
+
+            } else {
+            cell.addFriendButton.tag = (NSInteger)self.currentUser.friendStatus;
+              
+                if (self.currentUser.friendStatus == 0) {
+                    titleForButtonAddFriends  = @"Add to Friends";
+                }
+                else
+                    if (self.currentUser.friendStatus == 1) {
+                        titleForButtonAddFriends = @"You send request";
+                    }
+                    else
+                        if (self.currentUser.friendStatus == 2) {
+                            titleForButtonAddFriends = @"Add to Friends";
+                        }
+                        else
+                            if (self.currentUser.friendStatus == 3) {
+                                titleForButtonAddFriends = @"Remove friend";
+                            }
+                
+                
+            [cell.addFriendButton setTitle:titleForButtonAddFriends forState:UIControlStateNormal];
+            [cell.addFriendButton addTarget:self action:@selector(addFriendAction:)forControlEvents:UIControlEventTouchUpInside];
+            }
+            
+            
+           
+             
+           
             
             [cell.sendMessageButton addTarget:self action:@selector(sendMessageAction:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.addFriendButton   addTarget:self action:@selector(addFriendAction:)   forControlEvents:UIControlEventTouchUpInside];
             
-            [cell.collectionViewMember reloadData];*/
+            
+            [cell.collectionViewMember reloadData];
             return cell;
         }
     }
@@ -674,6 +728,10 @@ static NSInteger ownerPostWallFilter = 1;
         [cell.commentButton addTarget:self action:@selector(showComment:) forControlEvents:UIControlEventTouchUpInside];
         cell.commentButton.tag = indexPath.row;
         [cell.commentButton setImage:[UIImage imageNamed:@"comment"] forState:UIControlStateNormal];
+
+        
+        [cell.openOwnerPage addTarget:self action:@selector(openOwnerPageAction:) forControlEvents:UIControlEventTouchUpInside];
+        cell.openOwnerPage.tag = indexPath.row;
 
         
 
@@ -914,9 +972,62 @@ static NSInteger ownerPostWallFilter = 1;
 }
 
 -(void)  addFriendAction:(UIButton*) sender {
+
+    if (sender.tag == 0 || sender.tag == 2) {
+        
+        [[ASServerManager sharedManager] addToFriends:self.currentUser.userID
+                                            onSuccess:^(NSDictionary *result) {
+                                           
+                                    int success = [[result objectForKey:@"response"]  integerValue];
+                                    
+                                    if (success==1) {
+                                        self.currentUser.friendStatus = 1;
+                                        
+                                        NSIndexSet* set = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,1)];
+                                        
+                                        [self.tableView beginUpdates];
+                                        [self.tableView reloadSections:set withRowAnimation:UITableViewRowAnimationFade];
+                                        [self.tableView endUpdates];
+                                    }
+     
+                                                
+                                                
+                                            }
+                                            onFailure:^(NSError *error, NSInteger statusCode) {
+                                                
+      }];
+    }
+    
+    if (sender.tag == 1 || sender.tag == 3) {
+        
+        [[ASServerManager sharedManager] deleteFromFriends:self.currentUser.userID
+                                            onSuccess:^(NSDictionary *result) {
+                                               
+                                        int success = [[[result objectForKey:@"response"] objectForKey:@"success"] integerValue];
+                                              
+                                        if (success==1) {
+                                            self.currentUser.friendStatus = 0;
+
+                                            NSIndexSet* set = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,1)];
+                                            
+                                            [self.tableView beginUpdates];
+                                            [self.tableView reloadSections:set withRowAnimation:UITableViewRowAnimationFade];
+                                            [self.tableView endUpdates];
+                                        }
+                                                
+                                            }
+                                            onFailure:^(NSError *error, NSInteger statusCode) {
+                                                
+     }];
+    }
+    
+    
+    
     
     
 }
+
+
 
 -(void)segmentControlPostAction:(UISegmentedControl *)sender {
     
@@ -1028,6 +1139,44 @@ static NSInteger ownerPostWallFilter = 1;
 }
 
 -(void) openSiteAction:(UIButton*) sender {
+    
+    
+}
+
+
+-(void) openOwnerPageAction:(UIButton*) sender {
+    
+    
+    ASWall* wall = [[ASWall alloc] init];
+    wall = self.arrrayWall[sender.tag];
+    
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+       
+    if (wall.group) {
+        //ownerID = self.wall.group.groupID;
+        //typeOwner = @"group";
+        
+        ASGroupTVC* groupVC = (ASGroupTVC*)[storyboard instantiateViewControllerWithIdentifier:@"ASGroupTVC"];
+        groupVC.superGroupID = wall.group.groupID;
+        
+        [self.navigationController pushViewController:groupVC animated:YES];
+
+    } else if (wall.user) {
+       
+        //ownerID = self.wall.user.userID;
+        //typeOwner = @"user";
+        
+        ASUserDetailTVC* userVC = (ASUserDetailTVC*)[storyboard instantiateViewControllerWithIdentifier:@"ASUserDetailTVC"];
+        userVC.superUserID = wall.user.userID;
+        [self.navigationController pushViewController:userVC animated:YES];
+
+    }
+    
+    
+    
+    
     
     
 }
