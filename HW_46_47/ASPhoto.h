@@ -25,8 +25,12 @@
 @property (assign, nonatomic) BOOL      canComment;
 
 // --->
-@property (assign, nonatomic) NSInteger height;
-@property (assign, nonatomic) NSInteger width;
+//@property (assign, nonatomic) NSInteger height;
+//@property (assign, nonatomic) NSInteger width;
+
+@property (assign, nonatomic) int height;
+@property (assign, nonatomic) int width;
+
 
 // --->
 
@@ -48,5 +52,5 @@
 -(instancetype) initWithServerResponse:(NSDictionary*) responseObject;
 -(instancetype) initFromResponseWallGet:(NSDictionary*) responseObject;
 
-
+-(void) description;
 @end

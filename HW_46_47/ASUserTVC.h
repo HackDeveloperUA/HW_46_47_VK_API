@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ASUserDetailTVC : UITableViewController
+@interface ASUserTVC : UITableViewController
 
 @property (strong, nonatomic) NSString* superUserID;
 

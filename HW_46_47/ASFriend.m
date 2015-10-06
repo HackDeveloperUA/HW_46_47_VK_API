@@ -17,11 +17,16 @@
         
         self.firstName = [responseObject objectForKey:@"first_name"];
         self.lastName  = [responseObject objectForKey:@"last_name"];
-        self.userID    = [responseObject objectForKey:@"user_id"];
+        self.userID    = [[responseObject objectForKey:@"id"] stringValue];
         
-        self.status    =  [responseObject objectForKey:@"status"];
-        self.cityID = [[responseObject objectForKey:@"city"] integerValue];
+        self.status  =   [responseObject objectForKey:@"status"];
+        self.cityID  = [[[responseObject objectForKey:@"city"] objectForKey:@"id"] integerValue];
+        self.city    = [[responseObject objectForKey:@"city"]objectForKey:@"title"];
         
+        int online  = [[responseObject objectForKey:@"online"] integerValue];
+    
+      
+        online == (1) ? (self.isOnline = @"Online") : (self.isOnline = @"offline");
         
         NSString* urlString = [responseObject objectForKey:@"photo_100"];
         

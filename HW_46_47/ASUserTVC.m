@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 MD. All rights reserved.
 //
 
-#import "ASUserDetailTVC.h"
+#import "ASUserTVC.h"
 
 // Model
 #import "ASUser.h"
@@ -41,6 +41,8 @@
 #import "ASImageViewGallery.h"
 #import "ASDetailTVC.h"
 #import "ASGroupTVC.h"
+#import "ASFriendTVC.h"
+
 
 #import "ASLinkModel.h"
 
@@ -59,7 +61,8 @@ static CGSize CGResizeFixHeight(CGSize size) {
 
     CGFloat targetHeight = 65.0f;
     CGFloat scaleFactor = targetHeight / size.height;
-    CGFloat targetWidth = size.width * scaleFactor;
+    //CGFloat targetWidth = size.width * scaleFactor;
+    int targetWidth = size.width * scaleFactor;
     
     return CGSizeMake(targetWidth, targetHeight);
 }
@@ -90,7 +93,7 @@ static NSInteger ownerPostWallFilter = 1;
 
 
 
-@interface ASUserDetailTVC () <UITableViewDataSource,      UITableViewDelegate,UICollectionViewDelegateFlowLayout,
+@interface ASUserTVC () <UITableViewDataSource,      UITableViewDelegate,UICollectionViewDelegateFlowLayout,
                                 UICollectionViewDataSource, UICollectionViewDelegate,
                                 UIScrollViewDelegate>
 
@@ -135,7 +138,7 @@ static NSInteger ownerPostWallFilter = 1;
 
 @end
 
-@implementation ASUserDetailTVC
+@implementation ASUserTVC
 
 
 - (void)viewDidLoad {
@@ -150,12 +153,13 @@ static NSInteger ownerPostWallFilter = 1;
      
    
     if ([self.superUserID length]<1) {
-        self.superUserID = @"4201288";
+        self.superUserID = @"201621080";
     }
     
     // Levan 181192839
     // Hack 201621080
     // Олейгич 7213748
+    // Алексей 26955116
   //  self.superUserID = @"201621080";
     
     self.wallFilter = @"all";
@@ -331,9 +335,10 @@ static NSInteger ownerPostWallFilter = 1;
                CGSize newSize = [self setFramesToImageViews:nil imageFrames:[[self.arrrayWall objectAtIndex:i] attachments]
                                                   toFitSize:CGSizeMake(self.view.frame.size.width-16, self.view.frame.size.width-16)];
                
-               //NSLog(@"newSize = %@",NSStringFromCGSize(newSize));
+               NSLog(@" getWallFromServer newSize = %@",NSStringFromCGSize(newSize));
                [self.imageViewSize addObject:[NSNumber numberWithFloat:roundf(newSize.height)]];
-                     }
+   
+            }
            
            
            
@@ -486,9 +491,9 @@ static NSInteger ownerPostWallFilter = 1;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
-    UIView* headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 95)];
-    
+    UIView* headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 95)];
 
+    
     NSString* titleButton = [NSString stringWithFormat:@"%d photos",[self.miniaturePhotoArray count]];
 
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -564,7 +569,9 @@ static NSInteger ownerPostWallFilter = 1;
         if (indexPath.row == 0) {
             
             ASMainUserCell* cell = (ASMainUserCell*)[tableView dequeueReusableCellWithIdentifier:identifierMainUser];
-       
+         
+            NSLog(@"ASMainUserCell");
+
             [cell.ownerMainPhoto setImageWithURL:self.currentUser.mainImageURL placeholderImage:[UIImage imageNamed:@"pl_man"]];
             
             CALayer *imageLayer = cell.ownerMainPhoto.layer;
@@ -582,28 +589,14 @@ static NSInteger ownerPostWallFilter = 1;
                                           (cell.lastSeenORonline.text = @"Online");
             
              cell.sendMessageButton.enabled = self.currentUser.enableSendMessageButton;
-           //  cell.addFriendButton.enabled   = self.currentUser.enableAddFriendButton;
-          
-           /*
-            if ([self.currentUser.userID isEqualToString:self.authorizedUser.userID]) {
-
-                NSLog(@"self.currentUser.userID %@",self.currentUser.userID);
-                NSLog(@"self.authorizedUser.userID %@",self.authorizedUser.userID);
-
-                [cell.addFriendButton setTitle:@"Open friends"  forState: UIControlStateNormal];
-           
-         } else {
-             
-             
-                [cell.addFriendButton setTitle:   self.currentUser.titleAddFriendButton  forState:UIControlStateNormal];
-                [cell.addFriendButton addTarget:self action:@selector(addFriendAction:) forControlEvents:UIControlEventTouchUpInside];
-            }*/
+       
             NSString* titleForButtonAddFriends;
             
             if ([self.currentUser.userID isEqualToString:self.authorizedUser.userID]) {
                 cell.addFriendButton.tag = 1000;
                 [cell.addFriendButton setTitle:@"Open friends" forState:UIControlStateNormal];
-
+                [cell.addFriendButton addTarget:self action:@selector(openFriends:)forControlEvents:UIControlEventTouchUpInside];
+                
             } else {
             cell.addFriendButton.tag = (NSInteger)self.currentUser.friendStatus;
               
@@ -627,11 +620,7 @@ static NSInteger ownerPostWallFilter = 1;
             [cell.addFriendButton setTitle:titleForButtonAddFriends forState:UIControlStateNormal];
             [cell.addFriendButton addTarget:self action:@selector(addFriendAction:)forControlEvents:UIControlEventTouchUpInside];
             }
-            
-            
-           
-             
-           
+      
             
             [cell.sendMessageButton addTarget:self action:@selector(sendMessageAction:) forControlEvents:UIControlEventTouchUpInside];
             
@@ -647,7 +636,8 @@ static NSInteger ownerPostWallFilter = 1;
     if (indexPath.section == 1) {
         
         if (indexPath.row == 0) {
-            
+            NSLog(@"ASGrayCell");
+
             ASGrayCell* cell = (ASGrayCell*)[tableView dequeueReusableCellWithIdentifier:identifierGray];
             if (!cell) {
                 cell = [[ASGrayCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierGray];
@@ -659,7 +649,8 @@ static NSInteger ownerPostWallFilter = 1;
         
         
         if (indexPath.row == 1) {
-            
+            NSLog(@"ASSegmentPost");
+ 
             ASSegmentPost* cell = (ASSegmentPost*)[tableView dequeueReusableCellWithIdentifier:identifierSegmentPost];
             if (!cell) {
                 cell = [[ASSegmentPost alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierSegmentPost];
@@ -689,13 +680,12 @@ static NSInteger ownerPostWallFilter = 1;
 
         
         ASWallAttachmentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifierWall];
-        
+        NSLog(@"ASWallAttachmentCell");
         if (!cell) {
             cell = [[ASWallAttachmentCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierWall];
         }
         
         ASWall* wall = self.arrrayWall[indexPath.row];
-     
 
         
         if (wall.user) {
@@ -829,12 +819,8 @@ static NSInteger ownerPostWallFilter = 1;
                     
                     //point.y += 50;
                 }
-             
+ 
             }
-            
-            
-            
-            
         }
         return cell;
         
@@ -857,14 +843,14 @@ static NSInteger ownerPostWallFilter = 1;
     }
     
     if (collectionView.tag == 200) {
-     return [self.miniaturePhotoArray count];
+        return [self.miniaturePhotoArray count];
     }
 
     if (collectionView.tag == 300) {
         return [self.miniaturePhotoArray count];
     }
     
-    return 1;
+    return 0;
 }
 
 
@@ -872,10 +858,10 @@ static NSInteger ownerPostWallFilter = 1;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     
-    NSLog(@"cellForItemAtIndexPath");
     
     if (collectionView.tag == 100) {
-    
+        NSLog(@"ASInfoMemberCollectionCell");
+
         static NSString *identifier = @"ASInfoMemberCollectionCell";
         ASInfoMemberCollectionCell *cell = (ASInfoMemberCollectionCell*)
                                            [collectionView dequeueReusableCellWithReuseIdentifier:identifier
@@ -889,7 +875,8 @@ static NSInteger ownerPostWallFilter = 1;
     
     
     if (collectionView.tag == 300) {
-       
+        NSLog(@"collectionPhotoCell");
+
         ASCollectionPhotoCell *cell = (ASCollectionPhotoCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"collectionPhotoCell" forIndexPath:indexPath];
 
         if (!cell) {
@@ -941,12 +928,23 @@ static NSInteger ownerPostWallFilter = 1;
         
         
         ASPhoto* photo = self.miniaturePhotoArray[indexPath.row];
+    
+        NSLog(@"-- photo wieght %ld height %f",(long)photo.width, photo.height);
+
         
+        if (photo.width == 0 && photo.height == 0) {
+            photo.width = 300;
+            photo.height = 150;
+
+        }
         
         CGSize   oldSize = CGSizeMake(photo.width, photo.height);
         CGSize   newSize = CGResizeFixHeight(oldSize);
         
-        return CGResizeFixHeight(newSize);
+        NSLog(@"-- neewsiz %@",NSStringFromCGSize(newSize));
+        //return CGResizeFixHeight(newSize);
+        return  newSize;//CGSizeMake(50, 50);
+
     }
     
     return  CGSizeMake(50, 50);
@@ -970,6 +968,22 @@ static NSInteger ownerPostWallFilter = 1;
     
     
 }
+
+
+
+-(void) openFriends:(UIButton*) sender {
+    
+    
+    ASFriendTVC* friendVC = [[ASFriendTVC alloc] initWithStyle:UITableViewStylePlain];
+    friendVC.currentUser = self.currentUser;
+ 
+    [self.navigationController pushViewController:friendVC animated:YES];
+
+    
+}
+
+
+
 
 -(void)  addFriendAction:(UIButton*) sender {
 
@@ -1165,13 +1179,13 @@ static NSInteger ownerPostWallFilter = 1;
 
     } else if (wall.user) {
        
-        //ownerID = self.wall.user.userID;
-        //typeOwner = @"user";
-        
-        ASUserDetailTVC* userVC = (ASUserDetailTVC*)[storyboard instantiateViewControllerWithIdentifier:@"ASUserDetailTVC"];
+       
+        if (![wall.user.userID isEqualToString:self.authorizedUser.userID]) {
+             
+        ASUserTVC* userVC = (ASUserTVC*)[storyboard instantiateViewControllerWithIdentifier:@"ASUserDetailTVC"];
         userVC.superUserID = wall.user.userID;
         [self.navigationController pushViewController:userVC animated:YES];
-
+        }
     }
     
     

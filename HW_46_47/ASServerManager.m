@@ -16,6 +16,8 @@
 #import "ASWall.h"
 #import "ASPhoto.h"
 #import "ASComment.h"
+#import "ASFriend.h"
+
 
 static NSString* kToken = @"kToken";
 static NSString* kExpirationDate = @"kExpirationDate";
@@ -562,6 +564,12 @@ static NSString* kUserId = @"kUserId";
 
 
 
+////////////////////////////////////////
+//
+//  REPOST
+//
+////////////////////////////////////////
+
 
 
 
@@ -611,6 +619,23 @@ static NSString* kUserId = @"kUserId";
         }
     }];
 }
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////
+//
+//  GET COMMENTS
+//
+////////////////////////////////////////
 
 
 
@@ -741,6 +766,17 @@ static NSString* kUserId = @"kUserId";
 }
 
 
+
+
+
+////////////////////////////////////////
+//
+//  JOIN IN GROUP
+//
+////////////////////////////////////////
+
+
+
 -(void) joinToGroup:(NSString*) groupID
           onSuccess:(void(^)(NSDictionary* result))success
           onFailure:(void(^)(NSError* error, NSInteger statusCode))failure {
@@ -777,6 +813,18 @@ static NSString* kUserId = @"kUserId";
 
 
 
+
+
+
+
+
+////////////////////////////////////////
+//
+//  LEAVE FROM GROUP
+//
+////////////////////////////////////////
+
+
 -(void) leaveFromGroup:(NSString*) groupID
              onSuccess:(void(^)(NSDictionary* result))success
              onFailure:(void(^)(NSError* error, NSInteger statusCode))failure {
@@ -807,6 +855,18 @@ static NSString* kUserId = @"kUserId";
     }];
  
 }
+
+
+
+
+
+
+////////////////////////////////////////
+//
+//  ADD FRIENDS
+//
+////////////////////////////////////////
+
 
 -(void) addToFriends:(NSString*) userId
            onSuccess:(void(^)(NSDictionary* result))success
@@ -841,6 +901,14 @@ static NSString* kUserId = @"kUserId";
 
 
 
+
+////////////////////////////////////////
+//
+//  DELETE FRIENDS
+//
+////////////////////////////////////////
+
+
 -(void) deleteFromFriends:(NSString*) userId
                 onSuccess:(void(^)(NSDictionary* result))success
                 onFailure:(void(^)(NSError* error, NSInteger statusCode))failure {
@@ -865,7 +933,143 @@ static NSString* kUserId = @"kUserId";
             failure(error, operation.response.statusCode);
         }
     }];
+}
+
+
+
+
+
+
+////////////////////////////////////////
+//
+//  GET FRIENDS
+//
+////////////////////////////////////////
+
+
+
+
+- (void) getFriendsWithOffset:(NSString*) userId
+                   withOffset:(NSInteger) offset
+                    withCount:(NSInteger) count
+                    onSuccess:(void(^)(NSArray* friends)) success
+                    onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure {
     
+    
+
+    
+    NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            userId, @"user_id",
+                            //@"hints",     @"order",
+                            @"name",     @"order",
+                            @(count),     @"count",
+                            @(offset),    @"offset",
+                            @"photo_100,city,status",  @"fields",
+                            @"nom",       @"name_case",
+                            @"5.37",      @"v",
+                            self.accessToken.token, @"access_token", nil];
+
+    
+    
+    
+    [self.requestOperationManager GET:@"friends.get"
+                           parameters:params
+     
+                              success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
+                                  
+                                  //NSLog(@"JSON - %@",responseObject);
+                                  
+                                  NSArray* friendsArray = [[responseObject objectForKey:@"response"] objectForKey:@"items"];
+                                  NSMutableArray* objectsArray = [NSMutableArray array];
+                                  
+                                  
+                                  for (NSDictionary* dict in friendsArray) {
+                                      
+                                      ASFriend* friend = [[ASFriend alloc] initWithServerResponse:dict];
+                                      [objectsArray addObject:friend];
+                                  }
+                                  
+                                  
+                                  if (success) {
+                                      success(objectsArray);
+                                  }
+                              }
+     
+     
+                              failure:^(AFHTTPRequestOperation *operation, NSError* error){
+                                  NSLog(@"Error: %@",error);
+                                  if (failure) {
+                                      failure(error, operation.response.statusCode);
+                                  }
+                              }];
+}
+
+
+
+
+
+
+
+
+////////////////////////////////////////
+//
+//  GET FRIENDS
+//
+////////////////////////////////////////
+
+
+
+- (void) getSubscriptionsWithId:(NSString*) userId
+                       onOffSet:(NSInteger) offset
+                          count:(NSInteger) count
+                      onSuccess:(void(^)(NSArray* subcriptions)) success
+                      onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure {
+    
+    
+    
+    
+    NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            userId,        @"user_id",
+                            @"1",          @"extended",
+                            @(offset),     @"offset",
+                            @"20",         @"count",
+                            @"members_count,photo_100,status",  @"fields",
+                            @"5.37",      @"v",
+                            self.accessToken.token, @"access_token", nil];
+    
+    
+    [self.requestOperationManager GET:@"users.getSubscriptions"
+                           parameters:params
+     
+                              success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
+                                  
+                                  NSLog(@"users.getSubscriptions JSON: %@",responseObject);
+                                  
+                                  
+                                  NSArray* subcriptArray = [responseObject objectForKey:@"response"];
+                                  NSMutableArray* objectsArray = [NSMutableArray array];
+                                  
+                                  
+                                  
+                                  for (NSDictionary* dict in subcriptArray) {
+                                      
+                                     // ASSubscription* subscript = [[ASSubscription alloc] initWithServerResponse:dict];
+                                     // [objectsArray addObject:subscript];
+                                  }
+                                  
+                                  
+                                  if (success) {
+                                      success(objectsArray);
+                                  }
+                              }
+     
+     
+                              failure:^(AFHTTPRequestOperation *operation, NSError* error){
+                                  NSLog(@"Error: %@",error);
+                                  if (failure) {
+                                      failure(error, operation.response.statusCode);
+                                  }
+                              }];
     
 }
 

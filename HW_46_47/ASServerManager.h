@@ -112,7 +112,7 @@
              onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
 
 
-// --- ADD IN FRIENDS
+// --- ADD IN FRIENDS --- //
 
 -(void) addToFriends:(NSString*) userId
           onSuccess:(void(^)(NSDictionary* result))success
@@ -121,6 +121,27 @@
 -(void) deleteFromFriends:(NSString*) userId
            onSuccess:(void(^)(NSDictionary* result))success
            onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
+
+// ---- GET FRIENDS ---- //
+
+- (void) getFriendsWithOffset:(NSString*) userId
+                   withOffset:(NSInteger) offset
+                    withCount:(NSInteger) count
+                    onSuccess:(void(^)(NSArray* friends)) success
+                    onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
+
+
+
+- (void) getSubscriptionsWithId:(NSString*) userId
+                       onOffSet:(NSInteger) offset
+                          count:(NSInteger) count
+                      onSuccess:(void(^)(NSArray* subcriptions)) success
+                      onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
+
+
+
+
+
 
 @end
 

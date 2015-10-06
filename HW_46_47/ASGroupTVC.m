@@ -41,7 +41,8 @@
 // Controllers
 #import "ASImageViewGallery.h"
 #import "ASDetailTVC.h"
-#import "ASUserDetailTVC.h"
+#import "ASUserTVC.h"
+#import "ASFriendTVC.h"
 
 
 static NSString* identifierMainGroup    = @"ASMainGroupCell";
@@ -101,11 +102,10 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     [super viewDidLoad];
     
     //58860049 10639516,
-    //self.superGroupID = @"58860049";
     // california 32422548
     
     if ([self.superGroupID length]<1) {
-        self.superGroupID = @"32422548";
+        self.superGroupID = @"58860049";
     }
     
     self.wallFilter = @"all";
@@ -971,7 +971,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     
-    ASUserDetailTVC* userVC = (ASUserDetailTVC*)[storyboard instantiateViewControllerWithIdentifier:@"ASUserDetailTVC"];
+    ASUserTVC* userVC = (ASUserTVC*)[storyboard instantiateViewControllerWithIdentifier:@"ASUserDetailTVC"];
     
     userVC.superUserID = wall.user.userID;
     

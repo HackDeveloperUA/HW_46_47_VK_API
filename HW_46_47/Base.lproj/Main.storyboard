@@ -256,10 +256,10 @@
             </objects>
             <point key="canvasLocation" x="2033" y="356"/>
         </scene>
-        <!--User DetailTVC-->
+        <!--UserTVC-->
         <scene sceneID="Zaq-z1-1LO">
             <objects>
-                <tableViewController storyboardIdentifier="ASUserDetailTVC" id="816-OW-CbA" customClass="ASUserDetailTVC" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ASUserDetailTVC" id="816-OW-CbA" customClass="ASUserTVC" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" tag="400" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="223" sectionHeaderHeight="22" sectionFooterHeight="22" id="was-rS-uTM">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="900"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -338,8 +338,8 @@
                                                 </collectionViewCell>
                                             </cells>
                                             <connections>
-                                                <outlet property="dataSource" destination="816-OW-CbA" id="1SF-Me-irP"/>
-                                                <outlet property="delegate" destination="816-OW-CbA" id="dR1-CV-XQJ"/>
+                                                <outlet property="dataSource" destination="816-OW-CbA" id="jeP-V9-ADO"/>
+                                                <outlet property="delegate" destination="816-OW-CbA" id="ZPM-GS-XPv"/>
                                             </connections>
                                         </collectionView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Kyiv" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="del-HO-Xu6">
