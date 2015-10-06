@@ -55,6 +55,11 @@
       self.height = [[responseObject objectForKey:@"height"] integerValue];
       self.width  = [[responseObject objectForKey:@"width"]  integerValue];
         
+        if (self.width == 0 || self.width == NULL) {
+            self.width = 304;
+            self.height = 304;
+        }
+        
       self.photo_75URL   = [NSURL URLWithString:[responseObject objectForKey:@"photo_75"]];
       self.photo_130URL  = [NSURL URLWithString:[responseObject objectForKey:@"photo_130"]];
       self.photo_604URL  = [NSURL URLWithString:[responseObject objectForKey:@"photo_604"]];
@@ -85,6 +90,13 @@
         
         self.height = [[dict objectForKey:@"height"] integerValue];
         self.width  = [[dict objectForKey:@"width"]  integerValue];
+        
+        // Заруб
+        if (self.width == 0 || self.width == NULL) {
+            self.width = 304;
+            self.height = 304;
+        }
+        
         
         self.photo_75URL   = [NSURL URLWithString:[dict objectForKey:@"photo_75"]];
         self.photo_130URL  = [NSURL URLWithString:[dict objectForKey:@"photo_130"]];

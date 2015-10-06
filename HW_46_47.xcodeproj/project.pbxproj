@@ -29,6 +29,9 @@
 		6C6A8F321BBD425F0064AA3E /* UIImageView+MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A8F2E1BBD425E0064AA3E /* UIImageView+MHFacebookImageViewer.m */; };
 		6C6B2D741BC435DD0055571E /* ASFriendTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6B2D731BC435DD0055571E /* ASFriendTVC.m */; };
 		6C6B2D771BC4589C0055571E /* ASSubscriptionTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6B2D761BC4589C0055571E /* ASSubscriptionTVC.m */; };
+		6C6B2D7A1BC47A600055571E /* ASAudioView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6B2D791BC47A600055571E /* ASAudioView.m */; };
+		6C6B2D7C1BC47A750055571E /* AudioXib.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C6B2D7B1BC47A750055571E /* AudioXib.xib */; };
+		6C6B2D7F1BC47CEF0055571E /* ASAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C6B2D7E1BC47CEF0055571E /* ASAudio.m */; };
 		6C7C9F4E1BACBCFE00D2228F /* ASPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C7C9F4D1BACBCFE00D2228F /* ASPhoto.m */; };
 		6C88FDE51BC29C29007CC44C /* ASLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C88FDE41BC29C29007CC44C /* ASLink.m */; };
 		6C88FDF11BC2CB85007CC44C /* LinkXib.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C88FDF01BC2CB85007CC44C /* LinkXib.xib */; };
@@ -108,6 +111,11 @@
 		6C6B2D731BC435DD0055571E /* ASFriendTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASFriendTVC.m; sourceTree = "<group>"; };
 		6C6B2D751BC4589C0055571E /* ASSubscriptionTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASSubscriptionTVC.h; sourceTree = "<group>"; };
 		6C6B2D761BC4589C0055571E /* ASSubscriptionTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASSubscriptionTVC.m; sourceTree = "<group>"; };
+		6C6B2D781BC47A600055571E /* ASAudioView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASAudioView.h; sourceTree = "<group>"; };
+		6C6B2D791BC47A600055571E /* ASAudioView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASAudioView.m; sourceTree = "<group>"; };
+		6C6B2D7B1BC47A750055571E /* AudioXib.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AudioXib.xib; sourceTree = "<group>"; };
+		6C6B2D7D1BC47CEF0055571E /* ASAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASAudio.h; sourceTree = "<group>"; };
+		6C6B2D7E1BC47CEF0055571E /* ASAudio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASAudio.m; sourceTree = "<group>"; };
 		6C7C9F4C1BACBCFE00D2228F /* ASPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASPhoto.h; sourceTree = "<group>"; };
 		6C7C9F4D1BACBCFE00D2228F /* ASPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASPhoto.m; sourceTree = "<group>"; };
 		6C88FDE31BC29C29007CC44C /* ASLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASLink.h; sourceTree = "<group>"; };
@@ -230,6 +238,8 @@
 				6C451E8B1BA61B8800A879C9 /* ASGroup.m */,
 				6C2AC5BD1BA42B27006C0DE6 /* ASFollower.h */,
 				6C2AC5BE1BA42B27006C0DE6 /* ASFollower.m */,
+				6C2AC5C01BA42B4D006C0DE6 /* ASSubscription.h */,
+				6C2AC5C11BA42B4D006C0DE6 /* ASSubscription.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -271,8 +281,8 @@
 				6C7C9F4D1BACBCFE00D2228F /* ASPhoto.m */,
 				6C88FDE31BC29C29007CC44C /* ASLink.h */,
 				6C88FDE41BC29C29007CC44C /* ASLink.m */,
-				6C2AC5C01BA42B4D006C0DE6 /* ASSubscription.h */,
-				6C2AC5C11BA42B4D006C0DE6 /* ASSubscription.m */,
+				6C6B2D7D1BC47CEF0055571E /* ASAudio.h */,
+				6C6B2D7E1BC47CEF0055571E /* ASAudio.m */,
 			);
 			name = "Primitive Model";
 			sourceTree = "<group>";
@@ -311,6 +321,9 @@
 				6C9B12071BA1572D00242620 /* Main.storyboard */,
 				6CB8A2BC1BB2C93400FB8D50 /* CVPhotoCell.xib */,
 				6C88FDF01BC2CB85007CC44C /* LinkXib.xib */,
+				6C6B2D7B1BC47A750055571E /* AudioXib.xib */,
+				6C6B2D781BC47A600055571E /* ASAudioView.h */,
+				6C6B2D791BC47A600055571E /* ASAudioView.m */,
 				6C88FDF21BC2CBDA007CC44C /* ASLinkModel.h */,
 				6C88FDF31BC2CBDA007CC44C /* ASLinkModel.m */,
 				6C9B120A1BA1572D00242620 /* Images.xcassets */,
@@ -458,6 +471,7 @@
 			files = (
 				6C6A8F311BBD425F0064AA3E /* Done@2x.png in Resources */,
 				6C9B12091BA1572D00242620 /* Main.storyboard in Resources */,
+				6C6B2D7C1BC47A750055571E /* AudioXib.xib in Resources */,
 				6C88FDF11BC2CB85007CC44C /* LinkXib.xib in Resources */,
 				6C9B120E1BA1572D00242620 /* LaunchScreen.xib in Resources */,
 				6C6A8F301BBD425F0064AA3E /* Done.png in Resources */,
@@ -531,6 +545,7 @@
 				6C9671A91BA723D9006B2D59 /* ASInfoMemberFlowLayout.m in Sources */,
 				6CF725941BA22804003F935B /* ASInfoMemberCollectionCell.m in Sources */,
 				6C2AC5C21BA42B4D006C0DE6 /* ASSubscription.m in Sources */,
+				6C6B2D7F1BC47CEF0055571E /* ASAudio.m in Sources */,
 				6C88FDE51BC29C29007CC44C /* ASLink.m in Sources */,
 				6C9671AC1BA72407006B2D59 /* ASPhotosFlowLayout.m in Sources */,
 				6C4568541BA33ECE000B380A /* ASUser.m in Sources */,
@@ -545,6 +560,7 @@
 				6C9B12001BA1572D00242620 /* main.m in Sources */,
 				6CB8A2C01BB2CBA000FB8D50 /* ASCollectionPhotoCell.m in Sources */,
 				6C25598E1BA215AB0005622E /* ASSegmentPost.m in Sources */,
+				6C6B2D7A1BC47A600055571E /* ASAudioView.m in Sources */,
 				6C2AC5BC1BA42A4E006C0DE6 /* ASWall.m in Sources */,
 				6C4568431BA2DF3C000B380A /* ASUserTVC.m in Sources */,
 			);

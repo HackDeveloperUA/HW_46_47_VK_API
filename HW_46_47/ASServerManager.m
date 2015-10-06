@@ -18,6 +18,7 @@
 #import "ASComment.h"
 #import "ASFriend.h"
 #import "ASSubscription.h"
+#import "ASAudio.h"
 
 
 static NSString* kToken = @"kToken";

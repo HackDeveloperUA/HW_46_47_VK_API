@@ -15,6 +15,8 @@
 #import "ASGroup.h"
 #import "ASPhoto.h"
 #import "ASLink.h"
+#import "ASAudio.h"
+
 
 // Collection View
 #import "ASInfoMemberCollectionCell.h"
@@ -1434,6 +1436,10 @@ static NSInteger ownerPostWallFilter = 1;
     for (int i = 0; i < [imageFrames count]; i++) {
         
         if ([[imageFrames objectAtIndex:i] isKindOfClass:[ASLink class]]) {
+            N--;
+        }
+        
+        if ([[imageFrames objectAtIndex:i] isKindOfClass:[ASAudio class]]) {
             N--;
         }
     }

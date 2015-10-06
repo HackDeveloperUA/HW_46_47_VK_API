@@ -10,6 +10,8 @@
 #import "ASPhoto.h"
 #import "ASLink.h"
 
+#import "ASAudio.h"
+
 
 @implementation ASWall
 
@@ -97,6 +99,18 @@
                         ASLink* link = [[ASLink alloc] initWithServerResponse:dict];
                         [self.attachments addObject:link];
                     }
+                    
+                    
+                    // Сюда смотри !!!!
+                    
+                    
+                    if ([[dict objectForKey:@"type"]  isEqual: @"audio"]) {
+                        ASAudio* audio = [[ASAudio alloc] initWithServerResponse:dict];
+                        [self.attachments addObject:audio];
+                    }
+                    
+                    
+                    
                 }
                 
             }
