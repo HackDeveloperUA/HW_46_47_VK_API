@@ -149,8 +149,10 @@ static NSInteger ownerPostWallFilter = 1;
    
     
     
-    //181192839 201621080
-    self.superUserID = @"181192839";
+    // Levan 181192839
+    // Hack 201621080
+    // Олейгич 7213748
+  //  self.superUserID = @"201621080";
     
     self.wallFilter = @"all";
     
@@ -557,7 +559,7 @@ static NSInteger ownerPostWallFilter = 1;
             ASMainUserCell* cell = (ASMainUserCell*)[tableView dequeueReusableCellWithIdentifier:identifierMainUser];
        
             [cell.ownerMainPhoto setImageWithURL:self.currentUser.mainImageURL placeholderImage:[UIImage imageNamed:@"pl_man"]];
-            
+            /*
             CALayer *imageLayer = cell.ownerMainPhoto.layer;
             [imageLayer setCornerRadius:40];
             [imageLayer setBorderWidth:3];
@@ -580,7 +582,7 @@ static NSInteger ownerPostWallFilter = 1;
             [cell.sendMessageButton addTarget:self action:@selector(sendMessageAction:) forControlEvents:UIControlEventTouchUpInside];
             [cell.addFriendButton   addTarget:self action:@selector(addFriendAction:)   forControlEvents:UIControlEventTouchUpInside];
             
-            [cell.collectionViewMember reloadData];
+            [cell.collectionViewMember reloadData];*/
             return cell;
         }
     }
@@ -1214,6 +1216,7 @@ static NSInteger ownerPostWallFilter = 1;
     
     self.arrayNumberDataCountres = newNumberArray;
     self.arrayTextDataCountres   = newTextArray;
+    
     /*
     NSArray* arrayCounterText = @[@"albums",   @"audios",  @"followers", @"friends",
                                   @"groups",   @"pages",   @"photos",    @"videos", @"subscriptions"];
@@ -1323,7 +1326,12 @@ static NSInteger ownerPostWallFilter = 1;
     int k1 = K-1;
     int n1 = N-1;
     int ranges[N][2];
+   
     while (k1 >= 0) {
+       
+        if (k1>=10) {
+            k1=0;
+        }
         ranges[k1][0] = D[n1][k1]+1;
         ranges[k1][1] = n1;
         
@@ -1343,7 +1351,9 @@ static NSInteger ownerPostWallFilter = 1;
         frameWidth = frameSize.width - ((ranges[i][1] - ranges[i][0]) + 2) * cellDistance;
         
         for (int j = ranges[i][0]; j <= ranges[i][1]; j++) {
+           // тута
             rowWidth += (float)ceilf(newFrames[j].size.width);
+        
         }
         
         float ratio = frameWidth / rowWidth;
