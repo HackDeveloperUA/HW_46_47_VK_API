@@ -15,37 +15,7 @@
     self = [super init];
     if (self) {
         
-       /*
-        @property (strong, nonatomic) NSString* title;
-        @property (strong, nonatomic) NSString* artist;
-        
-        @property (strong, nonatomic) NSURL* urlAudio;
-        
-        @property (strong, nonatomic) NSString* ownerId;
-        @property (strong, nonatomic) NSString* date;
-        
-        @property (strong, nonatomic) NSString* duration;
 
-        */
-  
-        /*
-         {
-         audio =     {
-         artist = "Hank Williams Jr.";
-         date = 1444199485;
-         duration = 79;
-         "genre_id" = 2;
-         id = 402744362;
-         "lyrics_id" = 8040481;
-         "owner_id" = 2000309537;
-         title = Canyonero;
-         url = "https://psv4.vk.me/c4703/u3242868/audios/0ecb8300244c.mp3?extra=TW9H6ZdjrVLi3laCEDKqPceBV83q7gMq6Vhble6_T6ZF1pswte8KgXi_7UuIbALrzsEqk9-xUsP3Zx93Tdb4mZjRTiyfnWdgeA";
-         };
-         type = audio;
-         }
-         
-         
-        */
      
         NSDictionary* audioDict = [responseObject objectForKey:@"audio"];
         

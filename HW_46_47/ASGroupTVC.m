@@ -14,7 +14,6 @@
 #import "ASFriend.h"
 #import "ASGroup.h"
 #import "ASPhoto.h"
-
 #import "ASLink.h"
 #import "ASAudio.h"
 
@@ -49,15 +48,16 @@
 
 
 
-static NSString* identifierMainGroup    = @"ASMainGroupCell";
-static NSString* identifierSegmentPost  = @"ASSegmentPost";
-static NSString* identifierGray         = @"ASGrayCell";
-static NSString* identifierWall         = @"ASWallCell";
+static NSString* identifierMainGroup     = @"ASMainGroupCell";
+static NSString* identifierSegmentPost   = @"ASSegmentPost";
+static NSString* identifierGray          = @"ASGrayCell";
+static NSString* identifierWall          = @"ASWallCell";
 static NSString* identifierWallTextOnly  = @"ASWallTextCell";
 
 
 static NSInteger allPostWallFilter   = 0;
 static NSInteger ownerPostWallFilter = 1;
+
 
 
 static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
@@ -108,8 +108,9 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     //58860049 10639516,
     // california 32422548
     // cp 33393308
+    
     if ([self.superGroupID length]<1) {
-        self.superGroupID = @"102981503";
+        self.superGroupID = @"32422548";
     }
     
     self.wallFilter = @"all";
@@ -128,7 +129,6 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     [self.tableView addSubview:self.refresh];
     
 
-    
     
     
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
@@ -160,7 +160,6 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
         }];
         
     }
-   // [self.tableView reloadData];
 
 }
 
@@ -194,7 +193,6 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 
                    for (NSInteger i= [self.arrrayWall count]; i<=[posts count]+[self.arrrayWall count]-1; i++) {
                 
-                        NSLog(@"Добавляем %ld",(long)i);
                        [arrPath addObject:[NSIndexPath indexPathForRow:i inSection:1]];
                    }
                    
@@ -396,6 +394,8 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
         
         if (indexPath.row == 0) {
             
+            #pragma mark ASMainGroupCell
+            
             ASMainGroupCell* cell = (ASMainGroupCell*)[tableView dequeueReusableCellWithIdentifier:identifierMainGroup];
             
             if (!cell) {
@@ -431,7 +431,6 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             cell.typeGroup.text     = self.currentGroup.typeCommunity;
             cell.statusGroup.text   = self.currentGroup.status;
             
-            //648fc4
             //@"Join community" : @"You are a member"
             [cell.followButton addTarget:self
                                 action:@selector(followButtonAction:)
@@ -446,14 +445,18 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                 [cell.followButton setBackgroundColor:[UIColor colorWithRed:1 green:0.176 blue:0.333 alpha:1]];
             }
             
- 
             cell.collectionView.collectionViewLayout = (UICollectionViewLayout*)[ASInfoMemberFlowLayout initFlowLayout];
             return cell;
         }
         
         
         
+        
+        
+        
         if (indexPath.row == 1) {
+
+            #pragma mark ASGrayCell
 
             ASGrayCell* cell = (ASGrayCell*)[tableView dequeueReusableCellWithIdentifier:identifierGray];
             
@@ -468,19 +471,20 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
         
         if (indexPath.row == 2) {
 
+            #pragma mark ASSegmentPost
+
             ASSegmentPost* cell = (ASSegmentPost*)[tableView dequeueReusableCellWithIdentifier:identifierSegmentPost];
             
             if (!cell) {
                cell = [[ASSegmentPost alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierSegmentPost];
             }
         
-     
-            if ([self.wallFilter isEqualToString:@"all"]) {
-                cell.postSegmentControl.selectedSegmentIndex = allPostWallFilter;
-            
-            } else if ([self.wallFilter isEqualToString:@"owner"]) {
-                cell.postSegmentControl.selectedSegmentIndex = ownerPostWallFilter;
-            }
+                if ([self.wallFilter isEqualToString:@"all"]) {
+                    cell.postSegmentControl.selectedSegmentIndex = allPostWallFilter;
+                
+                } else if ([self.wallFilter isEqualToString:@"owner"]) {
+                    cell.postSegmentControl.selectedSegmentIndex = ownerPostWallFilter;
+                  }
             
             
             [cell.postSegmentControl addTarget:self
@@ -495,6 +499,8 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
         }
     }
     
+    
+    
     if (indexPath.section == 1) {
 
         ASWall* wall = self.arrrayWall[indexPath.row];
@@ -503,6 +509,8 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
         if ([wall.attachments count] > 0) {
             
         
+            #pragma mark ASWallAttachmentCell
+
             ASWallAttachmentCell* cell = (ASWallAttachmentCell*)[tableView dequeueReusableCellWithIdentifier:identifierWall];
             
             if (!cell) {
@@ -526,7 +534,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             cell.date.text     = wall.date;
             
             
-                CGPoint point = CGPointZero;
+            CGPoint point = CGPointZero;
        
             float sizeText = [self heightLabelOfTextForString:cell.textPost.text fontSize:14.f widthLabel:CGRectGetWidth(self.view.bounds)-2*8];
             point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame),sizeText+60+16);
@@ -576,13 +584,13 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             }
             
         
-            
             return cell;
       
             
         } else {
             
-            
+            #pragma mark ASWallTextCell
+
             ASWallTextCell* cell = (ASWallTextCell*)[tableView dequeueReusableCellWithIdentifier:identifierWallTextOnly];
             
             if (!cell) {
@@ -673,6 +681,8 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 }
 
 
+
+
 #pragma mark -  UICollectionViewDataSource
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -705,10 +715,8 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     static NSString *identifier = @"ASInfoMemberCollectionCell";
     ASInfoMemberCollectionCell *cell = (ASInfoMemberCollectionCell*)[collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
 
-    NSLog(@"TESSSTT didSelectItemAtIndexPath");
     
     if ([cell.seconLabel.text isEqualToString:@"members"]) {
-        
         
     }
     else
@@ -753,15 +761,14 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
         sender.selectedSegmentIndex = 1;
     }
     
-    //[self refreshWall:sender];
     [self updateOnlyWall:sender];
 }
 
 
+
+
 -(void) createPostAction:(UIButton*) sender {
 
-    
-    NSLog(@"createPostAction");
     
     UIStoryboard*   storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     ASWritePostTVC* writeVC = (ASWritePostTVC*)[storyboard instantiateViewControllerWithIdentifier:@"ASWritePostTVC"];
@@ -772,15 +779,12 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             ownerGroupID = [@"-" stringByAppendingString:ownerGroupID];
         }
         
-    
-    //writeVC.currentOwnerID = self.currentGroup.groupID;
-    writeVC.currentOwnerID = ownerGroupID;
+     writeVC.currentOwnerID = ownerGroupID;
     
     
     UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:writeVC];
     
     
-    //[self presentModalViewController:navController animated:YES];
     [self presentViewController:navController animated:YES completion:nil];
 
 
@@ -790,8 +794,6 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 
 -(void) followButtonAction:(UIButton*) sender {
     
-    
-    NSLog(@"followButtonAction");
     
     if (self.currentGroup.isMember == YES) {
         [[ASServerManager sharedManager] leaveFromGroup:self.currentGroup.groupID
@@ -894,8 +896,6 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     
     [alert show];
     self.indexPathWallForRepost = sender.tag;
-   
-    NSLog(@"after alert show");
     
 }
 
@@ -975,50 +975,17 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 
 -(void) openOwnerPageAction:(UIButton*) sender {
     
-    /*
-     @property (strong, nonatomic) NSString* fromID;
-     @property (strong, nonatomic) NSString* ownerID;
-     
-     
-     @property (strong, nonatomic) NSString* fullName;
-     @property (strong, nonatomic) NSURL*    urlPhoto;
-     
-     @property (strong, nonatomic) NSMutableArray* attachments;
-     
-     
-     @property (strong, nonatomic) ASUser* user;
-     @property (strong, nonatomic) ASGroup* group;
-    */
-    
     
     ASWall* wall = [[ASWall alloc] init];
     wall = self.arrrayWall[sender.tag];
 
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    
-    ASUserTVC* userVC = (ASUserTVC*)[storyboard instantiateViewControllerWithIdentifier:@"ASUserDetailTVC"];
+    UIStoryboard*  storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    ASUserTVC*     userVC     = (ASUserTVC*)[storyboard instantiateViewControllerWithIdentifier:@"ASUserDetailTVC"];
     
     userVC.superUserID = wall.user.userID;
-    
-    /*
-    detailVC.group  = self.group;
-    
-    ASWall* wall = [[ASWall alloc] init];
-    wall = self.arrrayWall[sender.tag];
-    wall.group = self.group;
-    wall.imageViewSize = [[self.imageViewSize objectAtIndex:sender.tag] floatValue];
-    
-    detailVC.whence = @"group";
-    detailVC.wall   = wall;
-    detailVC.postID = [[self.arrrayWall objectAtIndex:sender.tag] postID];
-    */
-    
     [self.navigationController pushViewController:userVC animated:YES];
-
-    
-    
-    
+  
 }
 
 
@@ -1055,27 +1022,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                                                   } onFailure:^(NSError *error, NSInteger statusCode) {
                                                       
                                                   }];
-            
-            
-            
-            /*
-            [[ASServerManager sharedManager] repostOnMyWall:wall.ownerID inPost:wall.postID withMessage:textfield.text
-                                                  onSuccess:^(NSDictionary *result) {
-                                                      
-                                               
-                                                      NSDictionary* response = [result objectForKey:@"response"];
-                                                      
-                                                      wall.canRepost = NO;
-                                                      wall.reposts   = [[response objectForKey:@"reposts_count"] stringValue];
-                                                      [self.tableView reloadData];
-
-                                                      self.indexPathWallForRepost = NULL;
-                                                  }
-                                                  onFailure:^(NSError *error, NSInteger statusCode) {
-                                                      
-                                                  }];*/
-            
-            
+        
         }
     }
 }

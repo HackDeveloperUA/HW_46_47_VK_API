@@ -17,16 +17,13 @@
     {
         NSLog(@"initWithFrame");
         
-        NSArray *xib = [[NSBundle mainBundle] loadNibNamed:@"LinkXib" owner:self options:nil];
+        NSArray *xib   = [[NSBundle mainBundle] loadNibNamed:@"LinkXib" owner:self options:nil];
         UIView* uuview = [xib objectAtIndex:0];
         
         uuview.frame = frame;
         
         [self addSubview:uuview];
-        //self.frame = frame;
-        //self.backgroundColor = [UIColor  redColor];
-        // [self addSubview:myView];
-        
+    
     }
     return self;
 }

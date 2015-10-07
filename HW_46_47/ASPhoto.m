@@ -10,28 +10,7 @@
 
 @implementation ASPhoto
 
--(void) description {
-    
-    NSLog(@"owner_id = %@",self.owner_id);
-    NSLog(@"postID = %@",self.postID);
 
-    NSLog(@"albumID = %@",self.albumID);
-    NSLog(@"date = %@",self.date);
-    NSLog(@"commentsCount = %@",self.commentsCount);
-    NSLog(@"likesCount = %@",self.likesCount);
-    
-    NSLog(@"height = %f",self.height);
-    NSLog(@"width = %f",self.width);
-    
-    NSLog(@"photo_75URL = %@",self.photo_75URL);
-    NSLog(@"photo_130URL = %@",self.photo_130URL);
-    NSLog(@"photo_604URL = %@",self.photo_604URL);
-    
-    NSLog(@"photo_807URL = %@",self.photo_807URL);
-    NSLog(@"photo_1280URL = %@",self.photo_1280URL);
-    NSLog(@"----------------\n");
-
-}
 -(instancetype) initWithServerResponse:(NSDictionary*) responseObject {
     
     self = [super init];
@@ -121,5 +100,28 @@
     return parseDate;
 }
 
+
+-(void) description {
+    
+    NSLog(@"owner_id = %@",self.owner_id);
+    NSLog(@"postID = %@",self.postID);
+    
+    NSLog(@"albumID = %@",self.albumID);
+    NSLog(@"date = %@",self.date);
+    NSLog(@"commentsCount = %@",self.commentsCount);
+    NSLog(@"likesCount = %@",self.likesCount);
+    
+    NSLog(@"height = %d",self.height);
+    NSLog(@"width = %d",self.width);
+    
+    NSLog(@"photo_75URL = %@",self.photo_75URL);
+    NSLog(@"photo_130URL = %@",self.photo_130URL);
+    NSLog(@"photo_604URL = %@",self.photo_604URL);
+    
+    NSLog(@"photo_807URL = %@",self.photo_807URL);
+    NSLog(@"photo_1280URL = %@",self.photo_1280URL);
+    NSLog(@"----------------\n");
+    
+}
 
 @end

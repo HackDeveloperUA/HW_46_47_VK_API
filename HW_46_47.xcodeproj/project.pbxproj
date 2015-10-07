@@ -332,10 +332,7 @@
 				6CB8A2BC1BB2C93400FB8D50 /* CVPhotoCell.xib */,
 				6C88FDF01BC2CB85007CC44C /* LinkXib.xib */,
 				6C6B2D7B1BC47A750055571E /* AudioXib.xib */,
-				6C6B2D781BC47A600055571E /* ASAudioView.h */,
-				6C6B2D791BC47A600055571E /* ASAudioView.m */,
-				6C88FDF21BC2CBDA007CC44C /* ASLinkModel.h */,
-				6C88FDF31BC2CBDA007CC44C /* ASLinkModel.m */,
+				6CACF0731BC550A300441DD9 /* Custom View */,
 				6C9B120A1BA1572D00242620 /* Images.xcassets */,
 				6C9671AD1BA74F64006B2D59 /* UIColor+HEX.h */,
 				6C9671AE1BA74F64006B2D59 /* UIColor+HEX.m */,
@@ -372,6 +369,17 @@
 				6C9B12181BA1572D00242620 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6CACF0731BC550A300441DD9 /* Custom View */ = {
+			isa = PBXGroup;
+			children = (
+				6C6B2D781BC47A600055571E /* ASAudioView.h */,
+				6C6B2D791BC47A600055571E /* ASAudioView.m */,
+				6C88FDF21BC2CBDA007CC44C /* ASLinkModel.h */,
+				6C88FDF31BC2CBDA007CC44C /* ASLinkModel.m */,
+			);
+			name = "Custom View";
 			sourceTree = "<group>";
 		};
 		6CF725911BA227AC003F935B /* CollectionView Cell */ = {

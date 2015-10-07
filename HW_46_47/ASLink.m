@@ -16,10 +16,7 @@
     self = [super init];
     if (self) {
         
-        /*
-         @property (strong, nonatomic) NSString* urlString;
-         @property (strong, nonatomic) NSString* title;
-        */
+       
         self.urlString = [[responseObject objectForKey:@"link"] objectForKey:@"url"];
         self.title     = [[responseObject objectForKey:@"link"] objectForKey:@"title"];
     }

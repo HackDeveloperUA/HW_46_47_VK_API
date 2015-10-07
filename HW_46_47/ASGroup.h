@@ -10,7 +10,6 @@
 
 @interface ASGroup : NSObject
 
-//status,activity,can_post,members_count,counters,description
 
 @property (strong, nonatomic) NSString* fullName;
 @property (strong, nonatomic) NSString* groupID;

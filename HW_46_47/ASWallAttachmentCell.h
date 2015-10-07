@@ -36,19 +36,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *openOwnerPage;
 
 
-//+(CGFloat) heightForTextInWall:(NSString*) text;
-//+(CGFloat) heightForTextInWall:(NSString*) text andWidthTextCell:(CGFloat) widthCellText;
-//+(CGFloat) heightForTextInWall:(NSString*) text withPostModel:(ASWall*) wall andWidthTextCell:(CGFloat) widthCellText;
-
-
-/*
-+(CGFloat) heightForTextWithPostModel:(ASWall*) wall andWidthTextCell:(CGFloat) widthCellText andViewFrame:(UIView*) superView;
-+(CGFloat) heightForAttachmentsWithPostModel:(ASWall*) wall andWidthTextCell:(CGFloat) widthCellText;
-
-
-+(CGFloat) heightImageAttachemts:(NSArray*) attachments andAttachmentView:(UIView*) attachmentView;
-*/
-
 +(CGFloat) heightForTextWithPostModel:(ASWall*) wall andWidthTextCell:(CGFloat) widthCellText;
 
 @end

@@ -53,16 +53,6 @@
     [self.navigationItem setRightBarButtonItem:item animated:NO];
     self.navigationItem.title = @"Login";
     
-    // My
-    //2 4 8 16 131072 256 8192 262144 4096
-    // 405790
-    
-    
-    
-    // Alexy
-    // + 2 + 4 + 16 + 131072 + 8192
-    // 139286
-    
     
     NSString* urlString =
     @"https://oauth.vk.com/authorize?"
@@ -110,7 +100,6 @@
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     
     
-    // Разобраться кто приходит в [[request URL] description]
     NSLog(@"[[request URL] description] = %@",[[request URL] description]);
     
     

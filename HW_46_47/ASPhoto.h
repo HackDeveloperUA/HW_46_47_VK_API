@@ -24,15 +24,8 @@
 @property (strong, nonatomic) NSString* likesCount;
 @property (assign, nonatomic) BOOL      canComment;
 
-// --->
-//@property (assign, nonatomic) NSInteger height;
-//@property (assign, nonatomic) NSInteger width;
-
 @property (assign, nonatomic) int height;
 @property (assign, nonatomic) int width;
-
-
-// --->
 
 
 @property (strong, nonatomic) NSURL* photo_75URL;
@@ -48,7 +41,6 @@
 @property (strong, nonatomic) UIImage* photo_1280image;
 
 
-//-(instancetype) initFromResponsePhotosGet:(NSDictionary*) responseObject;
 -(instancetype) initWithServerResponse:(NSDictionary*) responseObject;
 -(instancetype) initFromResponseWallGet:(NSDictionary*) responseObject;
 

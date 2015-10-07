@@ -30,7 +30,6 @@
 
 
 
-float        offset = 8.f;
 
 static NSString* identifierWall      = @"ASWallCell";
 
@@ -42,6 +41,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     return size;
 }
 
+float   offset = 8.f;
 static float heightPhoto  = 40.f;
 static float heightShared = 33.f;
 
@@ -74,10 +74,6 @@ static float offsetAfterShared                = 6.f;
     [super viewDidLoad];
     
    
-    NSLog(@"viewDidLoad ASDetailTVC");
-    //self.group = [[ASGroup alloc] init];
-   
-    
     
     self.arrayComments  = [NSMutableArray array];
     self.imageViewSize  = [NSMutableArray array];
@@ -132,7 +128,6 @@ static float offsetAfterShared                = 6.f;
     NSString* typeOwner;
     
     if (self.wall.group) {
-       // ownerID = self.group.groupID;
         ownerID = self.wall.group.groupID;
         typeOwner = @"group";
    
@@ -165,7 +160,6 @@ static float offsetAfterShared                = 6.f;
                       tempArray = [NSMutableArray array];
                   }
                   
-                  /////////////
                   NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange: NSMakeRange(0,[comments count])];
                   
                   [tempArray insertObjects:comments atIndexes:indexes];
@@ -175,10 +169,7 @@ static float offsetAfterShared                = 6.f;
                   for (int i=1; i<=[comments count]; i++) {
                       [arrPath addObject:[NSIndexPath indexPathForRow:i inSection:1]];
                   }
-                  /////////
-                  
-                  NSLog(@"готовност");
-
+                 
                   for (NSInteger i=0; i<=[comments count]-1; i++) {
                       
                       CGSize newSize = [self setFramesToImageViews:nil
@@ -223,7 +214,6 @@ static float offsetAfterShared                = 6.f;
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    //UITableViewCellStyleValue2
     
    
     id cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
@@ -233,7 +223,6 @@ static float offsetAfterShared                = 6.f;
         
         if (indexPath.row == 0) {
             
-            // Пидор вверху не трогай !!!!!!! ^
 
             float height = 0;
             
@@ -307,96 +296,90 @@ static float offsetAfterShared                = 6.f;
         }
         
         
-        if (self.wall.user) {
-            cell.fullName.text = [NSString stringWithFormat:@"%@ %@",self.wall.user.firstName, self.wall.user.lastName];
-            [cell.ownerPhoto setImageWithURL:self.wall.user.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
-        } else if (self.wall.group) {
+                if (self.wall.user) {
+                    cell.fullName.text = [NSString stringWithFormat:@"%@ %@",self.wall.user.firstName, self.wall.user.lastName];
+                    [cell.ownerPhoto setImageWithURL:self.wall.user.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
+                } else if (self.wall.group) {
+                    
+                    cell.fullName.text = self.wall.group.fullName;
+                    [cell.ownerPhoto setImageWithURL:self.wall.group.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
+                }
+                
+                cell.textPost.text = self.wall.text;
+                cell.date.text     = self.wall.date;
+                
+                
+
+                
+                cell.commentLabel.text = ([self.wall.comments length]>3) ? ([NSString stringWithFormat:@"%@k",[self.wall.comments substringToIndex:1]]) : (self.wall.comments);
+                cell.likeLabel.text    = ([self.wall.likes length]>3)    ? ([NSString stringWithFormat:@"%@k",[self.wall.likes substringToIndex:1]])    : (self.wall.likes);
+                cell.repostLabel.text  = ([self.wall.reposts length]>3)  ? ([NSString stringWithFormat:@"%@k",[self.wall.reposts substringToIndex:1]])  : (self.wall.reposts);
+                
+                
+                cell.likeButton.tag   = indexPath.row;
+                cell.repostButton.tag = indexPath.row;
+                cell.commentButton.tag = indexPath.row;
+
+                
+                if (self.wall.canLike == NO) {
+                    cell.likeView.backgroundColor =  [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:0.5];
+                } else {
+                    cell.likeView.backgroundColor = [UIColor clearColor];
+                }
+                
+                
+                if (self.wall.canRepost == NO) {
+                    cell.repostView.backgroundColor =  [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:0.5];
+                } else {
+                    cell.repostView.backgroundColor = [UIColor clearColor];
+                }
+                
+                
             
-            cell.fullName.text = self.wall.group.fullName;
-            [cell.ownerPhoto setImageWithURL:self.wall.group.photo_100URL placeholderImage:[UIImage imageNamed:@"pl_man"]];
-        }
-        
-        cell.textPost.text = self.wall.text;
-        cell.date.text     = self.wall.date;
-        
-        
+                
+                __weak ASWallAttachmentCell *weakCell = cell;
+                
+                NSURL* url = [[NSURL alloc] init];
+                if (self.wall.user.photo_100URL) {
+                    url = self.user.photo_100URL;
+                } else {
+                    url = self.group.photo_100URL;
+                }
+                
+                NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url];
+                
+                [cell.ownerPhoto setImageWithURLRequest:request
+                                       placeholderImage:nil
+                                                success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                    
+                                                    weakCell.ownerPhoto.image = image;
+                                                    
+                                                }
+                                                failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                                    
+                                                }];
+               
 
-        
-        cell.commentLabel.text = ([self.wall.comments length]>3) ? ([NSString stringWithFormat:@"%@k",[self.wall.comments substringToIndex:1]]) : (self.wall.comments);
-        cell.likeLabel.text    = ([self.wall.likes length]>3)    ? ([NSString stringWithFormat:@"%@k",[self.wall.likes substringToIndex:1]])    : (self.wall.likes);
-        cell.repostLabel.text  = ([self.wall.reposts length]>3)  ? ([NSString stringWithFormat:@"%@k",[self.wall.reposts substringToIndex:1]])  : (self.wall.reposts);
-        
-        
-        
-        //[cell.likeButton     addTarget:self action:@selector(addLikeOnPost:) forControlEvents:UIControlEventTouchUpInside];
-        cell.likeButton.tag = indexPath.row;
-        
-        
-        if (self.wall.canLike == NO) {
-            cell.likeView.backgroundColor =  [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:0.5];
-        } else {
-            cell.likeView.backgroundColor = [UIColor clearColor];
-        }
-        
-        
-        //[cell.repostButton     addTarget:self action:@selector(addRepost:) forControlEvents:UIControlEventTouchUpInside];
-        cell.repostButton.tag = indexPath.row;
-        
-        if (self.wall.canRepost == NO) {
-            cell.repostView.backgroundColor =  [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:0.5];
-        } else {
-            cell.repostView.backgroundColor = [UIColor clearColor];
-        }
-        
-        
-        //[cell.commentButton addTarget:self action:@selector(showComment:) forControlEvents:UIControlEventTouchUpInside];
-        cell.commentButton.tag = indexPath.row;
-    
-        
-        __weak ASWallAttachmentCell *weakCell = cell;
-        
-        NSURL* url = [[NSURL alloc] init];
-        if (self.wall.user.photo_100URL) {
-            url = self.user.photo_100URL;
-        } else {
-            url = self.group.photo_100URL;
-        }
-        
-        NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url];
-        
-        [cell.ownerPhoto setImageWithURLRequest:request
-                               placeholderImage:nil
-                                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                            
-                                            weakCell.ownerPhoto.image = image;
-                                            
-                                        }
-                                        failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                                            
-                                        }];
-       
-
-        
-        if ([cell viewWithTag:11]) [[cell viewWithTag:11] removeFromSuperview];
-        
-    if ([self.wall.attachments count] > 0) {
-        
-        CGPoint point = CGPointZero;
-        
-        float sizeText = [self heightLabelOfTextForString:cell.textPost.text fontSize:14.f widthLabel:CGRectGetWidth(self.view.bounds)-2*8];
-        
-        point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame),
-                            sizeText+(offsetBeforePhoto + heightPhoto + offsetBetweenPhotoAndText)+30);
-        
-        
-        CGSize sizeAttachment = CGSizeMake(CGRectGetWidth(self.view.bounds)-2*offset, CGRectGetWidth(self.view.bounds)-2*offset);
-        
-        ASImageViewGallery *galery = [[ASImageViewGallery alloc]initWithImageArray:self.wall.attachments startPoint:point withSizeView:sizeAttachment];
-        galery.tag = 11;
-        [cell addSubview:galery];
-        //galery.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-        
-     }
+                
+                if ([cell viewWithTag:11]) [[cell viewWithTag:11] removeFromSuperview];
+                
+                if ([self.wall.attachments count] > 0) {
+                
+                    CGPoint point = CGPointZero;
+                    
+                    float sizeText = [self heightLabelOfTextForString:cell.textPost.text fontSize:14.f widthLabel:CGRectGetWidth(self.view.bounds)-2*8];
+                    
+                    point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame),
+                                        sizeText+(offsetBeforePhoto + heightPhoto + offsetBetweenPhotoAndText)+30);
+                    
+                    
+                    CGSize sizeAttachment = CGSizeMake(CGRectGetWidth(self.view.bounds)-2*offset, CGRectGetWidth(self.view.bounds)-2*offset);
+                    
+                    ASImageViewGallery *galery = [[ASImageViewGallery alloc]initWithImageArray:self.wall.attachments startPoint:point withSizeView:sizeAttachment];
+                    galery.tag = 11;
+                    [cell addSubview:galery];
+                    
+                }
         return cell;
         
     }
@@ -414,7 +397,7 @@ static float offsetAfterShared                = 6.f;
                 cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:@"cell"];
             }
             
-            cell.textLabel.text = @"Load More";
+            cell.textLabel.text = @"Load More Comment";
             return cell;
         }
     
@@ -495,7 +478,6 @@ static float offsetAfterShared                = 6.f;
                         ASImageViewGallery *galery = [[ASImageViewGallery alloc]initWithImageArray:comment.attachments startPoint:point withSizeView:sizeAttachment];
                         galery.tag = 11;
                         [cell addSubview:galery];
-                        //galery.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
                     }
             return cell;
@@ -544,10 +526,7 @@ static float offsetAfterShared                = 6.f;
     float ideal_height = MAX(frameSize.height, frameSize.width) / N;
     float seq[N];
     float total_width = 0;
-    
-    ////
-    ////
-    ////
+   
     
     for (int i = 0; i < [imageFrames count]; i++) {
         
@@ -675,6 +654,7 @@ static float offsetAfterShared                = 6.f;
 }
 
 
+#pragma mark - Action
 
 -(void) addLikeOnPost:(UIButton*) sender {
     
@@ -683,25 +663,6 @@ static float offsetAfterShared                = 6.f;
     NSString* ownerID;
     NSString* ownerType;
 
-    
-   /*
-    if ([self.whence isEqualToString:@"group"]) {
-        
-        ownerID   = comment.group.groupID;
-        ownerType = @"group";
-   
-        
-    } else if ([self.whence isEqualToString:@"user"]) {
-     
-        if (comment.user) {
-            
-            ownerID   = comment.user.userID;
-            ownerType = @"user";
-        }
-        
-    }*/
-    
- 
     
     if (comment.group) {
         

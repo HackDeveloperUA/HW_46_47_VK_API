@@ -16,7 +16,6 @@
     self = [super init];
     if (self) {
         
-        //photo_max_orig,status,sex,bdate,city, online
         
         
         self.firstName = [responseObject objectForKey:@"first_name"];
@@ -26,8 +25,8 @@
         self.status    = [responseObject objectForKey:@"status"];
         
    
-     self.bdate = [self parseDataWithDateFormetter:@"dd MMM yyyy " andDate:[responseObject objectForKey:@"date"]];
-     self.lastSeen = [self parseDataWithDateFormetter:@"EEEE HH:mm" andDate:[[responseObject objectForKey:@"last_seen"] objectForKey:@"time"]];
+       self.bdate = [self parseDataWithDateFormetter:@"dd MMM yyyy " andDate:[responseObject objectForKey:@"date"]];
+       self.lastSeen = [self parseDataWithDateFormetter:@"EEEE HH:mm" andDate:[[responseObject objectForKey:@"last_seen"] objectForKey:@"time"]];
         
         
         self.city    = [[responseObject objectForKey:@"city"]    objectForKey:@"title"];
@@ -64,36 +63,6 @@
         int friendStatus   = [[responseObject objectForKey:@"friend_status"] integerValue];
         self.friendStatus  =  friendStatus;
 
-        
-        
-        
-        
-        /*
-        if (self.currentUser.friendStatus == 0) {
-            
-            if ([self.currentUser.userID isEqualToString:self.authorizedUser.userID]) {
-                [cell.addFriendButton setTitle:@"Open friends"  forState: UIControlStateNormal];
-            } else {
-                [cell.addFriendButton setTitle:@"Add to Friends"  forState:UIControlStateNormal];
-                [cell.addFriendButton addTarget:self action:@selector(addFriendAction:) forControlEvents:UIControlEventTouchUpInside];
-            }
-            
-        } else if (self.currentUser.friendStatus == 1) {
-            
-            [cell.addFriendButton setTitle:@"You send request"  forState: UIControlStateNormal];
-            
-        } else if (self.currentUser.friendStatus == 2) {
-            
-            [cell.addFriendButton setTitle:@"Add to Friends"  forState:UIControlStateNormal];
-            [cell.addFriendButton addTarget:self action:@selector(addFriendAction:) forControlEvents:UIControlEventTouchUpInside];
-        } else if (self.currentUser.friendStatus) {
-            [cell.addFriendButton setTitle:@"Remove friend"  forState:UIControlStateNormal];
-            
-        }*/
-        
-        
-        
-        
         
         
         if (friendStatus == 0) {

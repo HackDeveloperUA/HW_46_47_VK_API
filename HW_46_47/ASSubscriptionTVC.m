@@ -155,7 +155,6 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                       reuseIdentifier:identifier];
     }
-    cell.textLabel.text       = @"моска";
     
     ASSubscription* subscription = self.arraySubscription[indexPath.row];
     
