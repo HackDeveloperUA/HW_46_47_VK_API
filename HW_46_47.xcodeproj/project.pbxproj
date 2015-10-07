@@ -46,6 +46,8 @@
 		6C9B120B1BA1572D00242620 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6C9B120A1BA1572D00242620 /* Images.xcassets */; };
 		6C9B120E1BA1572D00242620 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6C9B120C1BA1572D00242620 /* LaunchScreen.xib */; };
 		6C9B121A1BA1572D00242620 /* HW_46_47Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6C9B12191BA1572D00242620 /* HW_46_47Tests.m */; };
+		6CACF06F1BC519C300441DD9 /* ASWritePostTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CACF06E1BC519C300441DD9 /* ASWritePostTVC.m */; };
+		6CACF0721BC51A3B00441DD9 /* ASWritePostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CACF0711BC51A3B00441DD9 /* ASWritePostCell.m */; };
 		6CB8A2BD1BB2C93400FB8D50 /* CVPhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6CB8A2BC1BB2C93400FB8D50 /* CVPhotoCell.xib */; };
 		6CB8A2C01BB2CBA000FB8D50 /* ASCollectionPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CB8A2BF1BB2CBA000FB8D50 /* ASCollectionPhotoCell.m */; };
 		6CCBDA761BBEE76000B3A478 /* ASDetailTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CCBDA751BBEE76000B3A478 /* ASDetailTVC.m */; };
@@ -142,6 +144,10 @@
 		6C9B12131BA1572D00242620 /* HW_46_47Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HW_46_47Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6C9B12181BA1572D00242620 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6C9B12191BA1572D00242620 /* HW_46_47Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HW_46_47Tests.m; sourceTree = "<group>"; };
+		6CACF06D1BC519C300441DD9 /* ASWritePostTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASWritePostTVC.h; sourceTree = "<group>"; };
+		6CACF06E1BC519C300441DD9 /* ASWritePostTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASWritePostTVC.m; sourceTree = "<group>"; };
+		6CACF0701BC51A3B00441DD9 /* ASWritePostCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASWritePostCell.h; sourceTree = "<group>"; };
+		6CACF0711BC51A3B00441DD9 /* ASWritePostCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASWritePostCell.m; sourceTree = "<group>"; };
 		6CB8A2BC1BB2C93400FB8D50 /* CVPhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CVPhotoCell.xib; sourceTree = "<group>"; };
 		6CB8A2BE1BB2CBA000FB8D50 /* ASCollectionPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASCollectionPhotoCell.h; sourceTree = "<group>"; };
 		6CB8A2BF1BB2CBA000FB8D50 /* ASCollectionPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASCollectionPhotoCell.m; sourceTree = "<group>"; };
@@ -198,6 +204,8 @@
 				6C2559961BA21DF30005622E /* ASMainUserCell.m */,
 				6C9671B01BA75623006B2D59 /* ASGrayCell.h */,
 				6C9671B11BA75623006B2D59 /* ASGrayCell.m */,
+				6CACF0701BC51A3B00441DD9 /* ASWritePostCell.h */,
+				6CACF0711BC51A3B00441DD9 /* ASWritePostCell.m */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -219,6 +227,8 @@
 				6C6B2D731BC435DD0055571E /* ASFriendTVC.m */,
 				6C6B2D751BC4589C0055571E /* ASSubscriptionTVC.h */,
 				6C6B2D761BC4589C0055571E /* ASSubscriptionTVC.m */,
+				6CACF06D1BC519C300441DD9 /* ASWritePostTVC.h */,
+				6CACF06E1BC519C300441DD9 /* ASWritePostTVC.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -532,6 +542,7 @@
 				6C6B2D741BC435DD0055571E /* ASFriendTVC.m in Sources */,
 				6C4568511BA33E09000B380A /* ASServerManager.m in Sources */,
 				6C6B2D771BC4589C0055571E /* ASSubscriptionTVC.m in Sources */,
+				6CACF0721BC51A3B00441DD9 /* ASWritePostCell.m in Sources */,
 				6C9671AF1BA74F64006B2D59 /* UIColor+HEX.m in Sources */,
 				6CF725901BA224B6003F935B /* ASGroupTVC.m in Sources */,
 				6CCBDA791BBEF4F300B3A478 /* ASComment.m in Sources */,
@@ -559,6 +570,7 @@
 				6C6A8F261BBD38680064AA3E /* ASImageViewGallery.m in Sources */,
 				6C9B12001BA1572D00242620 /* main.m in Sources */,
 				6CB8A2C01BB2CBA000FB8D50 /* ASCollectionPhotoCell.m in Sources */,
+				6CACF06F1BC519C300441DD9 /* ASWritePostTVC.m in Sources */,
 				6C25598E1BA215AB0005622E /* ASSegmentPost.m in Sources */,
 				6C6B2D7A1BC47A600055571E /* ASAudioView.m in Sources */,
 				6C2AC5BC1BA42A4E006C0DE6 /* ASWall.m in Sources */,

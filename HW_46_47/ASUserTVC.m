@@ -47,6 +47,7 @@
 #import "ASGroupTVC.h"
 #import "ASFriendTVC.h"
 #import "ASSubscriptionTVC.h"
+#import "ASWritePostTVC.h"
 
 
 #import "ASLinkModel.h"
@@ -685,9 +686,7 @@ static NSInteger ownerPostWallFilter = 1;
         
         ASWallAttachmentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifierWall];
        
-        [cell setNeedsLayout];
-        [cell setNeedsDisplay];
-        [cell layoutIfNeeded];
+        
 
         
         NSLog(@"ASWallAttachmentCell");
@@ -695,11 +694,16 @@ static NSInteger ownerPostWallFilter = 1;
             cell = [[ASWallAttachmentCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierWall];
             
         }
+        
+        //[cell setNeedsLayout];
+        //[cell setNeedsDisplay];
+        
         if ([cell viewWithTag:11]) [[cell viewWithTag:11] removeFromSuperview];
         if ([cell viewWithTag:222]) [[cell viewWithTag:222] removeFromSuperview];
         if ([cell viewWithTag:555]) [[cell viewWithTag:555] removeFromSuperview];
         
-        
+        [cell layoutIfNeeded];
+
         ASWall* wall = self.arrrayWall[indexPath.row];
 
         
@@ -743,7 +747,7 @@ static NSInteger ownerPostWallFilter = 1;
         if (wall.canLike == NO) {
             cell.likeView.backgroundColor =  [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:0.5];
         } else {
-            cell.likeView.backgroundColor = [UIColor yellowColor];
+            //cell.likeView.backgroundColor = [UIColor yellowColor];
         }
         
 
@@ -1109,6 +1113,18 @@ static NSInteger ownerPostWallFilter = 1;
     
     
     NSLog(@"createPostAction");
+    
+    ASWall* wall = self.arrrayWall[sender.tag];
+    
+    
+    UIStoryboard*   storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    ASWritePostTVC* writeVC = (ASWritePostTVC*)[storyboard instantiateViewControllerWithIdentifier:@"ASWritePostTVC"];
+    
+    //userVC.superUserID = wall.user.userID;
+    UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:writeVC];
+    
+    [self presentModalViewController:navController animated:YES];
+        
 }
 
 
