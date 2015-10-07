@@ -74,6 +74,10 @@
                         }
                         
                         
+                        if ([[dict objectForKey:@"type"]  isEqual: @"audio"]) {
+                            ASAudio* audio = [[ASAudio alloc] initWithServerResponse:dict];
+                            [self.attachments addObject:audio];
+                        }
                       }
                  }
        //////

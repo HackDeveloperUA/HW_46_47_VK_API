@@ -63,6 +63,11 @@ static NSString* kUserId = @"kUserId";
     return self;
 }
 
+
+
+#pragma mark - SAVE SETTING
+
+
 - (void)saveSettings:(ASAccessToken *)token {
     
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
@@ -132,6 +137,8 @@ static NSString* kUserId = @"kUserId";
 }
 
 
+#pragma mark - GET USER INFO
+
 // --- USER --- //
 
 - (void) getUsersInfoUserID:(NSString*) userId
@@ -193,6 +200,10 @@ static NSString* kUserId = @"kUserId";
                               }];
 }
 
+
+#pragma mark - GET USER PHOTOS
+
+
 -(void) getPhotoUserID:(NSString*) userID
             withOffset:(NSInteger) offset
                  count:(NSInteger) count
@@ -251,6 +262,7 @@ static NSString* kUserId = @"kUserId";
 
 
 
+#pragma mark - GET COUNTERES
 
 
 - (void)getCounteresInfoByID:(NSString *)ids
@@ -295,6 +307,8 @@ static NSString* kUserId = @"kUserId";
 
 
 
+
+#pragma mark - GET FRIENDS / SUBSCRIPTION
 
 // --- GROUP --- //
 
@@ -349,6 +363,7 @@ static NSString* kUserId = @"kUserId";
 
 
 
+#pragma mark - GET WALL
 
 
 
@@ -472,6 +487,7 @@ static NSString* kUserId = @"kUserId";
 }
 
 ///////
+#pragma mark - ADD LIKE ON POST / DELETE LIKE FROM POST
 
 
 - (void) postAddLikeOnWall:(NSString*)ownerID
@@ -570,6 +586,9 @@ static NSString* kUserId = @"kUserId";
 
 
 
+#pragma mark - REPOST
+
+
 ////////////////////////////////////////
 //
 //  REPOST
@@ -634,6 +653,7 @@ static NSString* kUserId = @"kUserId";
 
 
 
+#pragma mark - GET COMMENTS
 
 
 
@@ -773,6 +793,7 @@ static NSString* kUserId = @"kUserId";
 
 
 
+#pragma mark - JOIN IN GROUP / LEAVE FROM GROUP
 
 
 ////////////////////////////////////////
@@ -866,6 +887,7 @@ static NSString* kUserId = @"kUserId";
 
 
 
+#pragma mark - ADD FRIENDS / DELETE FREIENDS
 
 ////////////////////////////////////////
 //
@@ -944,6 +966,7 @@ static NSString* kUserId = @"kUserId";
 
 
 
+#pragma mark - GET FRIENDS / SUBSCRIPTION
 
 
 ////////////////////////////////////////
@@ -1009,6 +1032,8 @@ static NSString* kUserId = @"kUserId";
                                   }
                               }];
 }
+
+
 
 
 

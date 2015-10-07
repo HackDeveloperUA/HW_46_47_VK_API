@@ -15,7 +15,7 @@
     self = [super initWithFrame:frame];
     if (self)
     {
-        NSLog(@"initWithFrame");
+        NSLog(@"initWithFrame ASAudioView");
         
         NSArray *xib = [[NSBundle mainBundle] loadNibNamed:@"AudioXib" owner:self options:nil];
         UIView* uuview = [xib objectAtIndex:0];
@@ -42,5 +42,7 @@
     }
     return self;
 }
+
+
 
 @end

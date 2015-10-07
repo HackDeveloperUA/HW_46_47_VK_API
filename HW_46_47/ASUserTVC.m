@@ -32,7 +32,9 @@
 #import "ASWallAttachmentCell.h"
 
 #import "ASLinkView.h"
-#import "testView.h"
+#import "ASAudioView.h"
+
+//#import "testView.h"
 
 // Networking
 #import "ASServerManager.h"
@@ -682,10 +684,21 @@ static NSInteger ownerPostWallFilter = 1;
 
         
         ASWallAttachmentCell *cell = [tableView dequeueReusableCellWithIdentifier:identifierWall];
+       
+        [cell setNeedsLayout];
+        [cell setNeedsDisplay];
+        [cell layoutIfNeeded];
+
+        
         NSLog(@"ASWallAttachmentCell");
         if (!cell) {
             cell = [[ASWallAttachmentCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierWall];
+            
         }
+        if ([cell viewWithTag:11]) [[cell viewWithTag:11] removeFromSuperview];
+        if ([cell viewWithTag:222]) [[cell viewWithTag:222] removeFromSuperview];
+        if ([cell viewWithTag:555]) [[cell viewWithTag:555] removeFromSuperview];
+        
         
         ASWall* wall = self.arrrayWall[indexPath.row];
 
@@ -767,59 +780,91 @@ static NSInteger ownerPostWallFilter = 1;
                                         }];
         
         
-        if ([cell viewWithTag:11]) [[cell viewWithTag:11] removeFromSuperview];
-        if ([cell viewWithTag:222]) [[cell viewWithTag:222] removeFromSuperview];
-        
-        if ([wall.attachments count] > 0) {
-            
-            if ([cell viewWithTag:222]) [[cell viewWithTag:222] removeFromSuperview];
-
-            CGPoint point = CGPointZero;
      
-            
-            float sizeText = [self heightLabelOfTextForString:cell.textPost.text fontSize:14.f widthLabel:CGRectGetWidth(self.view.bounds)-2*8];
-            
-            point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame),sizeText+(offsetBeforePhoto + heightPhoto + offsetBetweenPhotoAndText));
- 
-            CGSize sizeAttachment = CGSizeMake(CGRectGetWidth(self.view.bounds)-2*offset, CGRectGetWidth(self.view.bounds)-2*offset);
-            
-            ASImageViewGallery *galery = [[ASImageViewGallery alloc]initWithImageArray:wall.attachments startPoint:point withSizeView:sizeAttachment];
-            galery.tag = 222;
-            [cell addSubview:galery];
+
+        if ([wall.attachments count] > 0) {
+
+            if ([cell viewWithTag:11]) [[cell viewWithTag:11] removeFromSuperview];
+            if ([cell viewWithTag:222]) [[cell viewWithTag:222] removeFromSuperview];
+            if ([cell viewWithTag:555]) [[cell viewWithTag:555] removeFromSuperview];
+
+                CGPoint point = CGPointZero;
+         
+                float sizeText = [self heightLabelOfTextForString:cell.textPost.text fontSize:14.f widthLabel:CGRectGetWidth(self.view.bounds)-2*8];
+                
+                point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame),sizeText+(offsetBeforePhoto + heightPhoto + offsetBetweenPhotoAndText));
+     
+                CGSize sizeAttachment = CGSizeMake(CGRectGetWidth(self.view.bounds)-2*offset, CGRectGetWidth(self.view.bounds)-2*offset);
+                
+                ASImageViewGallery *galery = [[ASImageViewGallery alloc]initWithImageArray:wall.attachments startPoint:point withSizeView:sizeAttachment];
+                galery.tag = 222;
+                [cell addSubview:galery];
    
             ///
-            
+            CGPoint newPoint = CGPointZero;
             
             for (id obj in wall.attachments) {
                 
                 if ([obj isKindOfClass:[ASLink class]]) {
                 
-                    if (CGRectGetMaxY(galery.frame)>70) {
-                        point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame), CGRectGetMaxY(galery.frame));
-                    } else {
-                        point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame), CGRectGetMaxY(cell.textPost.frame));
+                        if (CGRectGetMaxY(galery.frame)>70) {
+                            point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame), CGRectGetMaxY(galery.frame));
+                        } else {
+                            point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame), CGRectGetMaxY(cell.textPost.frame));
 
+                        }
+                        
+        
+                        ASLink* link = (ASLink*)obj;
+                        
+                        ASLinkModel* urlView = [[ASLinkModel alloc]initWithFrame:CGRectMake(point.x, point.y,
+                                                                                          self.view.bounds.size.width-16,50)];
+                        
+                        urlView.bounds = CGRectMake(point.x, point.y,  self.view.bounds.size.width-16,50);
+                        urlView.tag = 222;
+                        urlView.titleLabel.text = link.title;
+                        urlView.urlLabel.text   = link.urlString;
+                        
+                        [urlView.openSiteButton     addTarget:self
+                                                       action:@selector(openSiteAction:)
+                                             forControlEvents:UIControlEventTouchUpInside];
+                        
+                        [cell addSubview:urlView];
+                        point.y += 60;
+                        newPoint.y += 60;
+                }
+                
+                
+                if ([obj isKindOfClass:[ASAudio class]]) {
+        
+                    if (newPoint.y>0) {
+                        
+                    } else {
+                    
+                        if (CGRectGetMaxY(galery.frame)>70) {
+                            point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame), CGRectGetMaxY(galery.frame));
+                        } else {
+                           point = CGPointMake(CGRectGetMinX(cell.ownerPhoto.frame), CGRectGetMaxY(cell.textPost.frame));
+                         }
                     }
                     
-    
+                    ASAudio* audio = (ASAudio*)obj;
                     
-                    ASLink* link = (ASLink*)obj;
+                    ASAudioView* audioView = [[ASAudioView alloc]initWithFrame:CGRectMake(point.x, point.y,
+                                                                                        self.view.bounds.size.width-16,50)];
                     
-                    ASLinkModel* urlView = [[ASLinkModel alloc]initWithFrame:CGRectMake(point.x, point.y,
-                                                                                      self.view.bounds.size.width-16,50)];
+                    audioView.bounds = CGRectMake(point.x, point.y,  self.view.bounds.size.width-16,50);
+                    audioView.tag = 555;
                     
-                    urlView.bounds = CGRectMake(point.x, point.y,  self.view.bounds.size.width-16,50);
-                    urlView.tag = 222;
-                    urlView.titleLabel.text = link.title;
-                    urlView.urlLabel.text   = link.urlString;
+                    audioView.titleLabel.text = audio.title;
+                    audioView.descriptionLabel.text = audio.artist;
+                    audioView.durationLabel.text  = audio.duration;
                     
-                    [urlView.openSiteButton     addTarget:self
-                                                   action:@selector(openSiteAction:)
-                                         forControlEvents:UIControlEventTouchUpInside];
-                    
-                    [cell addSubview:urlView];
-                    
-                    //point.y += 50;
+              
+                    [cell addSubview:audioView];
+                     point.y += 60;
+                     newPoint.y += 60;
+
                 }
  
             }
@@ -1194,13 +1239,16 @@ static NSInteger ownerPostWallFilter = 1;
         [self.navigationController pushViewController:userVC animated:YES];
         }
     }
-    
-    
+}
+
+
+-(void) plaPauseSoundAction:(UIButton*) sender {
     
     
     
     
 }
+
 
 #pragma mark - UIAlertViewDelegate
 
@@ -1436,12 +1484,32 @@ static NSInteger ownerPostWallFilter = 1;
     for (int i = 0; i < [imageFrames count]; i++) {
         
         if ([[imageFrames objectAtIndex:i] isKindOfClass:[ASLink class]]) {
-            N--;
+            N=N-1;
         }
+       
         
         if ([[imageFrames objectAtIndex:i] isKindOfClass:[ASAudio class]]) {
-            N--;
+            N=N-1;
         }
+    }
+    
+    if (N==0) {
+        
+        float localHeightOffset = 0;
+        
+        for (int i = 0; i < [imageFrames count]; i++) {
+            
+            if ([[imageFrames objectAtIndex:i] isKindOfClass:[ASLink class]]) {
+                
+                localHeightOffset += 60;
+            }
+            
+            if ([[imageFrames objectAtIndex:i] isKindOfClass:[ASAudio class]]) {
+                
+                localHeightOffset += 60;
+            }
+        }
+        return CGSizeMake(frameSize.width, localHeightOffset);
     }
     
     
@@ -1552,7 +1620,19 @@ static NSInteger ownerPostWallFilter = 1;
             
             heightOffset += 60;
         }
+        
+        if ([[imageFrames objectAtIndex:i] isKindOfClass:[ASAudio class]]) {
+            
+              heightOffset += 60;
+        }
     }
+    
+    
+    /*
+     if ([[imageFrames objectAtIndex:i] isKindOfClass:[ASAudio class]]) {
+     
+     //  heightOffset += 60;
+     }*/
     
     
     return CGSizeMake(frameSize.width, heightOffset);

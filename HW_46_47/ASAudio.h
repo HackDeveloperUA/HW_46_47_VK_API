@@ -25,6 +25,8 @@
 
 @property (strong, nonatomic) NSString* duration;
 
+@property (strong, nonatomic) NSString* ID;
+
 
 
 -(instancetype) initWithServerResponse:(NSDictionary*) responseObject;

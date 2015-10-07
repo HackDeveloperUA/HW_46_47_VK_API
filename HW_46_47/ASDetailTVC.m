@@ -13,6 +13,8 @@
 #import "ASGroup.h"
 #import "ASPhoto.h"
 #import "ASComment.h"
+#import "ASAudio.h"
+#import "ASLink.h"
 
 // Custom Cell
 #import "ASWallAttachmentCell.h"
@@ -523,6 +525,20 @@ static float offsetAfterShared                = 6.f;
 - (CGSize)setFramesToImageViews:(NSArray *)imageViews imageFrames:(NSArray *)imageFrames toFitSize:(CGSize)frameSize {
     
     int N = (int)imageFrames.count;
+    
+    for (int i = 0; i < [imageFrames count]; i++) {
+        
+        if ([[imageFrames objectAtIndex:i] isKindOfClass:[ASLink class]]) {
+            N--;
+        }
+        if ([[imageFrames objectAtIndex:i] isKindOfClass:[ASAudio class]]) {
+            N--;
+        }
+    }
+    
+    
+    
+    
     CGRect newFrames[N];
     
     float ideal_height = MAX(frameSize.height, frameSize.width) / N;

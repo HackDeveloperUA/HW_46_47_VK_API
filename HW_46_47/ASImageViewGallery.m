@@ -9,7 +9,9 @@
 #import "ASImageViewGallery.h"
 #import "ASPhoto.h"
 #import "ASLink.h"
+#import "ASAudio.h"
 
+//
 #import "AFNetWorking.h"
 #import "UIImageView+AFNetworking.h"
 
@@ -156,6 +158,9 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     for (int i = 0; i < [imageFrames count]; i++) {
         
         if ([[imageFrames objectAtIndex:i] isKindOfClass:[ASLink class]]) {
+            N--;
+        }
+        if ([[imageFrames objectAtIndex:i] isKindOfClass:[ASAudio class]]) {
             N--;
         }
     }

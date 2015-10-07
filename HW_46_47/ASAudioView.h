@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface ASAudioView : UIView
+
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet UILabel *durationLabel;

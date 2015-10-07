@@ -15,6 +15,8 @@
 #import "ASGroup.h"
 #import "ASPhoto.h"
 
+#import "ASLink.h"
+#import "ASAudio.h"
 
 // Collection View
 #import "ASInfoMemberCollectionCell.h"
@@ -1061,6 +1063,19 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 - (CGSize)setFramesToImageViews:(NSArray *)imageViews imageFrames:(NSArray *)imageFrames toFitSize:(CGSize)frameSize {
     
     int N = (int)imageFrames.count;
+    
+    for (int i = 0; i < [imageFrames count]; i++) {
+        
+        if ([[imageFrames objectAtIndex:i] isKindOfClass:[ASLink class]]) {
+            N--;
+        }
+        if ([[imageFrames objectAtIndex:i] isKindOfClass:[ASAudio class]]) {
+            N--;
+        }
+    }
+    
+    
+    
     CGRect newFrames[N];
     
     float ideal_height = MAX(frameSize.height, frameSize.width) / N;
