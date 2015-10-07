@@ -10,4 +10,6 @@
 
 @interface ASWritePostTVC : UITableViewController
 
+@property (strong, nonatomic) NSString* currentOwnerID;
+
 @end

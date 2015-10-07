@@ -139,6 +139,10 @@
                       onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
 
 
+-(void) addPostOnWall:(NSString*) ID
+          withMessage:(NSString*) message
+            onSuccess:(void(^)(NSDictionary* result)) success
+            onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
 
 
 

@@ -9,6 +9,8 @@
 #import "ASWritePostTVC.h"
 #import "ASWritePostCell.h"
 
+#import "ASServerManager.h"
+
 @interface ASWritePostTVC () <UITableViewDataSource,UITableViewDelegate,UITextViewDelegate>
 
 @property (strong, nonatomic) NSString* textFromTextView;
@@ -82,7 +84,28 @@
     NSLog(@"doneAction");
     NSLog(@"text from textView = %@",self.textFromTextView);
 
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+    
+    
+    [[ASServerManager sharedManager] addPostOnWall:self.currentOwnerID
+                                       withMessage:self.textFromTextView
+                                         onSuccess:^(NSDictionary *result) {
+                                             
+                                             
+                
+            [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+                                        
+                                         } onFailure:^(NSError *error, NSInteger statusCode) {
+                                             
+                                         }];
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
 
 

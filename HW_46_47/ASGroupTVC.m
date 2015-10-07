@@ -45,6 +45,8 @@
 #import "ASDetailTVC.h"
 #import "ASUserTVC.h"
 #import "ASFriendTVC.h"
+#import "ASWritePostTVC.h"
+
 
 
 static NSString* identifierMainGroup    = @"ASMainGroupCell";
@@ -77,7 +79,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 @property (strong, nonatomic) NSString* groupID;
 @property (strong, nonatomic) NSString* wallFilter;
 
-@property (strong,nonatomic)  ASGroup *group;
+@property (strong,nonatomic)  ASGroup *currentGroup;
 @property (strong, nonatomic) NSMutableArray* arrrayWall;
 @property (strong, nonatomic) NSArray* arrayDataCountres;
 
@@ -107,12 +109,12 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     // california 32422548
     // cp 33393308
     if ([self.superGroupID length]<1) {
-        self.superGroupID = @"33393308";
+        self.superGroupID = @"102981503";
     }
     
     self.wallFilter = @"all";
 
-    self.group = [[ASGroup alloc] init];
+    self.currentGroup = [[ASGroup alloc] init];
     
     
     self.arrrayWall     = [NSMutableArray array];
@@ -252,9 +254,9 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             self.navigationItem.title = group.fullName;
         
             self.groupID = group.groupID;
-            self.group = group;
+            self.currentGroup = group;
         
-            _arrayDataCountres = @[_group.members, _group.topics, _group.docs, _group.photos, _group.videos, _group.albums];
+            _arrayDataCountres = @[_currentGroup.members, _currentGroup.topics, _currentGroup.docs, _currentGroup.photos, _currentGroup.videos, _currentGroup.albums];
         
             [self.tableView reloadData];
             self.loadingData = NO;
@@ -309,7 +311,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     
     if ([cell isKindOfClass:[ASMainGroupCell class]]) {
       
-       return  (208+[ASMainGroupCell heightForText:self.group.status])-21;
+       return  (208+[ASMainGroupCell heightForText:self.currentGroup.status])-21;
        
     }
     
@@ -403,7 +405,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
             
             __weak ASMainGroupCell *weakCell = cell;
             
-            NSURLRequest *request = [[NSURLRequest alloc]initWithURL:self.group.mainCommunityImageURL];
+            NSURLRequest *request = [[NSURLRequest alloc]initWithURL:self.currentGroup.mainCommunityImageURL];
 
             
             [cell.mainImageGroup setImageWithURLRequest:request
@@ -425,9 +427,9 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 
             
             
-            cell.fullNameGroup.text = self.group.fullName;
-            cell.typeGroup.text     = self.group.typeCommunity;
-            cell.statusGroup.text   = self.group.status;
+            cell.fullNameGroup.text = self.currentGroup.fullName;
+            cell.typeGroup.text     = self.currentGroup.typeCommunity;
+            cell.statusGroup.text   = self.currentGroup.status;
             
             //648fc4
             //@"Join community" : @"You are a member"
@@ -436,7 +438,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                       forControlEvents:UIControlEventTouchUpInside];
             
             
-            if (self.group.isMember == YES) {
+            if (self.currentGroup.isMember == YES) {
                 [cell.followButton setTitle:@"You are a member" forState: UIControlStateNormal];
                 cell.followButton.backgroundColor = [UIColor colorWithRed:0.333 green:0.584 blue:0.820 alpha:1.000];
             } else {
@@ -761,7 +763,26 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     
     NSLog(@"createPostAction");
     
+    UIStoryboard*   storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    ASWritePostTVC* writeVC = (ASWritePostTVC*)[storyboard instantiateViewControllerWithIdentifier:@"ASWritePostTVC"];
     
+    
+    NSString* ownerGroupID = self.currentGroup.groupID;
+    if (![ownerGroupID hasPrefix:@"-"]) {
+            ownerGroupID = [@"-" stringByAppendingString:ownerGroupID];
+        }
+        
+    
+    //writeVC.currentOwnerID = self.currentGroup.groupID;
+    writeVC.currentOwnerID = ownerGroupID;
+    
+    
+    UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:writeVC];
+    
+    
+    //[self presentModalViewController:navController animated:YES];
+    [self presentViewController:navController animated:YES completion:nil];
+
 
 }
 
@@ -772,15 +793,15 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
     
     NSLog(@"followButtonAction");
     
-    if (self.group.isMember == YES) {
-        [[ASServerManager sharedManager] leaveFromGroup:self.group.groupID
+    if (self.currentGroup.isMember == YES) {
+        [[ASServerManager sharedManager] leaveFromGroup:self.currentGroup.groupID
                                               onSuccess:^(NSDictionary *result) {
                                                
                              
                                           int success = [[result objectForKey:@"response"] integerValue];
                                          
                                           if (success == 1) {
-                                              self.group.isMember = NO;
+                                              self.currentGroup.isMember = NO;
                                               NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
                                               
                                               [self.tableView beginUpdates];
@@ -795,13 +816,13 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                                               }];
     } else {
         
-        [[ASServerManager sharedManager] joinToGroup:self.group.groupID
+        [[ASServerManager sharedManager] joinToGroup:self.currentGroup.groupID
                                            onSuccess:^(NSDictionary *result) {
                                            
                                    int success = [[result objectForKey:@"response"] integerValue];
                                    
                                    if (success == 1) {
-                                       self.group.isMember = YES;
+                                       self.currentGroup.isMember = YES;
                                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 
                                [self.tableView beginUpdates];
@@ -886,12 +907,12 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
 
     ASDetailTVC* detailVC = (ASDetailTVC*)[storyboard instantiateViewControllerWithIdentifier:@"ASDetailTVC"];
    
-    detailVC.group  = self.group;
+    detailVC.group  = self.currentGroup;
     
 
     ASWall* wall = [[ASWall alloc] init];
     wall = self.arrrayWall[sender.tag];
-    wall.group = self.group;
+    wall.group = self.currentGroup;
     wall.imageViewSize = [[self.imageViewSize objectAtIndex:sender.tag] floatValue];
     
     detailVC.whence = @"group";
@@ -915,7 +936,7 @@ static CGSize CGSizeResizeToHeight(CGSize size, CGFloat height) {
                 [self.arrrayWall removeAllObjects];
                 [self.imageViewSize removeAllObjects];
                 
-                self.group = nil;
+                self.currentGroup = nil;
                 
                 [self getInfoFromServer];
                 [self getWallFromServer];

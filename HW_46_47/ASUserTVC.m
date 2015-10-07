@@ -1114,17 +1114,17 @@ static NSInteger ownerPostWallFilter = 1;
     
     NSLog(@"createPostAction");
     
-    ASWall* wall = self.arrrayWall[sender.tag];
-    
-    
     UIStoryboard*   storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     ASWritePostTVC* writeVC = (ASWritePostTVC*)[storyboard instantiateViewControllerWithIdentifier:@"ASWritePostTVC"];
     
-    //userVC.superUserID = wall.user.userID;
-    UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:writeVC];
+    writeVC.currentOwnerID = self.currentUser.userID;
     
-    [self presentModalViewController:navController animated:YES];
-        
+    UINavigationController* navController = [[UINavigationController alloc] initWithRootViewController:writeVC];
+
+    
+    //[self presentModalViewController:navController animated:YES];
+     [self presentViewController:navController animated:YES completion:nil];
+    
 }
 
 

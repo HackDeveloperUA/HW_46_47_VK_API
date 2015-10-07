@@ -1104,4 +1104,47 @@ static NSString* kUserId = @"kUserId";
 }
 
 
+-(void) addPostOnWall:(NSString*) ownerID
+          withMessage:(NSString*) message
+            onSuccess:(void(^)(NSDictionary* result)) success
+            onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure {
+    
+    
+    NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            ownerID,            @"owner_id",
+                            @"0",          @"friends_only",
+                            @"",          @"from_group",
+                            message,       @"message",
+                            @"",           @"attachments",
+
+                            @"",           @"services",
+                            @"0",          @"signed",
+                            @"0",           @"publish_date",
+                            @"",           @"lat",
+                            @"",           @"long",
+                            @"",           @"place_id",
+                            @"",           @"post_id",
+                            @"5.37",      @"v",
+                            self.accessToken.token, @"access_token", nil];
+    
+    
+    [self.requestOperationManager POST:@"wall.post" parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
+        
+
+        if (success) {
+            success(responseObject);
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error, operation.response.statusCode);
+        }
+    }];
+
+    
+    
+    
+    
+}
+
 @end
