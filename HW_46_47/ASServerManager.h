@@ -10,6 +10,7 @@
 
 @class ASUser;
 @class ASGroup;
+@class ASAccessToken;
 
 @interface ASServerManager : NSObject
 
@@ -17,14 +18,255 @@
 
 
 
+#pragma mark - INIT SINGLETONE
+
+//  INIT SINGLETONE
+
 + (ASServerManager*) sharedManager;
 
 
-- (void) authorizeUser:(void(^)(ASUser* user)) completion;
+
+#pragma mark - SETTING
+
+- (void)saveSettings:(ASAccessToken *)token;
+
+- (void)loadSettings;
+
+- (void)authorizeUser:(void(^)(ASUser* user)) completion;
 
 
-// --- USER --- //
 
+#pragma mark - GET USER INFO
+
+//  GET USER INFO
+
+- (void) getUsersInfoUserID:(NSString*) userId
+                  onSuccess:(void(^)(ASUser* user)) success
+                  onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
+
+
+
+#pragma mark - GET USER PHOTOS
+
+//  GET USER PHOTOS
+
+-(void) getPhotoUserID:(NSString*) userID
+            withOffset:(NSInteger) offset
+                 count:(NSInteger) count
+             onSuccess:(void(^)(NSArray* photos)) success
+             onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
+
+
+
+#pragma mark - GET COUNTERES
+
+//  GET COUNTERES
+
+- (void)getCounteresInfoByID:(NSString *)ids
+                   onSuccess:(void (^) (NSString *country)) success
+                   onFailure:(void (^) (NSError *error)) failure;
+
+
+
+//  GET CITY BY ID
+
+- (void)getCityInfoByID:(NSString *)ids
+              onSuccess:(void (^) (NSString *city)) success
+              onFailure:(void (^) (NSError *error)) failure;
+
+
+
+
+
+
+
+
+
+#pragma mark - GET GROUP INFO
+
+
+//  GET GROUP INFO
+
+- (void) getGroupInfoID:(NSString*) groupId
+              onSuccess:(void(^)(ASGroup* group)) success
+              onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
+
+
+
+#pragma mark - ADD POST ON WALL  / GET WALL
+
+
+//   ADD POST
+
+-(void) addPostOnWall:(NSString*) ownerID
+          withMessage:(NSString*) message
+            onSuccess:(void(^)(NSDictionary* result)) success
+            onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
+
+
+
+
+//   GET WALL
+
+- (void)  getWall:(NSString*) ownerID
+       withDomain:(NSString*) domain
+       withFilter:(NSString*) filter
+       withOffset:(NSInteger) offset
+        typeOwner:(NSString*) typeOwner
+            count:(NSInteger) count
+        onSuccess:(void(^)(NSArray* posts)) success
+        onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
+
+
+
+
+
+
+
+
+
+#pragma mark - ADD LIKE ON POST / DELETE LIKE FROM POST
+
+
+//  ADD LIKE
+
+- (void) postAddLikeOnWall:(NSString*)ownerID
+                    inPost:(NSString*)postID
+                      type:(NSString *)type
+                 typeOwner:(NSString*) typeOwner
+                 onSuccess:(void(^)(NSDictionary* result))success
+                 onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
+
+
+//  DELETE LIKE
+
+- (void) postDeleteLikeOnWall:(NSString*)ownerID
+                       inPost:(NSString*)postID
+                         type:(NSString *)type
+                    typeOwner:(NSString*) typeOwner
+                    onSuccess:(void(^)(NSDictionary* result))success
+                    onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
+
+
+
+
+
+
+
+
+
+
+
+
+#pragma mark - REPOST
+
+//  REPOST
+
+- (void)repostOnMyWall:(NSString*)ownerID
+                inPost:(NSString*)postID
+           withMessage:(NSString*)message
+             typeOwner:(NSString*) typeOwner
+             onSuccess:(void(^)(NSDictionary* result))success
+             onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
+
+
+
+
+
+
+
+
+
+#pragma mark - GET COMMENTS
+
+
+//  GET COMMENTS
+
+-(void) getCommentFromPost:(NSString*) ownerID
+                    inPost:(NSString*) postID
+                 typeOwner:(NSString*) typeOwner
+                withOffset:(NSInteger) offset
+                     count:(NSInteger) count
+                 onSuccess:(void(^)(NSArray* comments)) success
+                 onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
+
+
+
+
+
+
+#pragma mark - JOIN IN GROUP / LEAVE FROM GROUP
+
+
+//  JOIN IN GROUP
+
+
+-(void) joinToGroup:(NSString*) groupID
+          onSuccess:(void(^)(NSDictionary* result))success
+          onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
+
+
+
+
+//  LEAVE FROM GROUP
+
+-(void) leaveFromGroup:(NSString*) groupID
+             onSuccess:(void(^)(NSDictionary* result))success
+             onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
+
+
+
+
+#pragma mark - ADD FRIENDS / DELETE FREIENDS
+
+//  ADD FRIENDS
+
+-(void) addToFriends:(NSString*) userId
+           onSuccess:(void(^)(NSDictionary* result))success
+           onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
+
+
+
+//  DELETE FRIENDS
+
+-(void) deleteFromFriends:(NSString*) userId
+                onSuccess:(void(^)(NSDictionary* result))success
+                onFailure:(void(^)(NSError* error, NSInteger statusCode))failure;
+
+
+
+
+
+
+
+
+#pragma mark - GET FRIENDS / SUBSCRIPTION
+
+
+//  GET FRIENDS
+
+- (void) getFriendsWithOffset:(NSString*) userId
+                   withOffset:(NSInteger) offset
+                    withCount:(NSInteger) count
+                    onSuccess:(void(^)(NSArray* friends)) success
+                    onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
+
+
+
+//  GET SUBSCRIPTION
+
+- (void) getSubscriptionsWithId:(NSString*) userId
+                       onOffSet:(NSInteger) offset
+                          count:(NSInteger) count
+                      onSuccess:(void(^)(NSArray* subcriptions)) success
+                      onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
+
+
+
+
+
+
+/*
 
 - (void) getUsersInfoUserID:(NSString*) userId
                   onSuccess:(void(^)(ASUser* user)) success
@@ -144,7 +386,7 @@
             onSuccess:(void(^)(NSDictionary* result)) success
             onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure;
 
-
+*/
 
 
 @end

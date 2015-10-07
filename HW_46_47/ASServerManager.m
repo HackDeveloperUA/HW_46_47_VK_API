@@ -38,6 +38,10 @@ static NSString* kUserId = @"kUserId";
 @implementation ASServerManager
 
 
+#pragma mark - INIT SINGLETONE
+
+
+
 + (ASServerManager*) sharedManager {
     
     static ASServerManager* manager = nil;
@@ -65,7 +69,18 @@ static NSString* kUserId = @"kUserId";
 
 
 
+
+
+
+
+
 #pragma mark - SAVE SETTING
+
+////////////////////////////////////////
+//
+//  SAVE SETTING
+//
+////////////////////////////////////////
 
 
 - (void)saveSettings:(ASAccessToken *)token {
@@ -77,6 +92,18 @@ static NSString* kUserId = @"kUserId";
     [userDefaults synchronize];
 }
 
+
+
+
+
+
+////////////////////////////////////////
+//
+//  LOAD SETTING
+//
+////////////////////////////////////////
+
+
 - (void)loadSettings {
     
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
@@ -85,6 +112,18 @@ static NSString* kUserId = @"kUserId";
     self.accessToken.userID = [userDefaults objectForKey:kUserId];
     
 }
+
+
+
+
+
+
+////////////////////////////////////////
+//
+//  AUTHORIZE USER
+//
+////////////////////////////////////////
+
 
 
 - (void)authorizeUser:(void(^)(ASUser* user))completion {
@@ -137,16 +176,29 @@ static NSString* kUserId = @"kUserId";
 }
 
 
+
+
+
+
+
+
+
+
+
 #pragma mark - GET USER INFO
 
-// --- USER --- //
+////////////////////////////////////////
+//
+//  GET USER INFO
+//
+////////////////////////////////////////
+
+
 
 - (void) getUsersInfoUserID:(NSString*) userId
                   onSuccess:(void(^)(ASUser* user)) success
                   onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure {
     
-    
-    //photo_max_orig,status,sex,bdate,city, online
     
     NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
                             userId,      @"user_ids",
@@ -175,8 +227,6 @@ static NSString* kUserId = @"kUserId";
      
                               success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
                                   
-                                  //NSLog(@"JSON: %@",responseObject);
-                                  
 
                                   NSArray* responceArray = [responseObject objectForKey:@"response"];
                                   ASUser* user = nil;
@@ -201,7 +251,22 @@ static NSString* kUserId = @"kUserId";
 }
 
 
+
+
+
+
+
+
+
 #pragma mark - GET USER PHOTOS
+
+
+////////////////////////////////////////
+//
+//  GET USER PHOTOS
+//
+////////////////////////////////////////
+
 
 
 -(void) getPhotoUserID:(NSString*) userID
@@ -231,16 +296,12 @@ static NSString* kUserId = @"kUserId";
      
                               success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
                                   
-                                  //NSLog(@"JSON - %@",responseObject);
-                                  
-                                  //NSArray*  response = [responseObject  objectForKey:@"response"];
-                                  NSArray*  items    = [[responseObject objectForKey:@"response"] objectForKey:@"items"];
+                               NSArray*  items    = [[responseObject objectForKey:@"response"] objectForKey:@"items"];
                                   
                                   NSMutableArray* objectsArray = [NSMutableArray array];
 
                                   for (NSDictionary* dict in items) {
                                       
-                                      // ASPhoto* photo =  [[ASPhoto alloc] initFromResponsePhotosGet:dict];
                                       ASPhoto* photo = [[ASPhoto alloc] initWithServerResponse:dict];
                                       [objectsArray addObject:photo];
                                   }
@@ -262,7 +323,21 @@ static NSString* kUserId = @"kUserId";
 
 
 
+
+
+
+
+
+
+
 #pragma mark - GET COUNTERES
+
+////////////////////////////////////////
+//
+//  GET COUNTERES
+//
+////////////////////////////////////////
+
 
 
 - (void)getCounteresInfoByID:(NSString *)ids
@@ -284,6 +359,16 @@ static NSString* kUserId = @"kUserId";
                               }];
     
 }
+
+
+
+
+
+////////////////////////////////////////
+//
+//  GET CITY BY ID
+//
+////////////////////////////////////////
 
 
 - (void)getCityInfoByID:(NSString *)ids
@@ -308,20 +393,29 @@ static NSString* kUserId = @"kUserId";
 
 
 
-#pragma mark - GET FRIENDS / SUBSCRIPTION
 
-// --- GROUP --- //
+
+
+
+
+
+
+
+
+#pragma mark - GET GROUP INFO
+
+////////////////////////////////////////
+//
+//  GET GROUP INFO
+//
+////////////////////////////////////////
+
+
 
 - (void) getGroupInfoID:(NSString*) groupId
               onSuccess:(void(^)(ASGroup* group)) success
               onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure {
     
-
-    // accessToket тут не нужен . Он вредит
-   /*
-    if (![groupId hasPrefix:@"-"]) {
-        groupId = [@"-" stringByAppendingString:groupId];
-    }*/
     
     NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
                             groupId,                @"group_id",
@@ -363,12 +457,69 @@ static NSString* kUserId = @"kUserId";
 
 
 
-#pragma mark - GET WALL
 
 
 
 
-/// NEW
+#pragma mark - ADD POST ON WALL  / GET WALL
+
+
+////////////////////////////////////////
+//
+//   ADD POST
+//
+////////////////////////////////////////
+
+
+-(void) addPostOnWall:(NSString*) ownerID
+          withMessage:(NSString*) message
+            onSuccess:(void(^)(NSDictionary* result)) success
+            onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure {
+    
+    
+    NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            ownerID,            @"owner_id",
+                            @"0",          @"friends_only",
+                            @"",          @"from_group",
+                            message,       @"message",
+                            @"",           @"attachments",
+                            
+                            @"",           @"services",
+                            @"0",          @"signed",
+                            @"0",           @"publish_date",
+                            @"",           @"lat",
+                            @"",           @"long",
+                            @"",           @"place_id",
+                            @"",           @"post_id",
+                            @"5.37",      @"v",
+                            self.accessToken.token, @"access_token", nil];
+    
+    
+    [self.requestOperationManager POST:@"wall.post" parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
+        
+        
+        if (success) {
+            success(responseObject);
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error, operation.response.statusCode);
+        }
+    }];
+    
+}
+
+
+
+
+
+////////////////////////////////////////
+//
+//   GET WALL
+//
+////////////////////////////////////////
+
 
 - (void)  getWall:(NSString*) ownerID
        withDomain:(NSString*) domain
@@ -377,7 +528,7 @@ static NSString* kUserId = @"kUserId";
         typeOwner:(NSString*) typeOwner
             count:(NSInteger) count
         onSuccess:(void(^)(NSArray* posts)) success
-        onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure; {
+        onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure {
 
 
 
@@ -388,10 +539,6 @@ static NSString* kUserId = @"kUserId";
         }
 
     }
-    
-    
-   
-    
     
     NSMutableDictionary* params =
     [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -404,14 +551,6 @@ static NSString* kUserId = @"kUserId";
      @"5.37",       @"v",
      self.accessToken.token, @"access_token", nil];
     
-    
-    /*
-    if (groupID.length > 1) {
-        [params setValue:groupID forKey:@"owner_id"];
-    }
-    else {
-        [params setValue:domain forKey:@"domain"];
-    }*/
     
     
     [self.requestOperationManager  GET:@"wall.get"
@@ -464,8 +603,7 @@ static NSString* kUserId = @"kUserId";
                
                [arrayWithProfiles addObject:wall];
            }
-                       
-               
+                 
                    }
     
                    dispatch_async(dispatch_get_main_queue(), ^{
@@ -482,12 +620,28 @@ static NSString* kUserId = @"kUserId";
                                        failure(error, operation.response.statusCode);
                                    }
                                }];
- 
-    
+   
 }
 
-///////
+
+
+
+
+
+
+
+
+
+
+
 #pragma mark - ADD LIKE ON POST / DELETE LIKE FROM POST
+
+
+////////////////////////////////////////
+//
+//  ADD LIKE
+//
+////////////////////////////////////////
 
 
 - (void) postAddLikeOnWall:(NSString*)ownerID
@@ -498,8 +652,6 @@ static NSString* kUserId = @"kUserId";
                  onFailure:(void(^)(NSError* error, NSInteger statusCode))failure {
     
     
-    // Буть осторожен ! С добавлением минуса , потом когда будем использовать под пользователя
-    
     
     if ([typeOwner isEqualToString:@"group"]) {
         
@@ -508,13 +660,6 @@ static NSString* kUserId = @"kUserId";
         }
         
     }
-    
-    
-    /*
-    if (![ownerID hasPrefix:@"-"]) {
-        ownerID = [@"-" stringByAppendingString:ownerID];
-    }
-    */
 
     
     NSDictionary *parameters = @{@"type"            : type,
@@ -543,6 +688,19 @@ static NSString* kUserId = @"kUserId";
 
 
 
+
+
+
+
+
+////////////////////////////////////////
+//
+//  DELETE LIKE
+//
+////////////////////////////////////////
+
+
+
 - (void) postDeleteLikeOnWall:(NSString*)ownerID
                        inPost:(NSString*)postID
                          type:(NSString *)type
@@ -559,11 +717,7 @@ static NSString* kUserId = @"kUserId";
         
     }
 
-    /*
-    if (![ownerID hasPrefix:@"-"]) {
-        ownerID = [@"-" stringByAppendingString:ownerID];
-    }*/
-    
+
     NSDictionary *parameters = @{@"type"            : type,
                                  @"owner_id"        : ownerID,
                                  @"item_id"         : postID,
@@ -586,7 +740,18 @@ static NSString* kUserId = @"kUserId";
 
 
 
+
+
+
+
+
+
+
+
+
 #pragma mark - REPOST
+
+
 
 
 ////////////////////////////////////////
@@ -597,7 +762,6 @@ static NSString* kUserId = @"kUserId";
 
 
 
-
 - (void)repostOnMyWall:(NSString*)ownerID
                 inPost:(NSString*)postID
            withMessage:(NSString*)message
@@ -605,12 +769,7 @@ static NSString* kUserId = @"kUserId";
              onSuccess:(void(^)(NSDictionary* result))success
              onFailure:(void(^)(NSError* error, NSInteger statusCode))failure {
     
-    
-    
-    /*
-    if (![ownerID hasPrefix:@"-"]) {
-        ownerID = [@"-" stringByAppendingString:ownerID];
-    }*/
+
     
     if ([typeOwner isEqualToString:@"group"]) {
         
@@ -653,8 +812,10 @@ static NSString* kUserId = @"kUserId";
 
 
 
-#pragma mark - GET COMMENTS
 
+
+
+#pragma mark - GET COMMENTS
 
 
 ////////////////////////////////////////
@@ -682,12 +843,6 @@ static NSString* kUserId = @"kUserId";
         }
         
     }
-
-    /*
-    if (![groupID hasPrefix:@"-"]) {
-        groupID = [@"-" stringByAppendingString:groupID];
-    }*/
-    
     
     
     NSMutableDictionary* params =
@@ -733,26 +888,7 @@ static NSString* kUserId = @"kUserId";
                                                [profilesBase setValue:dict forKey:[[dict objectForKey:@"id"] stringValue]];
                                            }
                                            
-                                           
-                                           /*
-                                           for (int i=0; i<[commentArray count]; i++) {
-                                               
-                                               NSDictionary* dictItem    = commentArray[i];
-                                               ASComment* comment = [[ASComment alloc] initWithServerResponse:dictItem];
-                                               
-                                               if (![comment.fromID hasPrefix:@"-"]) {
-                                                   comment.user = [[ASUser alloc] initWithServerResponse:[profilesBase objectForKey:comment.fromID]];
-                                               } else {
-                                                   comment.group = [[ASGroup alloc] initWithServerResponse:[groupArray firstObject]];
-                                                   
-                                               }
-                                               
-                                               [arrayWithComment addObject:comment];
-                                           }*/
-                                           
-                                           for (int i=20; i>=0; i=i-1) {
-                                               NSLog(@"В обратку i = %d",i);
-                                           }
+                                      
                                            
                                            for (int i=[commentArray count]-1; i>=0; i--) {
                                                
@@ -773,14 +909,12 @@ static NSString* kUserId = @"kUserId";
                                        dispatch_async(dispatch_get_main_queue(), ^{
                                            
                                            if (success) {
-
                                                success(arrayWithComment);
                                            }
                                        });
                                    });
                                    
-                                
-                                   
+
                                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                    NSLog(@"Error: %@", error);
                                    
@@ -790,6 +924,10 @@ static NSString* kUserId = @"kUserId";
                                }];
 
 }
+
+
+
+
 
 
 
@@ -807,12 +945,6 @@ static NSString* kUserId = @"kUserId";
 -(void) joinToGroup:(NSString*) groupID
           onSuccess:(void(^)(NSDictionary* result))success
           onFailure:(void(^)(NSError* error, NSInteger statusCode))failure {
-    
-    
-   // if (![groupID hasPrefix:@"-"]) {
-   //     groupID = [@"-" stringByAppendingString:groupID];
-   // }
-    
     
     
     NSMutableDictionary* params =
@@ -856,12 +988,7 @@ static NSString* kUserId = @"kUserId";
              onSuccess:(void(^)(NSDictionary* result))success
              onFailure:(void(^)(NSError* error, NSInteger statusCode))failure {
     
-   // if (![groupID hasPrefix:@"-"]) {
-   //     groupID = [@"-" stringByAppendingString:groupID];
-   // }
-    
-    
-    
+ 
     NSMutableDictionary* params =
     [NSMutableDictionary dictionaryWithObjectsAndKeys:
      groupID,      @"group_id",
@@ -882,6 +1009,11 @@ static NSString* kUserId = @"kUserId";
     }];
  
 }
+
+
+
+
+
 
 
 
@@ -930,6 +1062,8 @@ static NSString* kUserId = @"kUserId";
 
 
 
+
+
 ////////////////////////////////////////
 //
 //  DELETE FRIENDS
@@ -962,6 +1096,14 @@ static NSString* kUserId = @"kUserId";
         }
     }];
 }
+
+
+
+
+
+
+
+
 
 
 
@@ -1006,7 +1148,6 @@ static NSString* kUserId = @"kUserId";
      
                               success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
                                   
-                                  //NSLog(@"JSON - %@",responseObject);
                                   
                                   NSArray* friendsArray = [[responseObject objectForKey:@"response"] objectForKey:@"items"];
                                   NSMutableArray* objectsArray = [NSMutableArray array];
@@ -1032,6 +1173,8 @@ static NSString* kUserId = @"kUserId";
                                   }
                               }];
 }
+
+
 
 
 
@@ -1087,12 +1230,10 @@ static NSString* kUserId = @"kUserId";
                                   [objectsArray addObject:subscript];
                               }
                               
-                                  
                                   if (success) {
                                       success(objectsArray);
                                   }
                               }
-     
      
                               failure:^(AFHTTPRequestOperation *operation, NSError* error){
                                   NSLog(@"Error: %@",error);
@@ -1104,47 +1245,6 @@ static NSString* kUserId = @"kUserId";
 }
 
 
--(void) addPostOnWall:(NSString*) ownerID
-          withMessage:(NSString*) message
-            onSuccess:(void(^)(NSDictionary* result)) success
-            onFailure:(void(^)(NSError* error, NSInteger statusCode)) failure {
-    
-    
-    NSDictionary* params = [NSDictionary dictionaryWithObjectsAndKeys:
-                            ownerID,            @"owner_id",
-                            @"0",          @"friends_only",
-                            @"",          @"from_group",
-                            message,       @"message",
-                            @"",           @"attachments",
 
-                            @"",           @"services",
-                            @"0",          @"signed",
-                            @"0",           @"publish_date",
-                            @"",           @"lat",
-                            @"",           @"long",
-                            @"",           @"place_id",
-                            @"",           @"post_id",
-                            @"5.37",      @"v",
-                            self.accessToken.token, @"access_token", nil];
-    
-    
-    [self.requestOperationManager POST:@"wall.post" parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
-        
-
-        if (success) {
-            success(responseObject);
-        }
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error, operation.response.statusCode);
-        }
-    }];
-
-    
-    
-    
-    
-}
 
 @end
