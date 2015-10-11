@@ -11,10 +11,12 @@
 
 #import "ASServerManager.h"
 
+#import "SCLAlertView.h"
+
 @interface ASWritePostTVC () <UITableViewDataSource,UITableViewDelegate,UITextViewDelegate>
 
 @property (strong, nonatomic) NSString* textFromTextView;
-
+@property (strong, nonatomic) UITextView* superTextView;
 @end
 
 
@@ -29,7 +31,12 @@
                                                   target:self
                                                   action:@selector(doneAction:)];
     
-    
+    UIBarButtonItem *cancleButton =
+    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                  target:self
+                                                  action:@selector(cancleAction:)];
+
+    self.navigationItem.leftBarButtonItem = cancleButton;
     self.navigationItem.rightBarButtonItem = doneButton;
 }
 
@@ -71,9 +78,17 @@
     }
 
     cell.textView.text = @"Test";
+    self.superTextView = cell.textView;
     
     return cell;
 }
+
+
+-(void) cancleAction:(UIBarButtonItem*) sender {
+    
+     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+}
+
 
 
 
@@ -84,27 +99,18 @@
     NSLog(@"doneAction");
     NSLog(@"text from textView = %@",self.textFromTextView);
 
-    
+    [self.superTextView resignFirstResponder];
+
     
     [[ASServerManager sharedManager] addPostOnWall:self.currentOwnerID
                                        withMessage:self.textFromTextView
                                          onSuccess:^(NSDictionary *result) {
                                              
+                                             [self successAlert];
                                              
-                
-            [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
-                                        
                                          } onFailure:^(NSError *error, NSInteger statusCode) {
                                              
                                          }];
-    
-    
-    
-    
-    
-    
-    
-    
     
 }
 
@@ -112,6 +118,21 @@
 
 - (void)textViewDidChange:(UITextView *)textView {
     self.textFromTextView = textView.text;
+}
+
+-(void) successAlert {
+   
+    
+    SCLAlertView *alert = [[SCLAlertView alloc] init];
+    [alert addButton:@"Готово" target:self selector:@selector(firstButton:)];
+    [alert showSuccess:self title:@"Отлично" subTitle:@"Ваш пост добавлен" closeButtonTitle:nil duration:0.0f];
+
+
+}
+
+-(void) firstButton:(id) sender {
+    
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
 }
 
 

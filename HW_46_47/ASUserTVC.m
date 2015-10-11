@@ -51,6 +51,7 @@
 
 
 #import "ASLinkModel.h"
+#import "SCLAlertView.h"
 
 
 static NSString* identifierMainUser     = @"ASMainUserCell";
@@ -1016,7 +1017,7 @@ static NSInteger ownerPostWallFilter = 1;
                                            
                                     int success = [[result objectForKey:@"response"]  integerValue];
                                     
-                                    if (success==1) {
+                                    if (success==1 || success==2) {
                                         self.currentUser.friendStatus = 1;
                                         
                                         NSIndexSet* set = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0,1)];
@@ -1024,6 +1025,11 @@ static NSInteger ownerPostWallFilter = 1;
                                         [self.tableView beginUpdates];
                                         [self.tableView reloadSections:set withRowAnimation:UITableViewRowAnimationFade];
                                         [self.tableView endUpdates];
+                                        
+                                        
+                                        SCLAlertView *alert = [[SCLAlertView alloc] init];
+                                        [alert showSuccess:self title:@"Отлично" subTitle:@"Ваш пост запрос отправлен пользователю" closeButtonTitle:@"Готово" duration:0.0f];
+                                        
                                     }
      
                                                 
@@ -1049,6 +1055,12 @@ static NSInteger ownerPostWallFilter = 1;
                                             [self.tableView beginUpdates];
                                             [self.tableView reloadSections:set withRowAnimation:UITableViewRowAnimationFade];
                                             [self.tableView endUpdates];
+                                            
+                                            SCLAlertView *alert = [[SCLAlertView alloc] init];
+                                            
+                                            [alert showError:self title:@"Удален !"
+                                                    subTitle:@"Печалька :("
+                                            closeButtonTitle:@"OK" duration:0.0f];
                                         }
                                                 
                                             }
